@@ -1,3 +1,7 @@
+// Press D to go right, Press A to go left, Press Space to jump
+// You can jump and move at the same time
+
+
 function Animation(spriteSheet, startX, startY, frameWidth, frameHeight, frameDuration, frames, loop, reverse) {
     this.spriteSheet = spriteSheet;
     this.startX = startX;
