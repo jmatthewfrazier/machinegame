@@ -70,6 +70,16 @@ GameEngine.prototype.startInput = function () {
         e.preventDefault();
     }, false);
 
+
+    this.ctx.canvas.addEventListener("keyup", function (e) {
+        if (String.fromCharCode(e.which) === ' ') that.space = false;
+        if (String.fromCharCode(e.which) === 'D') that.right = false;
+        if (String.fromCharCode(e.which) === 'A') that.left = false;
+
+//        console.log(e);
+        e.preventDefault();
+    }, false);
+
     console.log('Input started');
 }
 
@@ -109,9 +119,9 @@ GameEngine.prototype.loop = function () {
     this.clockTick = this.timer.tick();
     this.update();
     this.draw();
-    this.space = null;
-    this.right = null;
-    this.left = null;
+    this.space;
+    this.right;
+    this.left;
 }
 
 function Entity(game, x, y) {

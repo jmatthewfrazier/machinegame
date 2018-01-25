@@ -100,10 +100,10 @@ Background.prototype.draw = function (ctx) {
 function Unicorn(game) {
     this.animation = new Animation(ASSET_MANAGER.getAsset("./img/idle.png"), 0, 0, 187, 91, 0.1, 109, true, false);
     this.jumpAnimation = new Animation(ASSET_MANAGER.getAsset("./img/idle.png"), 0, 0, 187, 91, 0.1, 16, false, false);
-    this.walkAnimation = new Animation(ASSET_MANAGER.getAsset("./img/walk.png"), 0, 0, 187, 91, 0.02, 16, false, false);
     this.animationRev = new Animation(ASSET_MANAGER.getAsset("./img/idle copy.png"), 0, 0, 187, 91, 0.1, 105, true, false);
+    this.walkAnimation = new Animation(ASSET_MANAGER.getAsset("./img/walk.png"), 0, 0, 187, 91, 0.05, 16, true, false);
     this.jumpRevAnimation = new Animation(ASSET_MANAGER.getAsset("./img/idle copy.png"), 0, 0, 187, 91, 0.1, 16, false, false);
-    this.walkRevAnimation = new Animation(ASSET_MANAGER.getAsset("./img/walk copy.png"), 0, 0, 187, 91, 0.02, 16, false, false);
+    this.walkRevAnimation = new Animation(ASSET_MANAGER.getAsset("./img/walk copy.png"), 0, 0, 187, 91, 0.05, 16, true, false);
     this.jumping = false;
     this.rightMove = false;
     this.leftMove = false;
@@ -158,14 +158,34 @@ Unicorn.prototype.update = function () {
       this.x = this.x + 5;
       this.justRight = true;
       this.justLeft = false;
-    } if (this.leftMove) {
-      if (this.walkRevAnimation.elapsedTime > 0.15) {
-          this.walkRevAnimation.elapsedTime = 0;
-          this.leftMove = false;
+    } else if (this.jumping) {
+        if (this.jumpRevAnimation.isDone()) {
+            this.jumpRevAnimation.elapsedTime = 0;
+            this.jumping = false;
+        }
+        var jumpDistance = this.jumpRevAnimation.elapsedTime / this.jumpAnimation.totalTime;
+        var totalHeight = 200;
+
+        if (jumpDistance > 0.5)
+            jumpDistance = 1 - jumpDistance;
+
+        //var height = jumpDistance * 2 * totalHeight;
+        var height = totalHeight * (-4 * (jumpDistance * jumpDistance - jumpDistance));
+        this.y = this.ground - height;
+    } if (this.rightMove) {
+      this.x = this.x + 5;
+      this.justRight = true;
+      this.justLeft = false;
+      if (!this.game.right) {
+          this.rightMove = false;
       }
+    } if (this.leftMove) {
       this.x = this.x - 5;
       this.justRight = false;
       this.justLeft = true;
+      if (!this.game.left) {
+          this.leftMove = false;
+      }
     }
     Entity.prototype.update.call(this);
 }
@@ -175,7 +195,7 @@ Unicorn.prototype.draw = function (ctx) {
       this.jumpRevAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.2);
     } else if (this.justRight && this.jumping) {
       this.jumpAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.2);
-    } else if (this.rightMove) {
+    } if (this.rightMove) {
         this.walkAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.2);
     } else if (this.leftMove) {
       this.walkRevAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.2);
