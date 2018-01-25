@@ -14,6 +14,9 @@ function Animation(spriteSheet, startX, startY, frameWidth, frameHeight, frameDu
     this.elapsedTime = 0;
     this.loop = loop;
     this.reverse = reverse;
+    this.rightMove = false;
+    this.leftMove = false;
+    this.jumping = false;
     this.justRight = true;
     this.justLeft = false;
 }
@@ -78,23 +81,6 @@ Background.prototype.draw = function (ctx) {
 
 }
 
-// function Background(game) {
-//     Entity.call(this, game, 0, 400);
-//     this.radius = 200;
-// }
-//
-// Background.prototype = new Entity();
-// Background.prototype.constructor = Background;
-//
-// Background.prototype.update = function () {
-// }
-//
-// Background.prototype.draw = function (ctx) {
-//     ctx.fillStyle = "SaddleBrown";
-//     ctx.fillRect(0,700,800,300);
-//     Entity.prototype.draw.call(this);
-// }
-
 
 
 function Unicorn(game) {
@@ -103,7 +89,7 @@ function Unicorn(game) {
     this.animationRev = new Animation(ASSET_MANAGER.getAsset("./img/idle copy.png"), 0, 0, 187, 91, 0.1, 105, true, false);
     this.walkAnimation = new Animation(ASSET_MANAGER.getAsset("./img/walk.png"), 0, 0, 187, 91, 0.05, 16, true, false);
     this.jumpRevAnimation = new Animation(ASSET_MANAGER.getAsset("./img/idle copy.png"), 0, 0, 187, 91, 0.1, 16, false, false);
-    this.walkRevAnimation = new Animation(ASSET_MANAGER.getAsset("./img/walk copy.png"), 0, 0, 187, 91, 0.05, 16, true, false);
+    this.walkRevAnimation = new Animation(ASSET_MANAGER.getAsset("./img/walk copy.png"), 0, 0, 187, 91, 0.05, 16, true, true);
     this.jumping = false;
     this.rightMove = false;
     this.leftMove = false;
@@ -151,28 +137,6 @@ Unicorn.prototype.update = function () {
         var height = totalHeight * (-4 * (jumpDistance * jumpDistance - jumpDistance));
         this.y = this.ground - height;
     } if (this.rightMove) {
-      if (this.walkAnimation.elapsedTime > 0.15) {
-          this.walkAnimation.elapsedTime = 0;
-          this.rightMove = false;
-      }
-      this.x = this.x + 5;
-      this.justRight = true;
-      this.justLeft = false;
-    } else if (this.jumping) {
-        if (this.jumpRevAnimation.isDone()) {
-            this.jumpRevAnimation.elapsedTime = 0;
-            this.jumping = false;
-        }
-        var jumpDistance = this.jumpRevAnimation.elapsedTime / this.jumpAnimation.totalTime;
-        var totalHeight = 200;
-
-        if (jumpDistance > 0.5)
-            jumpDistance = 1 - jumpDistance;
-
-        //var height = jumpDistance * 2 * totalHeight;
-        var height = totalHeight * (-4 * (jumpDistance * jumpDistance - jumpDistance));
-        this.y = this.ground - height;
-    } if (this.rightMove) {
       this.x = this.x + 5;
       this.justRight = true;
       this.justLeft = false;
@@ -181,8 +145,8 @@ Unicorn.prototype.update = function () {
       }
     } if (this.leftMove) {
       this.x = this.x - 5;
-      this.justRight = false;
       this.justLeft = true;
+      this.justRight = false;
       if (!this.game.left) {
           this.leftMove = false;
       }
