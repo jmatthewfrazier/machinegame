@@ -76,54 +76,39 @@ Background.prototype.update = function () {
 
 Background.prototype.draw = function (ctx) {
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/Image_0005.jpg"), this.x, this.y);
+    ctx.drawImage(ASSET_MANAGER.getAsset("./img/Image_0005.jpg"), 800, this.y);
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/Image_0009.png"), this.x, this.y);
+    ctx.drawImage(ASSET_MANAGER.getAsset("./img/Image_0009.png"), 800, this.y);
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/Image_0010.png"), this.x, this.y);
+    ctx.drawImage(ASSET_MANAGER.getAsset("./img/Image_0010.png"), 800, this.y);
 
 }
 
-function Gwen(game) {
-    this.animation = new Animation(ASSET_MANAGER.getAsset("./img/gwen_idle.png"), 0, 0, 116, 191, 0.1, 76, true, false);
-    this.radius = 100;
-    this.ground = 570;
-    Entity.call(this, game, 500, 550);
-}
 
-Gwen.prototype = new Entity();
-Gwen.prototype.constructor = Gwen;
 
-Gwen.prototype.update = function () {
-      this.x += .5;
-      if (this.x > 800) this.x = -30;
-      Entity.prototype.update.call(this);
-}
-
-Gwen.prototype.draw = function (ctx) {
-      this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, .8);
-      Entity.prototype.draw.call(this);
-}
-
-function Man(game) {
+function Unicorn(game) {
     this.animation = new Animation(ASSET_MANAGER.getAsset("./img/idle.png"), 0, 0, 187, 91, 0.1, 109, true, false);
     this.jumpAnimation = new Animation(ASSET_MANAGER.getAsset("./img/idle.png"), 0, 0, 187, 91, 0.1, 16, false, false);
     this.animationRev = new Animation(ASSET_MANAGER.getAsset("./img/idle copy.png"), 0, 0, 187, 91, 0.1, 105, true, false);
     this.walkAnimation = new Animation(ASSET_MANAGER.getAsset("./img/walk.png"), 0, 0, 187, 91, 0.05, 16, true, false);
     this.jumpRevAnimation = new Animation(ASSET_MANAGER.getAsset("./img/idle copy.png"), 0, 0, 187, 91, 0.1, 16, false, false);
-    this.walkRevAnimation = new Animation(ASSET_MANAGER.getAsset("./img/walk copy.png"), 0, 0, 187, 91, 0.05, 16, true, true);
+    this.walkRevAnimation = new Animation(ASSET_MANAGER.getAsset("./img/walk_left.png"), 0, 0, 187, 91, 0.05, 16, true, true);
     this.jumping = false;
     this.rightMove = false;
     this.leftMove = false;
+    this.speed = 75;
     this.radius = 100;
-    this.ground = 600;
-    Entity.call(this, game, 0, 600);
+    this.ground = 650;
+    Entity.call(this, game, 0, 650);
 }
 
 //187, 91
 //,91
 
-Man.prototype = new Entity();
-Man.prototype.constructor = Man;
+Unicorn.prototype = new Entity();
+Unicorn.prototype.constructor = Unicorn;
 
-Man.prototype.update = function () {
+Unicorn.prototype.update = function () {
     if (this.game.space) this.jumping = true;
     if (this.game.right) this.rightMove = true;
     if (this.game.left) this.leftMove = true;
@@ -133,7 +118,7 @@ Man.prototype.update = function () {
             this.jumping = false;
         }
         var jumpDistance = this.jumpAnimation.elapsedTime / this.jumpAnimation.totalTime;
-        var totalHeight = 200;
+        var totalHeight = 75;
 
         if (jumpDistance > 0.5)
             jumpDistance = 1 - jumpDistance;
@@ -147,7 +132,7 @@ Man.prototype.update = function () {
             this.jumping = false;
         }
         var jumpDistance = this.jumpRevAnimation.elapsedTime / this.jumpRevAnimation.totalTime;
-        var totalHeight = 200;
+        var totalHeight = 75;
 
         if (jumpDistance > 0.5)
             jumpDistance = 1 - jumpDistance;
@@ -156,14 +141,14 @@ Man.prototype.update = function () {
         var height = totalHeight * (-4 * (jumpDistance * jumpDistance - jumpDistance));
         this.y = this.ground - height;
     } if (this.rightMove) {
-      this.x = this.x + 5;
+      this.x += this.speed * this.game.clockTick;
       this.justRight = true;
       this.justLeft = false;
       if (!this.game.right) {
           this.rightMove = false;
       }
     } if (this.leftMove) {
-      this.x = this.x - 5;
+      this.x -= this.speed * this.game.clockTick;
       this.justLeft = true;
       this.justRight = false;
       if (!this.game.left) {
@@ -173,21 +158,130 @@ Man.prototype.update = function () {
     Entity.prototype.update.call(this);
 }
 
-Man.prototype.draw = function (ctx) {
+Unicorn.prototype.draw = function (ctx) {
     if (this.justLeft && this.jumping) {
-      this.jumpRevAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.2);
+      this.jumpRevAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y, .75);
     } else if (this.justRight && this.jumping) {
-      this.jumpAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.2);
+      this.jumpAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y, .75);
     } if (this.rightMove) {
-        this.walkAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.2);
+        this.walkAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y, .75);
     } else if (this.leftMove) {
-      this.walkRevAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.2);
+      this.walkRevAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y, .75);
     } else if (this.justLeft) {
-        this.animationRev.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.2);
+        this.animationRev.drawFrame(this.game.clockTick, ctx, this.x, this.y, .75);
     }  else {
-        this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.2);
+        this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, .75);
     }
     Entity.prototype.draw.call(this);
+}
+
+function Gwen(game) {
+    this.animation = new Animation(ASSET_MANAGER.getAsset("./img/gwen_idle.png"), 0, 0, 116, 191, 0.1, 76, true, false);
+    this.speed = 50;
+    this.right = true;
+    this.left = false;
+    this.radius = 100;
+    this.ground = 570;
+    Entity.call(this, game, 500, 620);
+}
+
+Gwen.prototype = new Entity();
+Gwen.prototype.constructor = Gwen;
+
+Gwen.prototype.update = function () {
+      if (this.x >= 800) {
+          this.right = false;
+          this.left = true;
+      } else if (this.x <= 100) {
+          this.right = true;
+          this.left = false;
+      }
+      if (this.right) {
+          this.x += this.speed * this.game.clockTick;
+      } else if (this.left) {
+          this.x -= this.speed * this.game.clockTick;
+      }
+      Entity.prototype.update.call(this);
+}
+
+Gwen.prototype.draw = function (ctx) {
+      this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, .5);
+      Entity.prototype.draw.call(this);
+}
+
+function Lizard(game) {
+    this.animation = new Animation(ASSET_MANAGER.getAsset("./img/lizard.png"), 0, 0, 156, 88, 0.1, 4, true, false);
+    this.rightAnimation = new Animation(ASSET_MANAGER.getAsset("./img/lizard_right.png"), 0, 0, 156, 88, 0.1, 4, true, true);
+    this.speed = 250;
+    this.right = true;
+    this.left = false;
+    this.radius = 100;
+    this.ground = 570;
+    Entity.call(this, game, 500, 680);
+}
+
+Lizard.prototype = new Entity();
+Lizard.prototype.constructor = Lizard;
+
+Lizard.prototype.update = function () {
+      if (this.x >= 800) {
+          this.right = false;
+          this.left = true;
+      } else if (this.x <= 400) {
+          this.right = true;
+          this.left = false;
+      }
+      if (this.right) {
+          this.x += this.speed * this.game.clockTick;
+      } else if (this.left) {
+          this.x -= this.speed * this.game.clockTick;
+      }
+      Entity.prototype.update.call(this);
+}
+
+Lizard.prototype.draw = function (ctx) {
+    if (this.right) {
+        this.rightAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y, .5);
+    } else {
+        this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, .5);
+    }
+    Entity.prototype.draw.call(this);
+}
+
+function Box1(game) {
+    this.animation = new Animation(ASSET_MANAGER.getAsset("./img/box1.png"), 0, 0, 144, 144, 1, 1, true, false);
+    this.ground = 600;
+    Entity.call(this, game, this, 0, 0);
+}
+
+Box1.prototype = new Entity();
+Box1.prototype.constructor = Box1;
+
+Box1.prototype.update = function () {
+
+}
+
+Box1.prototype.draw = function (ctx) {
+    this.animation.drawFrame(this.game.clockTick, ctx, 400, 640, .5);
+    this.animation.drawFrame(this.game.clockTick, ctx, 472, 640, .5);
+}
+
+function Box2(game) {
+    this.animation = new Animation(ASSET_MANAGER.getAsset("./img/box2.png"), 0, 0, 144, 144, 1, 1, true, false);
+    this.ground = 650;
+    Entity.call(this, game, this, 0, 0);
+}
+
+Box2.prototype = new Entity();
+Box2.prototype.constructor = Box2;
+
+Box2.prototype.update = function () {
+
+}
+
+Box2.prototype.draw = function (ctx) {
+    this.animation.drawFrame(this.game.clockTick, ctx, 544, 640, .5);
+    this.animation.drawFrame(this.game.clockTick, ctx, 472, 568, .5);
 }
 
 
@@ -195,11 +289,15 @@ Man.prototype.draw = function (ctx) {
 
 var ASSET_MANAGER = new AssetManager();
 
+ASSET_MANAGER.queueDownload("./img/box1.png");
+ASSET_MANAGER.queueDownload("./img/box2.png");
+ASSET_MANAGER.queueDownload("./img/lizard.png");
+ASSET_MANAGER.queueDownload("./img/lizard_right.png");
+ASSET_MANAGER.queueDownload("./img/gwen_idle.png");
 ASSET_MANAGER.queueDownload("./img/idle.png");
 ASSET_MANAGER.queueDownload("./img/walk.png");
 ASSET_MANAGER.queueDownload("./img/idle copy.png");
-ASSET_MANAGER.queueDownload("./img/walk copy.png");
-ASSET_MANAGER.queueDownload("./img/gwen_idle.png");
+ASSET_MANAGER.queueDownload("./img/walk_left.png");
 ASSET_MANAGER.queueDownload("./img/Image_0005.jpg");
 ASSET_MANAGER.queueDownload("./img/Image_0009.png");
 ASSET_MANAGER.queueDownload("./img/Image_0010.png");
@@ -212,12 +310,20 @@ ASSET_MANAGER.downloadAll(function () {
 
     var gameEngine = new GameEngine();
     var bg = new Background(gameEngine);
-    var man = new Man(gameEngine);
+    var unicorn = new Unicorn(gameEngine);
+    var box = new Box1(gameEngine);
+    var box2 = new Box2(gameEngine);
     var gwen = new Gwen(gameEngine);
+    var lizard = new Lizard(gameEngine);
+
 
     gameEngine.addEntity(bg);
-    gameEngine.addEntity(man);
     gameEngine.addEntity(gwen);
+    gameEngine.addEntity(box);
+    gameEngine.addEntity(box2);
+    gameEngine.addEntity(lizard);
+    gameEngine.addEntity(unicorn);
+
 
     gameEngine.init(ctx);
     gameEngine.start();
