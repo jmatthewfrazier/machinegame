@@ -81,9 +81,28 @@ Background.prototype.draw = function (ctx) {
 
 }
 
+function Gwen(game) {
+    this.animation = new Animation(ASSET_MANAGER.getAsset("./img/gwen_idle.png"), 0, 0, 116, 191, 0.1, 76, true, false);
+    this.radius = 100;
+    this.ground = 570;
+    Entity.call(this, game, 500, 550);
+}
 
+Gwen.prototype = new Entity();
+Gwen.prototype.constructor = Gwen;
 
-function Unicorn(game) {
+Gwen.prototype.update = function () {
+      this.x += .5;
+      if (this.x > 800) this.x = -30;
+      Entity.prototype.update.call(this);
+}
+
+Gwen.prototype.draw = function (ctx) {
+      this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, .8);
+      Entity.prototype.draw.call(this);
+}
+
+function Man(game) {
     this.animation = new Animation(ASSET_MANAGER.getAsset("./img/idle.png"), 0, 0, 187, 91, 0.1, 109, true, false);
     this.jumpAnimation = new Animation(ASSET_MANAGER.getAsset("./img/idle.png"), 0, 0, 187, 91, 0.1, 16, false, false);
     this.animationRev = new Animation(ASSET_MANAGER.getAsset("./img/idle copy.png"), 0, 0, 187, 91, 0.1, 105, true, false);
@@ -101,10 +120,10 @@ function Unicorn(game) {
 //187, 91
 //,91
 
-Unicorn.prototype = new Entity();
-Unicorn.prototype.constructor = Unicorn;
+Man.prototype = new Entity();
+Man.prototype.constructor = Man;
 
-Unicorn.prototype.update = function () {
+Man.prototype.update = function () {
     if (this.game.space) this.jumping = true;
     if (this.game.right) this.rightMove = true;
     if (this.game.left) this.leftMove = true;
@@ -154,7 +173,7 @@ Unicorn.prototype.update = function () {
     Entity.prototype.update.call(this);
 }
 
-Unicorn.prototype.draw = function (ctx) {
+Man.prototype.draw = function (ctx) {
     if (this.justLeft && this.jumping) {
       this.jumpRevAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1.2);
     } else if (this.justRight && this.jumping) {
@@ -180,6 +199,7 @@ ASSET_MANAGER.queueDownload("./img/idle.png");
 ASSET_MANAGER.queueDownload("./img/walk.png");
 ASSET_MANAGER.queueDownload("./img/idle copy.png");
 ASSET_MANAGER.queueDownload("./img/walk copy.png");
+ASSET_MANAGER.queueDownload("./img/gwen_idle.png");
 ASSET_MANAGER.queueDownload("./img/Image_0005.jpg");
 ASSET_MANAGER.queueDownload("./img/Image_0009.png");
 ASSET_MANAGER.queueDownload("./img/Image_0010.png");
@@ -192,10 +212,12 @@ ASSET_MANAGER.downloadAll(function () {
 
     var gameEngine = new GameEngine();
     var bg = new Background(gameEngine);
-    var unicorn = new Unicorn(gameEngine);
+    var man = new Man(gameEngine);
+    var gwen = new Gwen(gameEngine);
 
     gameEngine.addEntity(bg);
-    gameEngine.addEntity(unicorn);
+    gameEngine.addEntity(man);
+    gameEngine.addEntity(gwen);
 
     gameEngine.init(ctx);
     gameEngine.start();
