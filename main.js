@@ -563,7 +563,6 @@ function continue_dl(){
   ASSET_MANAGER.downloadAll(function(){
     console.log("downloads complete\n");
   });
-}
 
 ASSET_MANAGER.queueDownload("./img/box1.png");
 ASSET_MANAGER.queueDownload("./img/box2.png");
@@ -582,6 +581,7 @@ ASSET_MANAGER.queueDownload("./img/dwight_talk_l.png");
 ASSET_MANAGER.queueDownload("./img/Image_0005.jpg");
 ASSET_MANAGER.queueDownload("./img/Image_0009.png");
 ASSET_MANAGER.queueDownload("./img/Image_0010.png");
+
 ASSET_MANAGER.queueDownload("./img/woodplat.png");
 ASSET_MANAGER.queueDownload("./img/lightning.png");
 ASSET_MANAGER.queueDownload("./img/scrap.png");
@@ -603,6 +603,7 @@ ASSET_MANAGER.queueDownload("./asset_lib/audio/jump.wav");
 //MUSIC LAST
 ASSET_MANAGER.queueDownload("./asset_lib/audio/Reach for the Dead.mp3");
 ASSET_MANAGER.queueDownload("./asset_lib/audio/Aquatic_Ambiance_2.mp3");
+// ASSET_MANAGER.queueDownload("./img/gear.png");
 
 ASSET_MANAGER.downloadAll(function () {
     console.log("starting up da sheild");
@@ -620,6 +621,7 @@ ASSET_MANAGER.downloadAll(function () {
     gameEngine.lvl = 1;
     level_1(gameEngine);
     var unicorn = new Unicorn(gameEngine);
+
     gameEngine.Hero = unicorn;
     gameEngine.addEntity(gameEngine.Hero);
 

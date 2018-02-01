@@ -158,6 +158,34 @@ Box2.prototype.draw = function (ctx) {
     this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, .5);
 }
 
+function Gear(game) {
+  this.spriteSheet = ASSET_MANAGER.getAsset("./img/gear.png");
+    this.angle = 0;
+    this.scale = .3;
+    this.center = (this.spriteSheet.height * this.scale) / 2
+    Entity.call(this, game, -this.center, 200);
+}
+
+Gear.prototype = new Entity();
+Gear.prototype.constructor = Gear;
+
+Gear.prototype.update = function () {
+      this.x += .5;
+      this.angle += .01;
+      if (this.x > 800 + this.center) this.x = -this.center;
+      Entity.prototype.update.call(this);
+}
+
+Gear.prototype.draw = function (ctx) {
+      ctx.save();
+      ctx.translate(this.x, this.y);
+      ctx.rotate(this.angle);
+      ctx.drawImage(this.spriteSheet, -(this.center), -(this.center), this.spriteSheet.width * this.scale, this.spriteSheet.height * this.scale);
+      ctx.restore();
+
+      Entity.prototype.draw.call(this);
+}
+
 function Plat1(game, x, y, width, height) {
     this.x = x;
     this.y = y;
