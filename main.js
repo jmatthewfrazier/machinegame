@@ -282,6 +282,7 @@ Box2.prototype.update = function () {
 Box2.prototype.draw = function (ctx) {
     this.animation.drawFrame(this.game.clockTick, ctx, 544, 640, .5);
     this.animation.drawFrame(this.game.clockTick, ctx, 472, 568, .5);
+}
 
 function Gear(game) {
 	this.spriteSheet = ASSET_MANAGER.getAsset("./img/gear.png");
