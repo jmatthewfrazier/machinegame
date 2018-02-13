@@ -492,6 +492,10 @@ ASSET_MANAGER.downloadAll(function () {
     var canvas = document.getElementById('gameWorld');
     var ctx = canvas.getContext('2d');
 
+    ctx.imageSmoothingEnabled= false;
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
     var gameEngine = new GameEngine();
     var boxes = [];
     var bg = new Background(gameEngine);
