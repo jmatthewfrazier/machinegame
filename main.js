@@ -201,6 +201,7 @@ Unicorn.prototype.update = function () {
     if (this.falling) {
         this.y += 5;
         this.lastbottom = this.boundingbox.bottom;
+        this.boundingbox = new BoundingBox(this.x + 90, this.y, this.boundingbox.width, this.boundingbox.height);
 
         for (var i = 0; i < this.game.boxes.length; i++) {
             var box = this.game.boxes[i];
