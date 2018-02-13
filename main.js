@@ -320,6 +320,12 @@ Unicorn.prototype.update = function () {
         this.lastplattouch.pushedRight = false;
         this.lastplattouch.pushedLeft = false;
     }
+    // for (var i = 0; i < this.game.boxes.length; i++) {
+    //     var box = this.game.boxes[i];
+    //     if (this.onBox && this.boundingbox.collide(box.boundingbox) && !(box === this.lastplattouch) && !(box instanceof Box1)) {
+    //         this.speed = 0;
+    //     }
+    // }
 
     Entity.prototype.update.call(this);
 }
@@ -428,6 +434,7 @@ function Plat1(game, x, y, width, height) {
     this.width = width;
     this.height = height;
     this.ogX = x;
+    this.speed = 75;
     this.animation = new Animation(ASSET_MANAGER.getAsset("./img/woodplat.png"), 0, 0, 553, 92, 1, 1, true, false);
     this.boundingbox = new BoundingBox(this.x, this.y, width * .5, height * .5);
     Entity.call(this, game, this.x, this.y);
@@ -437,6 +444,20 @@ Plat1.prototype = new Entity();
 Plat1.prototype.constructor = Plat1;
 
 Plat1.prototype.update = function () {
+    if (this.x <= this.ogX) {
+        this.rightMove = true;
+        this.leftMove = false;
+    } else if (this.x >= this.ogX + 150) {
+        this.rightMove = false;
+        this.leftMove = true;
+    }
+
+    if (this.rightMove) {
+        this.x += this.speed * this.game.clockTick;
+    } else if (this.leftMove) {
+        this.x -= this.speed * this.game.clockTick;
+    }
+    this.boundingbox = new BoundingBox(this.x, this.y, this.width * .5, this.height * .5);
 
 }
 
@@ -477,16 +498,19 @@ ASSET_MANAGER.downloadAll(function () {
     var box = new Box1(gameEngine, 400, 640, 144, 144);
     var box2 = new Box2(gameEngine, 544, 640, 144, 144);
     var box3 = new Box2(gameEngine, 230, 640, 144, 144);
+    var box4 = new Box2(gameEngine, 544, 568, 144, 144);
     var plat = new Plat1(gameEngine, 150, 560, 553, 92);
 
     gameEngine.addEntity(bg);
     gameEngine.addEntity(box);
     gameEngine.addEntity(box2);
     gameEngine.addEntity(box3);
+    gameEngine.addEntity(box4);
     gameEngine.addEntity(plat);
     boxes.push(box);
     boxes.push(box2);
     boxes.push(box3);
+    boxes.push(box4);
     boxes.push(plat);
 
     gameEngine.boxes = boxes;
