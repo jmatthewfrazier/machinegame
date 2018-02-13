@@ -19,6 +19,8 @@ function Animation(spriteSheet, startX, startY, frameWidth, frameHeight, frameDu
     this.jumping = false;
     this.justRight = true;
     this.justLeft = false;
+    this.rightScrolling = false;
+    this.leftScrolling = false;
 }
 
 Animation.prototype.drawFrame = function (tick, ctx, x, y, scaleBy) {
@@ -86,22 +88,41 @@ BoundingBox.prototype.collide = function (oth) {
 function Background(game) {
      this.x = 0;
      this.y = 0;
+     Entity.call(this, game, 0, 0);
 }
 
 Background.prototype = new Entity();
 Background.prototype.constructor = Background;
 
 Background.prototype.update = function () {
+    if (this.game.rightScroll) this.rightScrolling = true;
+    if (this.game.leftScroll) this.leftScrolling = true;
+    if (this.rightScrolling) {
+      this.x -= 0.7;
+      if (!this.game.rightScroll) {
+        this.rightScrolling = false;
+      }
+    } else if (this.leftScrolling) {
+      this.x += 0.7;
+      if (!this.game.leftScroll) {
+        this.leftScrolling = false;
+      }
+    }
+    if (this.x > 700) this.x = 0;
+    if (this.x < 0) this.x = 700;
+    Entity.prototype.update.call(this);
 }
 
 Background.prototype.draw = function (ctx) {
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/Image_0005.jpg"), this.x, this.y);
-    ctx.drawImage(ASSET_MANAGER.getAsset("./img/Image_0005.jpg"), 800, this.y);
+    ctx.drawImage(ASSET_MANAGER.getAsset("./img/Image_0005.jpg"), this.x + 699, this.y);
+    ctx.drawImage(ASSET_MANAGER.getAsset("./img/Image_0005.jpg"), this.x - 699, this.y);
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/Image_0009.png"), this.x, this.y);
-    ctx.drawImage(ASSET_MANAGER.getAsset("./img/Image_0009.png"), 800, this.y);
+    ctx.drawImage(ASSET_MANAGER.getAsset("./img/Image_0009.png"), this.x + 699, this.y);
+    ctx.drawImage(ASSET_MANAGER.getAsset("./img/Image_0009.png"), this.x - 699, this.y);
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/Image_0010.png"), this.x, this.y);
-    ctx.drawImage(ASSET_MANAGER.getAsset("./img/Image_0010.png"), 800, this.y);
-
+    ctx.drawImage(ASSET_MANAGER.getAsset("./img/Image_0010.png"), this.x + 699, this.y);
+    ctx.drawImage(ASSET_MANAGER.getAsset("./img/Image_0010.png"), this.x - 699, this.y);
 }
 
 
@@ -118,7 +139,7 @@ function Unicorn(game) {
     this.leftMove = false;
     this.speed = 75;
     this.radius = 100;
-    this.ground = 650;
+    this.ground = 550;
     this.height = 0;
     this.jumpHeight = 90;
     this.boxes = true;
@@ -127,7 +148,7 @@ function Unicorn(game) {
     this.platform = game.boxes[0];
     this.lastplattouch = game.boxes[0];
     this.boundingbox = new BoundingBox(this.x + 90, this.y, this.animation.frameWidth - 145, this.animation.frameHeight - 20);
-    Entity.call(this, game, 0, 650);
+    Entity.call(this, game, 0, 550);
 }
 
 //187, 91
@@ -372,7 +393,7 @@ function Box1(game, x, y, width, height) {
     this.pushedRight = false;
     this.pushedLeft = false;
     this.blocked = false;
-    this.boundingbox = new BoundingBox(400, 640, width * .5, height * .5);
+    this.boundingbox = new BoundingBox(400, 550, width * .5, height * .5);
     Entity.call(this, game, this.x, this.y);
 }
 
@@ -492,20 +513,22 @@ ASSET_MANAGER.downloadAll(function () {
     var canvas = document.getElementById('gameWorld');
     var ctx = canvas.getContext('2d');
 
+    ctx.imageSmoothingEnabled= false;
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
     var gameEngine = new GameEngine();
     var boxes = [];
     var bg = new Background(gameEngine);
-    var box = new Box1(gameEngine, 400, 640, 144, 144);
-    var box2 = new Box2(gameEngine, 544, 640, 144, 144);
-    var box3 = new Box2(gameEngine, 230, 640, 144, 144);
-    var box4 = new Box2(gameEngine, 544, 568, 144, 144);
-    var plat = new Plat1(gameEngine, 150, 560, 553, 92);
+    var box = new Box1(gameEngine, 400, 550, 144, 144);
+    var box2 = new Box2(gameEngine, 544, 550, 144, 144);
+    var box3 = new Box2(gameEngine, 230, 550, 144, 144);
+    var plat = new Plat1(gameEngine, 150, 470, 553, 92);
 
     gameEngine.addEntity(bg);
     gameEngine.addEntity(box);
     gameEngine.addEntity(box2);
     gameEngine.addEntity(box3);
-    gameEngine.addEntity(box4);
     gameEngine.addEntity(plat);
     boxes.push(box);
     boxes.push(box2);
