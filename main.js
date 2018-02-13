@@ -85,6 +85,31 @@ BoundingBox.prototype.collide = function (oth) {
     }
 }
 
+function PlayGame(game, x, y) {
+    Entity.call(this, game, x, y);
+}
+
+PlayGame.prototype = new Entity();
+PlayGame.prototype.constructor = PlayGame;
+
+PlayGame.prototype.update = function () {
+    if (this.game.click) this.game.running = true;
+}
+
+PlayGame.prototype.draw = function (ctx) {
+    if (!this.game.running) {
+        ctx.font = "sans-serif";
+        ctx.fillStyle = "white";
+        if (this.game.mouse) { ctx.fillStyle = "black"; }
+        if (!this.game.dead) {
+        ctx.fillText("click to begin", this.x, this.y);
+        }
+        else {
+            ctx.fillText("try again", this.x, this.y);
+        }
+    }
+}
+
 function Background(game) {
      this.x = 0;
      this.y = 0;
@@ -95,6 +120,7 @@ Background.prototype = new Entity();
 Background.prototype.constructor = Background;
 
 Background.prototype.update = function () {
+  if (this.game.running) {
     if (this.game.rightScroll) this.rightScrolling = true;
     if (this.game.leftScroll) this.leftScrolling = true;
     if (this.rightScrolling) {
@@ -110,18 +136,19 @@ Background.prototype.update = function () {
     }
     if (this.x > 700) this.x = 0;
     if (this.x < 0) this.x = 700;
+  }
+
     Entity.prototype.update.call(this);
 }
 
 Background.prototype.draw = function (ctx) {
+
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/Image_0005.jpg"), this.x, this.y);
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/Image_0005.jpg"), this.x + 699, this.y);
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/Image_0005.jpg"), this.x - 699, this.y);
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/Image_0009.png"), this.x, this.y);
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/Image_0009.png"), this.x + 699, this.y);
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/Image_0009.png"), this.x - 699, this.y);
-    ctx.drawImage(ASSET_MANAGER.getAsset("./img/Image_0010.png"), this.x, this.y);
-    ctx.drawImage(ASSET_MANAGER.getAsset("./img/Image_0010.png"), this.x + 699, this.y);
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/Image_0010.png"), this.x - 699, this.y);
 }
 
@@ -158,6 +185,7 @@ Unicorn.prototype = new Entity();
 Unicorn.prototype.constructor = Unicorn;
 
 Unicorn.prototype.update = function () {
+  if (this.game.running) {
     if (this.game.right) {
         this.rightMove = true;
     } else {
@@ -342,10 +370,13 @@ Unicorn.prototype.update = function () {
         this.lastplattouch.pushedLeft = false;
     }
 
+  }
+
     Entity.prototype.update.call(this);
 }
 
 Unicorn.prototype.draw = function (ctx) {
+    if (!this.game.running) return;
     if (this.boxes) {
         ctx.strokeStyle = "red";
         ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
@@ -413,6 +444,7 @@ Box1.prototype.update = function () {
 }
 
 Box1.prototype.draw = function (ctx) {
+    if (!this.game.running) return;
     ctx.strokeStyle = "blue";
     this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, .5); //400, 640
     ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
@@ -438,10 +470,35 @@ Box2.prototype.update = function () {
 }
 
 Box2.prototype.draw = function (ctx) {
+    if (!this.game.running) return;
     ctx.strokeStyle = "green";
     ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
     this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, .5);
 }
+
+// function Ground(game, x, y, width, height) {
+//     this.x = x;
+//     this.y = y;
+//     this.width = width;
+//     this.height = height;
+//     this.animation = new Animation(ASSET_MANAGER.getAsset("./img/Image_0010.png"), 0, 0, 350, 350, 1, 1, true, false);
+//     this.boundingbox = new BoundingBox(this.x, this.y, width * .5, height * .5)
+//     Entity.call(this, game, this.x, this.y);
+// }
+//
+// Ground.prototype = new Entity();
+// Ground.prototype.constuctor = Ground;
+//
+// Ground.prototype.update = function () {
+//   this.x -= 400 * this.game.clockTick;
+//   if (this.x + this.width < 0) this.x += 3200;
+//   this.boundingbox = new BoundingBox(this.x, this.y, this.width, this.height);
+//   Entity.prototype.update.call(this);
+// }
+//
+// Ground.prototype.draw = function (ctx) {
+//     this.animation.drawFram(this.game.clockTick, ctx, this.x, this.y, 1);
+// }
 
 function Plat1(game, x, y, width, height) {
     this.x = x;
@@ -462,6 +519,7 @@ Plat1.prototype.update = function () {
 }
 
 Plat1.prototype.draw = function (ctx) {
+    if (!this.game.running) return;
     ctx.strokestyle = "purple";
     ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
     this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, .5);
@@ -496,6 +554,7 @@ ASSET_MANAGER.downloadAll(function () {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
+
     var gameEngine = new GameEngine();
     var boxes = [];
     var bg = new Background(gameEngine);
@@ -503,6 +562,9 @@ ASSET_MANAGER.downloadAll(function () {
     var box2 = new Box2(gameEngine, 544, 550, 144, 144);
     var box3 = new Box2(gameEngine, 230, 550, 144, 144);
     var plat = new Plat1(gameEngine, 150, 470, 553, 92);
+
+    gameEngine.running = false;
+    gameEngine.dead = false;
 
     gameEngine.addEntity(bg);
     gameEngine.addEntity(box);
@@ -517,7 +579,9 @@ ASSET_MANAGER.downloadAll(function () {
     gameEngine.boxes = boxes;
 
     var unicorn = new Unicorn(gameEngine);
+    var pg = new PlayGame(gameEngine, 700, 400);
     gameEngine.addEntity(unicorn);
+    gameEngine.addEntity(pg);
 
     gameEngine.init(ctx);
     gameEngine.start();
