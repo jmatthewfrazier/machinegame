@@ -137,7 +137,7 @@ function Unicorn(game) {
     this.jumping = false;
     this.rightMove = false;
     this.leftMove = false;
-    this.speed = 75;
+    this.speed = 100;
     this.radius = 100;
     this.ground = 550;
     this.height = 0;
