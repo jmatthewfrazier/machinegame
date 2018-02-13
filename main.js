@@ -149,12 +149,11 @@ Background.prototype.draw = function (ctx) {
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/Image_0009.png"), this.x, this.y);
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/Image_0009.png"), this.x + 699, this.y);
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/Image_0009.png"), this.x - 699, this.y);
-    ctx.drawImage(ASSET_MANAGER.getAsset("./img/Image_0010.png"), this.x, this.y);
-    ctx.drawImage(ASSET_MANAGER.getAsset("./img/Image_0010.png"), this.x + 699, this.y);
-    ctx.drawImage(ASSET_MANAGER.getAsset("./img/Image_0010.png"), this.x - 699, this.y);
+    // ctx.drawImage(ASSET_MANAGER.getAsset("./img/Image_0010.png"), this.x, this.y);
+    // ctx.drawImage(ASSET_MANAGER.getAsset("./img/Image_0010.png"), this.x + 699, this.y);
+    // ctx.drawImage(ASSET_MANAGER.getAsset("./img/Image_0010.png"), this.x - 699, this.y);
 
 }
-
 
 
 function Unicorn(game) {
@@ -435,6 +434,21 @@ Box1.prototype = new Entity();
 Box1.prototype.constructor = Box1;
 
 Box1.prototype.update = function () {
+//    if (this.game.rightScroll) this.rightScrolling = true;
+//    if (this.game.leftScroll) this.leftScrolling = true;
+//    if (this.rightScrolling) {
+//        this.x -= 0.7;
+//        this.boundingbox.x -= 0.7;
+//        if (!this.game.rightScroll) {
+//            this.rightScrolling = false;
+//        }
+//    } else if (this.leftScrolling) {
+//        this.x += 0.7;
+//        this.boundingbox.x += 0.7;
+//        if (!this.game.leftScroll) {
+//            this.leftScrolling = false;
+//        }
+//    }
     for (var i = 0; i < this.game.boxes.length; i++) {
         var box = this.game.boxes[i];
         if (this.boundingbox.collide(box.boundingbox) && !(box instanceof Box1)) {
@@ -475,7 +489,21 @@ Box2.prototype = new Entity();
 Box2.prototype.constructor = Box2;
 
 Box2.prototype.update = function () {
-
+//    if (this.game.rightScroll) this.rightScrolling = true;
+//    if (this.game.leftScroll) this.leftScrolling = true;
+//    if (this.rightScrolling) {
+//        this.x -= 0.7;
+//        this.boundingbox.x -= 0.7;
+//        if (!this.game.rightScroll) {
+//            this.rightScrolling = false;
+//        }
+//    } else if (this.leftScrolling) {
+//        this.x += 0.7;
+//        this.boundingbox.x += 0.7;
+//        if (!this.game.leftScroll) {
+//            this.leftScrolling = false;
+//        }
+//    }
 }
 
 Box2.prototype.draw = function (ctx) {
@@ -485,29 +513,49 @@ Box2.prototype.draw = function (ctx) {
     this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, .5);
 }
 
-// function Ground(game, x, y, width, height) {
-//     this.x = x;
-//     this.y = y;
-//     this.width = width;
-//     this.height = height;
-//     this.animation = new Animation(ASSET_MANAGER.getAsset("./img/Image_0010.png"), 0, 0, 350, 350, 1, 1, true, false);
-//     this.boundingbox = new BoundingBox(this.x, this.y, width * .5, height * .5)
-//     Entity.call(this, game, this.x, this.y);
-// }
-//
-// Ground.prototype = new Entity();
-// Ground.prototype.constuctor = Ground;
-//
-// Ground.prototype.update = function () {
-//   this.x -= 400 * this.game.clockTick;
-//   if (this.x + this.width < 0) this.x += 3200;
-//   this.boundingbox = new BoundingBox(this.x, this.y, this.width, this.height);
-//   Entity.prototype.update.call(this);
-// }
-//
-// Ground.prototype.draw = function (ctx) {
-//     this.animation.drawFram(this.game.clockTick, ctx, this.x, this.y, 1);
-// }
+function Ground(game, x, y, width, height) {
+    this.x = x;
+    this.y = y;
+    this.width = width;
+    this.height = height;
+    this.animation = new Animation(ASSET_MANAGER.getAsset("./img/Image_0010.png"), 0, 0, 350, 86, 1, 1, true, false);
+    this.boundingbox = new BoundingBox(this.x, this.y, width * .5, height * .5)
+    Entity.call(this, game, this.x, this.y);
+}
+
+Ground.prototype = new Entity();
+Ground.prototype.constuctor = Ground;
+
+Ground.prototype.update = function () {
+    if (this.game.rightScroll) this.rightScrolling = true;
+    if (this.game.leftScroll) this.leftScrolling = true;
+    if (this.rightScrolling) {
+        this.x -= 0.7;
+        this.boundingbox.x -= 0.7;
+        if (!this.game.rightScroll) {
+            this.rightScrolling = false;
+        }
+    } else if (this.leftScrolling) {
+        this.x += 0.7;
+        this.boundingbox.x += 0.7;
+        if (!this.game.leftScroll) {
+            this.leftScrolling = false;
+        }
+    }
+  // this.x -= 400 * this.game.clockTick;
+  // if (this.x + this.width < 0) this.x += 3200;
+  // this.boundingbox = new BoundingBox(this.x, this.y, this.width, this.height);
+  Entity.prototype.update.call(this);
+}
+
+Ground.prototype.draw = function (ctx) {
+    if (!this.game.running) return;
+    for (var i = 0; i < 10; i++) {
+        if (i % 3 !== 0 || i === 0) {
+            this.animation.drawFrame(this.game.clockTick, ctx, this.x + (i * 349), this.y, 1);
+        }
+    }
+}
 
 function Plat1(game, x, y, width, height) {
     this.x = x;
@@ -525,6 +573,21 @@ Plat1.prototype = new Entity();
 Plat1.prototype.constructor = Plat1;
 
 Plat1.prototype.update = function () {
+//    if (this.game.rightScroll) this.rightScrolling = true;
+//    if (this.game.leftScroll) this.leftScrolling = true;
+//    if (this.rightScrolling) {
+//        this.x -= 0.7;
+//        this.boundingbox.x -= 0.7;
+//        if (!this.game.rightScroll) {
+//            this.rightScrolling = false;
+//        }
+//    } else if (this.leftScrolling) {
+//        this.x += 0.7;
+//        this.boundingbox.x += 0.7;
+//        if (!this.game.leftScroll) {
+//            this.leftScrolling = false;
+//        }
+//    }
     if (this.x <= this.ogX) {
         this.rightMove = true;
         this.leftMove = false;
@@ -582,15 +645,17 @@ ASSET_MANAGER.downloadAll(function () {
     var gameEngine = new GameEngine();
     var boxes = [];
     var bg = new Background(gameEngine);
+    var ground = new Ground(gameEngine, 0, 615, 350, 700);
     var box = new Box1(gameEngine, 400, 545, 144, 144);
     var box2 = new Box2(gameEngine, 544, 545, 144, 144);
     var box3 = new Box2(gameEngine, 230, 545, 144, 144);
-    var plat = new Plat1(gameEngine, 150, 470, 545, 92);
+    var plat = new Plat1(gameEngine, 150, 450, 545, 92);
 
     gameEngine.running = false;
     gameEngine.dead = false;
 
     gameEngine.addEntity(bg);
+    gameEngine.addEntity(ground);
     gameEngine.addEntity(box);
     gameEngine.addEntity(box2);
     gameEngine.addEntity(box3);
