@@ -149,7 +149,10 @@ Background.prototype.draw = function (ctx) {
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/Image_0009.png"), this.x, this.y);
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/Image_0009.png"), this.x + 699, this.y);
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/Image_0009.png"), this.x - 699, this.y);
+    ctx.drawImage(ASSET_MANAGER.getAsset("./img/Image_0010.png"), this.x, this.y);
+    ctx.drawImage(ASSET_MANAGER.getAsset("./img/Image_0010.png"), this.x + 699, this.y);
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/Image_0010.png"), this.x - 699, this.y);
+
 }
 
 
@@ -418,13 +421,13 @@ function Box1(game, x, y, width, height) {
     this.width = width;
     this.height = height;
     this.animation = new Animation(ASSET_MANAGER.getAsset("./img/box1.png"), 0, 0, 144, 144, 1, 1, true, false);
-    this.ground = 600;
+    this.ground = 630;
     this.boxes = true;
     this.speed = 10;
     this.pushedRight = false;
     this.pushedLeft = false;
     this.blocked = false;
-    this.boundingbox = new BoundingBox(400, 550, width * .5, height * .5);
+    this.boundingbox = new BoundingBox(400, 545, width * .5, height * .5);
     Entity.call(this, game, this.x, this.y);
 }
 
@@ -571,7 +574,7 @@ ASSET_MANAGER.downloadAll(function () {
     var canvas = document.getElementById('gameWorld');
     var ctx = canvas.getContext('2d');
 
-    ctx.imageSmoothingEnabled= false;
+    ctx.imageSmoothingEnabled = false;
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
@@ -579,10 +582,10 @@ ASSET_MANAGER.downloadAll(function () {
     var gameEngine = new GameEngine();
     var boxes = [];
     var bg = new Background(gameEngine);
-    var box = new Box1(gameEngine, 400, 550, 144, 144);
-    var box2 = new Box2(gameEngine, 544, 550, 144, 144);
-    var box3 = new Box2(gameEngine, 230, 550, 144, 144);
-    var plat = new Plat1(gameEngine, 150, 470, 553, 92);
+    var box = new Box1(gameEngine, 400, 545, 144, 144);
+    var box2 = new Box2(gameEngine, 544, 545, 144, 144);
+    var box3 = new Box2(gameEngine, 230, 545, 144, 144);
+    var plat = new Plat1(gameEngine, 150, 470, 545, 92);
 
     gameEngine.running = false;
     gameEngine.dead = false;
@@ -595,7 +598,7 @@ ASSET_MANAGER.downloadAll(function () {
     boxes.push(box);
     boxes.push(box2);
     boxes.push(box3);
-    boxes.push(box4);
+  //  boxes.push(box4);
     boxes.push(plat);
 
     gameEngine.boxes = boxes;
