@@ -63,6 +63,26 @@ Animation.prototype.isDone = function () {
     return (this.elapsedTime >= this.totalTime);
 }
 
+function BoundingBox(x, y, width, height) {
+    this.x = x;
+    this.y = y;
+    this.width = width;
+    this.height = height;
+
+    this.left = x;
+    this.top = y;
+    this.right = this.left + width;
+    this.bottom = this.top + height;
+}
+
+BoundingBox.prototype.collide = function (oth) {
+    if (this.right > oth.left && this.left < oth.right && this.top < oth.bottom && this.bottom > oth.top) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 function Background(game) {
      this.x = 0;
      this.y = 0;
@@ -99,6 +119,14 @@ function Unicorn(game) {
     this.speed = 75;
     this.radius = 100;
     this.ground = 650;
+    this.height = 0;
+    this.jumpHeight = 90;
+    this.boxes = true;
+    this.falling = false;
+    this.onBox = false;
+    this.platform = game.boxes[0];
+    this.lastplattouch = game.boxes[0];
+    this.boundingbox = new BoundingBox(this.x + 90, this.y, this.animation.frameWidth - 145, this.animation.frameHeight - 20);
     Entity.call(this, game, 0, 650);
 }
 
@@ -109,167 +137,269 @@ Unicorn.prototype = new Entity();
 Unicorn.prototype.constructor = Unicorn;
 
 Unicorn.prototype.update = function () {
-    if (this.game.space) this.jumping = true;
-    if (this.game.right) this.rightMove = true;
-    if (this.game.left) this.leftMove = true;
+    if (this.game.right) {
+        this.rightMove = true;
+    } else {
+        this.rightMove = false;
+    }
+    if (this.game.left) {
+        this.leftMove = true;
+    } else {
+        this.leftMove = false;
+    }
+    if (this.game.space && !this.jumping) {
+        this.jumping = true;
+        this.base = this.y;
+    }
     if (this.jumping && this.justRight) {
-        if (this.jumpAnimation.isDone()) {
-            this.jumpAnimation.elapsedTime = 0;
-            this.jumping = false;
+        var height = 0;
+        var duration = this.jumpAnimation.elapsedTime + this.game.clockTick;
+        if (duration > this.jumpAnimation.totalTime / 2) {
+             duration = this.jumpAnimation.totalTime - duration;
         }
-        var jumpDistance = this.jumpAnimation.elapsedTime / this.jumpAnimation.totalTime;
-        var totalHeight = 75;
+        duration = duration / this.jumpAnimation.totalTime;
 
-        if (jumpDistance > 0.5)
-            jumpDistance = 1 - jumpDistance;
+        height = (4 * duration - 4 * duration * duration) * this.jumpHeight;
+        this.lastbottom = this.boundingbox.bottom;
+        this.y = this.base - height;
+        this.boundingbox = new BoundingBox(this.x + 90, this.y, this.boundingbox.width, this.boundingbox.height);
 
-        //var height = jumpDistance * 2 * totalHeight;
-        var height = totalHeight * (-4 * (jumpDistance * jumpDistance - jumpDistance));
-        this.y = this.ground - height;
-    } else if (this.jumping) {
-        if (this.jumpRevAnimation.isDone()) {
-            this.jumpRevAnimation.elapsedTime = 0;
-            this.jumping = false;
+        for (var i = 0; i < this.game.boxes.length; i++) {
+            var box = this.game.boxes[i];
+            if (this.boundingbox.collide(box.boundingbox) && this.lastbottom <= box.boundingbox.top) {
+                this.jumping = false;
+                this.jumpAnimation.elapsedTime = 0;
+                this.onBox = true;
+                this.platform = box;
+                this.y = box.boundingbox.top - this.animation.frameHeight + 25;
+            }
         }
-        var jumpDistance = this.jumpRevAnimation.elapsedTime / this.jumpRevAnimation.totalTime;
-        var totalHeight = 75;
-
-        if (jumpDistance > 0.5)
-            jumpDistance = 1 - jumpDistance;
-
-        //var height = jumpDistance * 2 * totalHeight;
-        var height = totalHeight * (-4 * (jumpDistance * jumpDistance - jumpDistance));
-        this.y = this.ground - height;
-    } if (this.rightMove) {
-      this.x += this.speed * this.game.clockTick;
-      this.justRight = true;
-      this.justLeft = false;
-      if (!this.game.right) {
-          this.rightMove = false;
+    } else if (this.jumping && this.justLeft) {
+      var duration = this.jumpRevAnimation.elapsedTime + this.game.clockTick;
+      if (duration > this.jumpRevAnimation.totalTime / 2) {
+          duration = this.jumpRevAnimation.totalTime - duration;
       }
-    } if (this.leftMove) {
-      this.x -= this.speed * this.game.clockTick;
-      this.justLeft = true;
-      this.justRight = false;
-      if (!this.game.left) {
-          this.leftMove = false;
+      duration = duration / this.jumpRevAnimation.totalTime;
+
+      this.height = (4 * duration - 4 * duration * duration) * this.jumpHeight;
+      this.lastbottom = this.boundingbox.bottom;
+      this.y = this.base - this.height;
+      this.boundingbox = new BoundingBox(this.x + 90, this.y, this.boundingbox.width, this.boundingbox.height);
+
+      for (var i = 0; i < this.game.boxes.length; i++) {
+          var box = this.game.boxes[i];
+          if (this.boundingbox.collide(box.boundingbox) && this.lastbottom <= box.boundingbox.top) {
+              this.jumping = false;
+              this.y = box.boundingbox.top - this.animation.frameHeight + 25;
+              this.jumpAnimation.elapsedTime = 0;
+              this.onBox = true;
+              this.platform = box;
+          }
       }
     }
+
+    if (this.falling) {
+        this.y += 5;
+        this.lastbottom = this.boundingbox.bottom;
+
+        for (var i = 0; i < this.game.boxes.length; i++) {
+            var box = this.game.boxes[i];
+            if (this.boundingbox.collide(box.boundingbox) && this.lastbottom <= box.boundingbox.top) {
+                this.falling = false;
+                this.y = box.boundingbox.top - this.animation.frameHeight + 25;
+                this.onBox = true;
+                this.platform = box;
+            }
+        }
+
+        if (this.y >= this.ground) {
+            this.falling = false;
+            this.y = this.ground;
+            this.onBox = false;
+            this.lastbottom = this.y;
+            this.platform = this.game.boxes[0];
+        }
+    }
+    if (this.rightMove) {
+        this.x += this.speed * this.game.clockTick;
+        this.boundingbox = new BoundingBox(this.x + 100, this.y, this.boundingbox.width, this.boundingbox.height);
+        this.justRight = true;
+        this.justLeft = false;
+
+        for (var i = 0; i < this.game.boxes.length; i++) {
+            var box = this.game.boxes[i];
+            if (this.boundingbox.collide(box.boundingbox) && !this.onBox) {
+                this.lastplattouch = box;
+            }
+        }
+        if (this.boundingbox.right >= this.lastplattouch.boundingbox.left && !this.onBox && this.boundingbox.collide(this.lastplattouch.boundingbox)) {
+            if (this.lastplattouch instanceof Box1 && !this.jumping && !this.lastplattouch.blocked) {
+                this.lastplattouch.pushedLeft = false;
+                this.lastplattouch.pushedRight = true;
+                this.speed = 10;
+            } else {
+                this.speed = 0;
+            }
+        } else {
+            this.speed = 75;
+            this.lastplattouch.pushedRight = false;
+            this.lastplattouch.pushedLeft = false;
+        }
+        for (var i = 0; i < this.game.boxes.length; i++) {
+            var box = this.game.boxes[i];
+            if (this.boundingbox.collide(box.boundingbox) && this.lastbottom <= box.boundingbox.top) {
+                this.jumping = false;
+                this.y = box.boundingbox.top - this.animation.frameHeight + 25;
+                this.jumpAnimation.elapsedTime = 0;
+                this.onBox = true;
+                this.platform = box;
+            }
+        }
+        if (this.boundingbox.left > this.platform.boundingbox.right && this.onBox && !this.jumping) {
+            this.falling = true;
+            this.onBox = false;
+        }
+        if (!this.game.right) {
+            this.rightMove = false;
+        }
+
+    } else if (this.leftMove) {
+        this.x -= this.speed * this.game.clockTick;
+        this.boundingbox = new BoundingBox(this.x + 90, this.y, this.boundingbox.width, this.boundingbox.height);
+        this.justRight = false;
+        this.justLeft = true;
+
+        for (var i = 0; i < this.game.boxes.length; i++) {
+            var box = this.game.boxes[i];
+            if (this.boundingbox.collide(box.boundingbox) && !this.onBox) {
+                this.lastplattouch = box;
+            }
+        }
+        if (this.boundingbox.left <= this.lastplattouch.boundingbox.right && !this.onBox && this.boundingbox.collide(this.lastplattouch.boundingbox)) {
+            if (this.lastplattouch instanceof Box1 && !this.jumping && !this.lastplattouch.blocked) {
+                this.speed = 10;
+                this.lastplattouch.pushedRight = false;
+                this.lastplattouch.pushedLeft = true;
+            } else {
+                this.speed = 0;
+            }
+        } else {
+            this.speed = 75;
+            this.lastplattouch.pushedLeft = false;
+            this.lastplattouch.pushedRight = false;
+        }
+
+        for (var i = 0; i < this.game.boxes.length; i++) {
+            var box = this.game.boxes[i];
+            if (this.boundingbox.collide(box.boundingbox) && this.lastbottom <= box.boundingbox.top) {
+                this.jumping = false;
+                this.y = box.boundingbox.top - this.animation.frameHeight + 25;
+                this.jumpAnimation.elapsedTime = 0;
+                this.onBox = true;
+                this.platform = box;
+            }
+        }
+
+        if (this.boundingbox.right < this.platform.boundingbox.left && this.onBox && !this.jumping) {
+            this.falling = true;
+            this.onBox = false;
+        }
+        if (!this.game.left) {
+            this.leftMove = false;
+        }
+
+    }
+    if (!this.rightMove && !this.leftMove) {
+        this.lastplattouch.pushedRight = false;
+        this.lastplattouch.pushedLeft = false;
+    }
+
     Entity.prototype.update.call(this);
 }
 
 Unicorn.prototype.draw = function (ctx) {
+    if (this.boxes) {
+        ctx.strokeStyle = "red";
+        ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
+    }
     if (this.justLeft && this.jumping) {
       this.jumpRevAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y, .75);
+        if (this.jumpRevAnimation.isDone()) {
+            this.jumpRevAnimation.elapsedTime = 0;
+            this.jumping = false;
+        }
     } else if (this.justRight && this.jumping) {
       this.jumpAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y, .75);
-    } if (this.rightMove) {
+      if (this.jumpAnimation.isDone()) {
+          this.jumpAnimation.elapsedTime = 0;
+          this.jumping = false;
+      }
+    }
+     if (this.rightMove) {
         this.walkAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y, .75);
     } else if (this.leftMove) {
       this.walkRevAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y, .75);
     } else if (this.justLeft) {
         this.animationRev.drawFrame(this.game.clockTick, ctx, this.x, this.y, .75);
-    }  else {
+    } else {
         this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, .75);
     }
     Entity.prototype.draw.call(this);
 }
 
-function Gwen(game) {
-    this.animation = new Animation(ASSET_MANAGER.getAsset("./img/gwen_idle.png"), 0, 0, 116, 191, 0.1, 76, true, false);
-    this.speed = 50;
-    this.right = true;
-    this.left = false;
-    this.radius = 100;
-    this.ground = 570;
-    Entity.call(this, game, 500, 620);
-}
-
-Gwen.prototype = new Entity();
-Gwen.prototype.constructor = Gwen;
-
-Gwen.prototype.update = function () {
-      if (this.x >= 800) {
-          this.right = false;
-          this.left = true;
-      } else if (this.x <= 100) {
-          this.right = true;
-          this.left = false;
-      }
-      if (this.right) {
-          this.x += this.speed * this.game.clockTick;
-      } else if (this.left) {
-          this.x -= this.speed * this.game.clockTick;
-      }
-      Entity.prototype.update.call(this);
-}
-
-Gwen.prototype.draw = function (ctx) {
-      this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, .5);
-      Entity.prototype.draw.call(this);
-}
-
-function Lizard(game) {
-    this.animation = new Animation(ASSET_MANAGER.getAsset("./img/lizard.png"), 0, 0, 156, 88, 0.1, 4, true, false);
-    this.rightAnimation = new Animation(ASSET_MANAGER.getAsset("./img/lizard_right.png"), 0, 0, 156, 88, 0.1, 4, true, true);
-    this.speed = 250;
-    this.right = true;
-    this.left = false;
-    this.radius = 100;
-    this.ground = 570;
-    Entity.call(this, game, 500, 680);
-}
-
-Lizard.prototype = new Entity();
-Lizard.prototype.constructor = Lizard;
-
-Lizard.prototype.update = function () {
-      if (this.x >= 800) {
-          this.right = false;
-          this.left = true;
-      } else if (this.x <= 400) {
-          this.right = true;
-          this.left = false;
-      }
-      if (this.right) {
-          this.x += this.speed * this.game.clockTick;
-      } else if (this.left) {
-          this.x -= this.speed * this.game.clockTick;
-      }
-      Entity.prototype.update.call(this);
-}
-
-Lizard.prototype.draw = function (ctx) {
-    if (this.right) {
-        this.rightAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y, .5);
-    } else {
-        this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, .5);
-    }
-    Entity.prototype.draw.call(this);
-}
-
-function Box1(game) {
+function Box1(game, x, y, width, height) {
+    this.x = x;
+    this.y = y;
+    this.width = width;
+    this.height = height;
     this.animation = new Animation(ASSET_MANAGER.getAsset("./img/box1.png"), 0, 0, 144, 144, 1, 1, true, false);
     this.ground = 600;
-    Entity.call(this, game, this, 0, 0);
+    this.boxes = true;
+    this.speed = 10;
+    this.pushedRight = false;
+    this.pushedLeft = false;
+    this.blocked = false;
+    this.boundingbox = new BoundingBox(400, 640, width * .5, height * .5);
+    Entity.call(this, game, this.x, this.y);
 }
 
 Box1.prototype = new Entity();
 Box1.prototype.constructor = Box1;
 
 Box1.prototype.update = function () {
+    for (var i = 0; i < this.game.boxes.length; i++) {
+        var box = this.game.boxes[i];
+        if (this.boundingbox.collide(box.boundingbox) && !(box instanceof Box1)) {
+            this.pushedRight = false;
+            this.blocked = true;
+        }
+    }
+    if (this.pushedRight) {
+        this.x += this.speed * this.game.clockTick;
+        this.boundingbox = new BoundingBox(this.x, this.y, this.width * .5, this.height * .5);
 
+    } else if (this.pushedLeft) {
+        this.x -= this.speed * this.game.clockTick;
+        this.boundingbox = new BoundingBox(this.x, this.y, this.width * .5, this.height *.5);
+    }
 }
 
 Box1.prototype.draw = function (ctx) {
-    this.animation.drawFrame(this.game.clockTick, ctx, 400, 640, .5);
-    this.animation.drawFrame(this.game.clockTick, ctx, 472, 640, .5);
+    ctx.strokeStyle = "blue";
+    this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, .5); //400, 640
+    ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
 }
 
-function Box2(game) {
+function Box2(game, x, y, width, height) {
+    this.x = x;
+    this.y = y;
+    this.width = width;
+    this.height = height;
     this.animation = new Animation(ASSET_MANAGER.getAsset("./img/box2.png"), 0, 0, 144, 144, 1, 1, true, false);
     this.ground = 650;
-    Entity.call(this, game, this, 0, 0);
+    this.pushed = false;
+    this.boundingbox = new BoundingBox(this.x, this.y, width * .5, height * .5);
+    Entity.call(this, game, this.x, this.y);
 }
 
 Box2.prototype = new Entity();
@@ -280,8 +410,33 @@ Box2.prototype.update = function () {
 }
 
 Box2.prototype.draw = function (ctx) {
-    this.animation.drawFrame(this.game.clockTick, ctx, 544, 640, .5);
-    this.animation.drawFrame(this.game.clockTick, ctx, 472, 568, .5);
+    ctx.strokeStyle = "green";
+    ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
+    this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, .5);
+}
+
+function Plat1(game, x, y, width, height) {
+    this.x = x;
+    this.y = y;
+    this.width = width;
+    this.height = height;
+    this.ogX = x;
+    this.animation = new Animation(ASSET_MANAGER.getAsset("./img/woodplat.png"), 0, 0, 553, 92, 1, 1, true, false);
+    this.boundingbox = new BoundingBox(this.x, this.y, width * .5, height * .5);
+    Entity.call(this, game, this.x, this.y);
+}
+
+Plat1.prototype = new Entity();
+Plat1.prototype.constructor = Plat1;
+
+Plat1.prototype.update = function () {
+
+}
+
+Plat1.prototype.draw = function (ctx) {
+    ctx.strokestyle = "purple";
+    ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
+    this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, .5);
 }
 
 
@@ -301,6 +456,7 @@ ASSET_MANAGER.queueDownload("./img/walk_left.png");
 ASSET_MANAGER.queueDownload("./img/Image_0005.jpg");
 ASSET_MANAGER.queueDownload("./img/Image_0009.png");
 ASSET_MANAGER.queueDownload("./img/Image_0010.png");
+ASSET_MANAGER.queueDownload("./img/woodplat.png");
 
 
 ASSET_MANAGER.downloadAll(function () {
@@ -309,21 +465,27 @@ ASSET_MANAGER.downloadAll(function () {
     var ctx = canvas.getContext('2d');
 
     var gameEngine = new GameEngine();
+    var boxes = [];
     var bg = new Background(gameEngine);
-    var unicorn = new Unicorn(gameEngine);
-    var box = new Box1(gameEngine);
-    var box2 = new Box2(gameEngine);
-    var gwen = new Gwen(gameEngine);
-    var lizard = new Lizard(gameEngine);
-
+    var box = new Box1(gameEngine, 400, 640, 144, 144);
+    var box2 = new Box2(gameEngine, 544, 640, 144, 144);
+    var box3 = new Box2(gameEngine, 230, 640, 144, 144);
+    var plat = new Plat1(gameEngine, 150, 560, 553, 92);
 
     gameEngine.addEntity(bg);
-    gameEngine.addEntity(gwen);
     gameEngine.addEntity(box);
     gameEngine.addEntity(box2);
-    gameEngine.addEntity(lizard);
-    gameEngine.addEntity(unicorn);
+    gameEngine.addEntity(box3);
+    gameEngine.addEntity(plat);
+    boxes.push(box);
+    boxes.push(box2);
+    boxes.push(box3);
+    boxes.push(plat);
 
+    gameEngine.boxes = boxes;
+
+    var unicorn = new Unicorn(gameEngine);
+    gameEngine.addEntity(unicorn);
 
     gameEngine.init(ctx);
     gameEngine.start();
