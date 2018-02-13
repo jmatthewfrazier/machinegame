@@ -93,16 +93,20 @@ PlayGame.prototype = new Entity();
 PlayGame.prototype.constructor = PlayGame;
 
 PlayGame.prototype.update = function () {
-    if (this.game.click) this.game.running = true;
+    if (this.game.click){
+    	this.game.running = true;
+    	hide(0, "dialogue");
+    } 
 }
 
 PlayGame.prototype.draw = function (ctx) {
     if (!this.game.running) {
-        ctx.font = "sans-serif";
+        ctx.font = "300% sans-serif";
+        ctx.textAlign = "center";
         ctx.fillStyle = "white";
-        if (this.game.mouse) { ctx.fillStyle = "black"; }
+        if (this.game.mouse) { ctx.fillStyle = "#ddd"; }
         if (!this.game.dead) {
-        ctx.fillText("click to begin", this.x, this.y);
+        	ctx.fillText("click to begin", this.x, this.y);
         }
         else {
             ctx.fillText("try again", this.x, this.y);
@@ -583,13 +587,12 @@ ASSET_MANAGER.downloadAll(function () {
     gameEngine.boxes = boxes;
 
     var unicorn = new Unicorn(gameEngine);
-    var pg = new PlayGame(gameEngine, 700, 400);
+    var pg = new PlayGame(gameEngine, canvas.width/2, canvas.height/2);
     gameEngine.addEntity(unicorn);
     gameEngine.addEntity(pg);
 
-    setText("hello", "dialogue");
+    setText("THE MACHINE", "dialogue");
     displayText("dialogue");
-    hide(6000, "dialogue");
 
     gameEngine.init(ctx);
     gameEngine.start();

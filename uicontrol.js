@@ -23,5 +23,6 @@ function hide(time, elementID){
   	}, time);
 	setTimeout(function() {
     	em.style.display = "none";
+    	em.innerHTML = null;
   	}, time + 4000);
 }
