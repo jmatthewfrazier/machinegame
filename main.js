@@ -221,6 +221,12 @@ Unicorn.prototype.update = function () {
             this.platform = this.game.boxes[0];
         }
     }
+
+    if (this.y >= this.ground) {
+        this.onBox = false;
+        this.y = this.ground;
+    }
+
     if (this.rightMove) {
         this.x += this.speed * this.game.clockTick;
         this.boundingbox = new BoundingBox(this.x + 100, this.y, this.boundingbox.width, this.boundingbox.height);
@@ -233,7 +239,7 @@ Unicorn.prototype.update = function () {
                 this.lastplattouch = box;
             }
         }
-        if (this.boundingbox.right >= this.lastplattouch.boundingbox.left && !this.onBox && this.boundingbox.collide(this.lastplattouch.boundingbox)) {
+        if (this.boundingbox.right >= this.lastplattouch.boundingbox.left && !this.onBox && this.boundingbox.collide(this.lastplattouch.boundingbox) && !(this.lastplattouch instanceof Plat1)) {
             if (this.lastplattouch instanceof Box1 && !this.jumping && !this.lastplattouch.blocked) {
                 this.lastplattouch.pushedLeft = false;
                 this.lastplattouch.pushedRight = true;
@@ -276,7 +282,7 @@ Unicorn.prototype.update = function () {
                 this.lastplattouch = box;
             }
         }
-        if (this.boundingbox.left <= this.lastplattouch.boundingbox.right && !this.onBox && this.boundingbox.collide(this.lastplattouch.boundingbox)) {
+        if (this.boundingbox.left <= this.lastplattouch.boundingbox.right && !this.onBox && this.boundingbox.collide(this.lastplattouch.boundingbox) && !(this.lastplattouch instanceof Plat1)) {
             if (this.lastplattouch instanceof Box1 && !this.jumping && !this.lastplattouch.blocked) {
                 this.speed = 10;
                 this.lastplattouch.pushedRight = false;
