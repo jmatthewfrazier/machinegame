@@ -164,7 +164,7 @@ function Unicorn(game) {
     this.jumping = false;
     this.rightMove = false;
     this.leftMove = false;
-    this.speed = 75;
+    this.speed = 100;
     this.radius = 100;
     this.ground = 550;
     this.height = 0;
@@ -369,6 +369,12 @@ Unicorn.prototype.update = function () {
         this.lastplattouch.pushedRight = false;
         this.lastplattouch.pushedLeft = false;
     }
+    // for (var i = 0; i < this.game.boxes.length; i++) {
+    //     var box = this.game.boxes[i];
+    //     if (this.onBox && this.boundingbox.collide(box.boundingbox) && !(box === this.lastplattouch) && !(box instanceof Box1)) {
+    //         this.speed = 0;
+    //     }
+    // }
 
   }
 
@@ -506,6 +512,7 @@ function Plat1(game, x, y, width, height) {
     this.width = width;
     this.height = height;
     this.ogX = x;
+    this.speed = 75;
     this.animation = new Animation(ASSET_MANAGER.getAsset("./img/woodplat.png"), 0, 0, 553, 92, 1, 1, true, false);
     this.boundingbox = new BoundingBox(this.x, this.y, width * .5, height * .5);
     Entity.call(this, game, this.x, this.y);
@@ -515,6 +522,20 @@ Plat1.prototype = new Entity();
 Plat1.prototype.constructor = Plat1;
 
 Plat1.prototype.update = function () {
+    if (this.x <= this.ogX) {
+        this.rightMove = true;
+        this.leftMove = false;
+    } else if (this.x >= this.ogX + 150) {
+        this.rightMove = false;
+        this.leftMove = true;
+    }
+
+    if (this.rightMove) {
+        this.x += this.speed * this.game.clockTick;
+    } else if (this.leftMove) {
+        this.x -= this.speed * this.game.clockTick;
+    }
+    this.boundingbox = new BoundingBox(this.x, this.y, this.width * .5, this.height * .5);
 
 }
 
@@ -574,6 +595,7 @@ ASSET_MANAGER.downloadAll(function () {
     boxes.push(box);
     boxes.push(box2);
     boxes.push(box3);
+    boxes.push(box4);
     boxes.push(plat);
 
     gameEngine.boxes = boxes;
