@@ -25,3 +25,11 @@ function hide(time, wait, elementID){
     	em.style.display = "none";
   	}, time + wait);
 }
+
+window.onload = function(){
+	const canvas = document.getElementById("gameWorld");
+
+	canvas.onblur = function() {
+		canvas.focus();
+	}
+}
