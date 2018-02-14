@@ -136,16 +136,29 @@ function Unicorn(game) {
 Unicorn.prototype = new Entity();
 Unicorn.prototype.constructor = Unicorn;
 
-// Unicorn.protoype.reset = function () {
-//
-// }
+Unicorn.protoype.reset = function () {
+  this.jumping = false;
+  this.rightMove = false;
+  this.leftMove = false;
+  this.speed = 75;
+  this.radius = 100;
+  //this.ground = 650;
+  this.height = 0;
+  this.jumpHeight = 90;
+  this.boxes = true;
+  this.falling = false;
+  this.onBox = true;
+  this.platform = game.boxes[0];
+  this.lastplattouch = game.boxes[0];
+  this.boundingbox = new BoundingBox(this.x + 90, this.y, this.animation.frameWidth - 155, this.animation.frameHeight - 20);
+}
 
 Unicorn.prototype.update = function () {
     if (this.y > 900) console.log("im dead");
-    // if (this.dead) {
-    //   this.game.reset();
-    //   return;
-    // }
+    if (this.dead) {
+      this.game.reset();
+      return;
+    }
     if (this.game.right) {
         this.rightMove = true;
     } else {
@@ -424,6 +437,8 @@ Unicorn.prototype.draw = function (ctx) {
 function Box1(game, x, y, width, height) {
     this.x = x;
     this.y = y;
+    this.startX = x;
+    this.startY = y;
     this.width = width;
     this.height = height;
     this.animation = new Animation(ASSET_MANAGER.getAsset("./img/box1.png"), 0, 0, 144, 144, 1, 1, true, false);
@@ -439,6 +454,17 @@ function Box1(game, x, y, width, height) {
 
 Box1.prototype = new Entity();
 Box1.prototype.constructor = Box1;
+
+Box1.prototype.reset = function() {
+  this.x = this.startX;
+  this.y = this.startY;
+  this.ground = 600;
+  this.boxes = true;
+  this.speed = 25;
+  this.pushedRight = false;
+  this.pushedLeft = false;
+  this.blocked = false;
+}
 
 Box1.prototype.update = function () {
     //yo, check to see that I haven't been pushed into another box.
@@ -482,6 +508,11 @@ function Box2(game, x, y, width, height) {
 
 Box2.prototype = new Entity();
 Box2.prototype.constructor = Box2;
+
+Box12prototype.reset = function() {
+  this.ground = 650;
+  this.pushed = false;
+}
 
 Box2.prototype.update = function () {
 
