@@ -99,8 +99,8 @@ Background.prototype.draw = function (ctx) {
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/Image_0005.jpg"), 800, this.y);
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/Image_0009.png"), this.x, this.y);
     ctx.drawImage(ASSET_MANAGER.getAsset("./img/Image_0009.png"), 800, this.y);
-    ctx.drawImage(ASSET_MANAGER.getAsset("./img/Image_0010.png"), this.x, this.y);
-    ctx.drawImage(ASSET_MANAGER.getAsset("./img/Image_0010.png"), 800, this.y);
+    //ctx.drawImage(ASSET_MANAGER.getAsset("./img/Image_0010.png"), this.x, this.y);
+    //ctx.drawImage(ASSET_MANAGER.getAsset("./img/Image_0010.png"), 800, this.y);
 
 }
 
@@ -118,7 +118,7 @@ function Unicorn(game) {
     this.leftMove = false;
     this.speed = 75;
     this.radius = 100;
-    this.ground = 650;
+    //this.ground = 650;
     this.height = 0;
     this.jumpHeight = 90;
     this.boxes = true;
@@ -127,7 +127,7 @@ function Unicorn(game) {
     this.platform = game.boxes[0];
     this.lastplattouch = game.boxes[0];
     this.boundingbox = new BoundingBox(this.x + 90, this.y, this.animation.frameWidth - 155, this.animation.frameHeight - 20);
-    Entity.call(this, game, 0, 650);
+    Entity.call(this, game, 0, this.platform.boundingbox.top - this.animation.frameHeight + 25);
 }
 
 //187, 91
@@ -259,7 +259,7 @@ Unicorn.prototype.update = function () {
         //if I walk right into a box on the ground and that box is of type Box1 and it's not blocked by another box,
         //push that bish right
         //otherwise don't move because you can't push that kind of box
-        if (this.boundingbox.right >= this.lastplattouch.boundingbox.left && !this.onBox && this.boundingbox.collide(this.lastplattouch.boundingbox)  && !(this.lastplattouch instanceof Plat1) && !(this.lastplattouch instanceof Plat2)) {
+        if (this.boundingbox.right >= this.lastplattouch.boundingbox.left && !this.onBox && this.boundingbox.collide(this.lastplattouch.boundingbox)  && !(this.lastplattouch instanceof Plat1) && !(this.lastplattouch instanceof Plat2)&& !(this.lastplattouch instanceof Plat3)) {
             if (this.lastplattouch instanceof Box1 && !this.jumping && !this.lastplattouch.blocked) {
                 this.lastplattouch.pushedLeft = false;
                 this.lastplattouch.pushedRight = true;
@@ -311,7 +311,7 @@ Unicorn.prototype.update = function () {
         //If I'm moving left on the ground and I run into a box, and that box is of type Box1 and it's not blocked by another box
         //push that bish left
         //otherwise, stop moving because you can't push that type of box
-        if (this.boundingbox.left <= this.lastplattouch.boundingbox.right && !this.onBox && this.boundingbox.collide(this.lastplattouch.boundingbox) && !(this.lastplattouch instanceof Plat1) && !(this.lastplattouch instanceof Plat2)) {
+        if (this.boundingbox.left <= this.lastplattouch.boundingbox.right && !this.onBox && this.boundingbox.collide(this.lastplattouch.boundingbox) && !(this.lastplattouch instanceof Plat1) && !(this.lastplattouch instanceof Plat2) && !(this.lastplattouch instanceof Plat3)) {
             if (this.lastplattouch instanceof Box1 && !this.jumping && !this.lastplattouch.blocked) {
                 this.speed = 25;
                 this.lastplattouch.pushedRight = false;
@@ -565,6 +565,26 @@ Plat2.prototype.draw = function (ctx) {
     this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, .5);
 }
 
+function Plat3(game, x, y, width, height) {
+    this.x = x;
+    this.y = y;
+    this.animation = new Animation(ASSET_MANAGER.getAsset("./img/woodplat.png"), 0, 0, 553, 92, 1, 1, true, false);
+    this.boundingbox = new BoundingBox(this.x, this.y, width * .5, height * .5);
+    Entity.call(this, game, this.x, this.y);
+}
+
+Plat3.prototype = new Entity();
+Plat3.prototype.constructor = Plat3;
+
+Plat3.prototype.update = function () {
+
+}
+
+Plat3.prototype.draw = function (ctx) {
+    ctx.strokestyle = "purple";
+    ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
+    this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, .5);
+}
 
 // the "main" code begins here
 
@@ -599,14 +619,17 @@ ASSET_MANAGER.downloadAll(function () {
     var box4 = new Box2(gameEngine, 544, 568, 144, 144);
     var plat = new Plat1(gameEngine, 650, 560, 553, 92);
     var plat2 = new Plat2(gameEngine, 100, 580, 553, 92);
+    var floorplat1 = new Plat3(gameEngine, 0, 714, 533, 92);
 
     gameEngine.addEntity(bg);
+    gameEngine.addEntity(floorplat1);
     gameEngine.addEntity(box);
     gameEngine.addEntity(box2);
     gameEngine.addEntity(box3);
     gameEngine.addEntity(box4);
     gameEngine.addEntity(plat);
     gameEngine.addEntity(plat2);
+    boxes.push(floorplat1);
     boxes.push(box);
     boxes.push(box2);
     boxes.push(box3);
