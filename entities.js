@@ -69,29 +69,31 @@ Box2.prototype.draw = function (ctx) {
     this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, .5);
 }
 
-// function Ground(game, x, y, width, height) {
-//     this.x = x;
-//     this.y = y;
-//     this.width = width;
-//     this.height = height;
-//     this.animation = new Animation(ASSET_MANAGER.getAsset("./img/Image_0010.png"), 0, 0, 350, 350, 1, 1, true, false);
-//     this.boundingbox = new BoundingBox(this.x, this.y, width * .5, height * .5)
-//     Entity.call(this, game, this.x, this.y);
-// }
-//
-// Ground.prototype = new Entity();
-// Ground.prototype.constuctor = Ground;
-//
-// Ground.prototype.update = function () {
-//   this.x -= 400 * this.game.clockTick;
-//   if (this.x + this.width < 0) this.x += 3200;
-//   this.boundingbox = new BoundingBox(this.x, this.y, this.width, this.height);
-//   Entity.prototype.update.call(this);
-// }
-//
-// Ground.prototype.draw = function (ctx) {
-//     this.animation.drawFram(this.game.clockTick, ctx, this.x, this.y, 1);
-// }
+function Ground(game, x, y, width, height, next) {
+    this.x = x;
+    this.y = y;
+    this.width = width;
+    this.height = height;
+    this.next = next;
+    this.animation = new Animation(ASSET_MANAGER.getAsset("./img/Image_0010.png"), this.x, this.y, this.width, this.height, 1, 1, true, false);
+    this.boundingbox = new BoundingBox(this.x, this.y, width, height)
+    Entity.call(this, game, this.x, this.y);
+}
+
+Ground.prototype = new Entity();
+Ground.prototype.constuctor = Ground;
+
+Ground.prototype.update = function () {
+
+  Entity.prototype.update.call(this);
+}
+
+Ground.prototype.draw = function (ctx) {
+  if (this.next % 3 !== 0 ||this.next === 0) {
+    this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1);
+    this.boundingbox = new BoundingBox(this.x, this.y, this.width, this.height);
+  }
+}
 
 function Plat1(game, x, y, width, height) {
     this.x = x;
@@ -370,4 +372,3 @@ Unicorn.prototype.draw = function (ctx) {
     }
     Entity.prototype.draw.call(this);
 }
-
