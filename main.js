@@ -251,7 +251,7 @@ Unicorn.prototype.update = function () {
         //if I collide with a box, I'm going to remember that box
         for (var i = 0; i < this.game.boxes.length; i++) {
             var box = this.game.boxes[i];
-            if (this.boundingbox.collide(box.boundingbox) && !this.onBox) {
+            if (this.boundingbox.collide(box.boundingbox) && this.boundingbox.right >= box.boundingbox.left && !(this.platform === box)) {
                 this.lastplattouch = box;
             }
         }
@@ -259,8 +259,8 @@ Unicorn.prototype.update = function () {
         //if I walk right into a box on the ground and that box is of type Box1 and it's not blocked by another box,
         //push that bish right
         //otherwise don't move because you can't push that kind of box
-        if (this.boundingbox.right >= this.lastplattouch.boundingbox.left && !this.onBox && this.boundingbox.collide(this.lastplattouch.boundingbox)  && !(this.lastplattouch instanceof Plat1) && !(this.lastplattouch instanceof Plat2)&& !(this.lastplattouch instanceof Plat3)) {
-            if (this.lastplattouch instanceof Box1 && !this.jumping && !this.lastplattouch.blocked) {
+        if (this.boundingbox.right >= this.lastplattouch.boundingbox.left && this.boundingbox.collide(this.lastplattouch.boundingbox)  && !(this.lastplattouch instanceof Plat1) && !(this.lastplattouch instanceof Plat2)&& !(this.lastplattouch instanceof Plat3)) {
+            if (this.lastplattouch instanceof Box1 && !this.jumping && !this.lastplattouch.blocked && !(this.platform instanceof Box1)) {
                 this.lastplattouch.pushedLeft = false;
                 this.lastplattouch.pushedRight = true;
                 this.speed = 25;
@@ -303,7 +303,7 @@ Unicorn.prototype.update = function () {
         //if I collide with a box, I'm going to remember that box
         for (var i = 0; i < this.game.boxes.length; i++) {
             var box = this.game.boxes[i];
-            if (this.boundingbox.collide(box.boundingbox) && !this.onBox) {
+            if (this.boundingbox.collide(box.boundingbox) && this.boundingbox.left <= box.boundingbox.right && !(this.platform === box)) {
                 this.lastplattouch = box;
             }
         }
@@ -311,8 +311,8 @@ Unicorn.prototype.update = function () {
         //If I'm moving left on the ground and I run into a box, and that box is of type Box1 and it's not blocked by another box
         //push that bish left
         //otherwise, stop moving because you can't push that type of box
-        if (this.boundingbox.left <= this.lastplattouch.boundingbox.right && !this.onBox && this.boundingbox.collide(this.lastplattouch.boundingbox) && !(this.lastplattouch instanceof Plat1) && !(this.lastplattouch instanceof Plat2) && !(this.lastplattouch instanceof Plat3)) {
-            if (this.lastplattouch instanceof Box1 && !this.jumping && !this.lastplattouch.blocked) {
+        if (this.boundingbox.left <= this.lastplattouch.boundingbox.right && this.boundingbox.collide(this.lastplattouch.boundingbox) && !(this.lastplattouch instanceof Plat1) && !(this.lastplattouch instanceof Plat2) && !(this.lastplattouch instanceof Plat3)) {
+            if (this.lastplattouch instanceof Box1 && !this.jumping && !this.lastplattouch.blocked && !(this.platform instanceof Box1)) {
                 this.speed = 25;
                 this.lastplattouch.pushedRight = false;
                 this.lastplattouch.pushedLeft = true;
@@ -620,9 +620,11 @@ ASSET_MANAGER.downloadAll(function () {
     var plat = new Plat1(gameEngine, 650, 560, 553, 92);
     var plat2 = new Plat2(gameEngine, 100, 580, 553, 92);
     var floorplat1 = new Plat3(gameEngine, 0, 714, 533, 92);
+    var floorplat2 = new Plat3(gameEngine, 266, 714, 533, 92);
 
     gameEngine.addEntity(bg);
     gameEngine.addEntity(floorplat1);
+    gameEngine.addEntity(floorplat2);
     gameEngine.addEntity(box);
     gameEngine.addEntity(box2);
     gameEngine.addEntity(box3);
@@ -630,6 +632,7 @@ ASSET_MANAGER.downloadAll(function () {
     gameEngine.addEntity(plat);
     gameEngine.addEntity(plat2);
     boxes.push(floorplat1);
+    boxes.push(floorplat2);
     boxes.push(box);
     boxes.push(box2);
     boxes.push(box3);
