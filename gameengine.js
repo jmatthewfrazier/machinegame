@@ -97,6 +97,8 @@ GameEngine.prototype.draw = function () {
     this.ctx.restore();
 }
 
+
+
 GameEngine.prototype.update = function () {
     var entitiesCount = this.entities.length;
 

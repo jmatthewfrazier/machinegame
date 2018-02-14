@@ -123,7 +123,7 @@ function Unicorn(game) {
     this.jumpHeight = 90;
     this.boxes = true;
     this.falling = false;
-    this.onBox = false;
+    this.onBox = true;
     this.platform = game.boxes[0];
     this.lastplattouch = game.boxes[0];
     this.boundingbox = new BoundingBox(this.x + 90, this.y, this.animation.frameWidth - 155, this.animation.frameHeight - 20);
@@ -136,7 +136,16 @@ function Unicorn(game) {
 Unicorn.prototype = new Entity();
 Unicorn.prototype.constructor = Unicorn;
 
+// Unicorn.protoype.reset = function () {
+//
+// }
+
 Unicorn.prototype.update = function () {
+    if (this.y > 900) console.log("im dead");
+    // if (this.dead) {
+    //   this.game.reset();
+    //   return;
+    // }
     if (this.game.right) {
         this.rightMove = true;
     } else {
@@ -568,8 +577,8 @@ Plat2.prototype.draw = function (ctx) {
 function Plat3(game, x, y, width, height) {
     this.x = x;
     this.y = y;
-    this.animation = new Animation(ASSET_MANAGER.getAsset("./img/woodplat.png"), 0, 0, 553, 92, 1, 1, true, false);
-    this.boundingbox = new BoundingBox(this.x, this.y, width * .5, height * .5);
+    this.animation = new Animation(ASSET_MANAGER.getAsset("./img/Image_0010.png"), 0, 0, 350, 87, 1, 1, true, false);
+    this.boundingbox = new BoundingBox(this.x, this.y, width * .75, height * .75);
     Entity.call(this, game, this.x, this.y);
 }
 
@@ -581,9 +590,10 @@ Plat3.prototype.update = function () {
 }
 
 Plat3.prototype.draw = function (ctx) {
-    ctx.strokestyle = "purple";
-    ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
-    this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, .5);
+    ctx.strokestyle = "black";
+    this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, .75);
+    ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.width * .75, this.height * .75);
+
 }
 
 // the "main" code begins here
@@ -616,10 +626,11 @@ ASSET_MANAGER.downloadAll(function () {
     var box = new Box1(gameEngine, 400, 640, 144, 144);
     var box2 = new Box2(gameEngine, 544, 640, 144, 144);
     var box3 = new Box2(gameEngine, 230, 640, 144, 144);
+
     var box4 = new Box2(gameEngine, 544, 568, 144, 144);
     var plat = new Plat1(gameEngine, 650, 560, 553, 92);
     var plat2 = new Plat2(gameEngine, 100, 580, 553, 92);
-    var floorplat1 = new Plat3(gameEngine, 0, 714, 533, 92);
+    var floorplat1 = new Plat3(gameEngine, 0, 714, 350, 87);
 
     gameEngine.addEntity(bg);
     gameEngine.addEntity(floorplat1);
@@ -629,7 +640,16 @@ ASSET_MANAGER.downloadAll(function () {
     gameEngine.addEntity(box4);
     gameEngine.addEntity(plat);
     gameEngine.addEntity(plat2);
+
     boxes.push(floorplat1);
+    for (var i = 1; i < 11; i++) {
+      if (i % 3 !== 0) {
+        var plat3 = new Plat3(gameEngine, i * (349 * .75), 714, 350, 87);
+        gameEngine.addEntity(plat3);
+        boxes.push(plat3);
+      }
+    }
+
     boxes.push(box);
     boxes.push(box2);
     boxes.push(box3);
