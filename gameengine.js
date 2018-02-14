@@ -85,13 +85,7 @@ GameEngine.prototype.startInput = function () {
           that.left = true;
           that.leftScroll = true;
         } if (e.keyCode === 27) {
-          if (that.timer.paused){
-            hide(20, 20, "menu");
-            that.timer.paused = false;
-          } else {
-            display(0.8, "menu");
-            that.timer.paused = true;
-          }
+          that.togglePause();
         }
 
 //        console.log(e);
@@ -174,15 +168,15 @@ GameEngine.prototype.loop = function () {
     }
 }
 
-GameEngine.prototype.pause = function () {
-    display(0.8, "menu");
-    this.timer.paused = true;
-}
-
-GameEngine.prototype.unpause = function () {
-    hide(20, 20, "menu");
-    this.timer.paused = false;
-    document.getElementById("gameWorld").focus();
+GameEngine.prototype.togglePause = function () {
+    if (this.timer.paused){
+        hide(20, 20, "menu");
+        document.getElementById("gameWorld").focus();
+        this.timer.paused = false;
+    } else {
+        this.timer.paused = true;
+        display(0.8, "menu");
+    }
 }
 
 function Entity(game, x, y) {

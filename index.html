@@ -12,11 +12,11 @@
     <link rel="stylesheet" type="text/css" href="index.css"/>
 </head>
 <body style="overflow:hidden;margin:0 auto;">
-	<div id="pause" onclick="gameEngine.pause()">Pause</div>
+	<div id="pause" onclick="gameEngine.togglePause()">Pause</div>
 	<div id="menu" style="display: none;">
 		<h3>Paused</h3>
 		<br/>
-		<button class="astext" onclick="gameEngine.unpause()">Resume</button>
+		<button class="astext" onclick="gameEngine.togglePause()">Resume</button>
 		<br/>
 		<button class="astext">Restart</button>
 	</div>

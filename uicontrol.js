@@ -1,7 +1,7 @@
 function pushText(text, timeMS, elementID){
 	setText(text, elementID);
-	displayText(1, elementID);
-	hide(time, 2000, elementID);
+	display(1, elementID);
+	hide(timeMS, 2000, elementID);
 }
 
 function setText(text, elementID) {

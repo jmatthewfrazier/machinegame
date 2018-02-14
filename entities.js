@@ -151,7 +151,7 @@ Unicorn.prototype = new Entity();
 Unicorn.prototype.constructor = Unicorn;
 
 Unicorn.prototype.update = function () {
-  if (this.game.running) {
+    if (this.game.running) {
     if (this.game.right) {
         this.rightMove = true;
     } else {
@@ -217,7 +217,6 @@ Unicorn.prototype.update = function () {
         this.y += 5;
         this.lastbottom = this.boundingbox.bottom;
         this.boundingbox = new BoundingBox(this.x + 90, this.y, this.boundingbox.width, this.boundingbox.height);
-
         for (var i = 0; i < this.game.boxes.length; i++) {
             var box = this.game.boxes[i];
             if (this.boundingbox.collide(box.boundingbox) && this.lastbottom <= box.boundingbox.top) {
