@@ -112,6 +112,9 @@ GameEngine.prototype.startInput = function () {
 
     this.ctx.canvas.addEventListener("mousemove", function (e) {
       that.mouse = getXandY(e);
+      if(that.mouse['x'] > 1000){
+        // pushText("great", 4000, "dialogue");
+      }
     }, false);
 
     this.ctx.canvas.addEventListener("mouseleave", function (e) {

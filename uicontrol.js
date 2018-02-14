@@ -20,15 +20,14 @@ function hide(time, wait, elementID){
 	let em = document.getElementById(elementID);
 	setTimeout(function() {
     	em.style.opacity = 0;
+    	setTimeout(function() {
+    		em.style.display = "none";
+  		}, wait);
   	}, time);
-	setTimeout(function() {
-    	em.style.display = "none";
-  	}, time + wait);
 }
 
 window.onload = function(){
 	const canvas = document.getElementById("gameWorld");
-
 	canvas.onblur = function() {
 		canvas.focus();
 	}

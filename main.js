@@ -124,6 +124,9 @@ Background.prototype = new Entity();
 Background.prototype.constructor = Background;
 
 Background.prototype.update = function () {
+	let canvas = document.getElementById("gameWorld");
+	canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
   if (this.game.running) {
     if (this.game.rightScroll) this.rightScrolling = true;
     if (this.game.leftScroll) this.leftScrolling = true;
@@ -146,16 +149,17 @@ Background.prototype.update = function () {
 }
 
 Background.prototype.draw = function (ctx) {
+	let size = window.innerWidth;
+	let fillNum = (size/700) + 2;
+	let x = this.x - 699;
+	let y = this.y;
 
-    ctx.drawImage(ASSET_MANAGER.getAsset("./img/Image_0005.jpg"), this.x, this.y);
-    ctx.drawImage(ASSET_MANAGER.getAsset("./img/Image_0005.jpg"), this.x + 699, this.y);
-    ctx.drawImage(ASSET_MANAGER.getAsset("./img/Image_0005.jpg"), this.x - 699, this.y);
-    ctx.drawImage(ASSET_MANAGER.getAsset("./img/Image_0009.png"), this.x, this.y);
-    ctx.drawImage(ASSET_MANAGER.getAsset("./img/Image_0009.png"), this.x + 699, this.y);
-    ctx.drawImage(ASSET_MANAGER.getAsset("./img/Image_0009.png"), this.x - 699, this.y);
-    ctx.drawImage(ASSET_MANAGER.getAsset("./img/Image_0010.png"), this.x, this.y);
-    ctx.drawImage(ASSET_MANAGER.getAsset("./img/Image_0010.png"), this.x + 699, this.y);
-    ctx.drawImage(ASSET_MANAGER.getAsset("./img/Image_0010.png"), this.x - 699, this.y);
+	for (i = 0; i < fillNum; i++){
+		ctx.drawImage(ASSET_MANAGER.getAsset("./img/Image_0005.jpg"), x, y);
+		ctx.drawImage(ASSET_MANAGER.getAsset("./img/Image_0009.png"), x, y);
+		ctx.drawImage(ASSET_MANAGER.getAsset("./img/Image_0010.png"), x, y);
+		x += 699;
+	}
 
 }
 
