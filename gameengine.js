@@ -94,13 +94,8 @@ GameEngine.prototype.startInput = function () {
 
     this.ctx.canvas.addEventListener("keyup", function (e) {
         if (String.fromCharCode(e.which) === ' ') that.space = false;
-        if (String.fromCharCode(e.which) === 'D') {
-          that.right = false;
-          that.rightScroll = false;
-        } if (String.fromCharCode(e.which) === 'A') {
-          that.left = false;
-          that.leftScroll = false;
-        }
+        if (String.fromCharCode(e.which) === 'D') that.right = false;
+        if (String.fromCharCode(e.which) === 'A') that.left = false;
 
 //        console.log(e);
         e.preventDefault();
@@ -137,6 +132,8 @@ GameEngine.prototype.draw = function () {
     }
     this.ctx.restore();
 }
+
+
 
 GameEngine.prototype.update = function () {
     var entitiesCount = this.entities.length;

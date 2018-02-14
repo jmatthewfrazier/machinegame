@@ -19,8 +19,6 @@ function Animation(spriteSheet, startX, startY, frameWidth, frameHeight, frameDu
     this.jumping = false;
     this.justRight = true;
     this.justLeft = false;
-    this.rightScrolling = false;
-    this.leftScrolling = false;
 }
 
 Animation.prototype.drawFrame = function (tick, ctx, x, y, scaleBy) {
@@ -117,7 +115,6 @@ PlayGame.prototype.draw = function (ctx) {
 function Background(game) {
      this.x = 0;
      this.y = 0;
-     Entity.call(this, game, 0, 0);
 }
 
 Background.prototype = new Entity();
@@ -145,6 +142,7 @@ Background.prototype.update = function () {
     if (this.x < 0) this.x = 698;
   }
 
+
     Entity.prototype.update.call(this);
 }
 
@@ -153,7 +151,6 @@ Background.prototype.draw = function (ctx) {
 	let fillNum = (size/700) + 2;
 	let x = this.x - 699;
 	let y = this.y;
-
 	for (i = 0; i < fillNum; i++){
 		ctx.drawImage(ASSET_MANAGER.getAsset("./img/Image_0005.jpg"), x, y);
 		ctx.drawImage(ASSET_MANAGER.getAsset("./img/Image_0009.png"), x, y);
@@ -194,24 +191,39 @@ ASSET_MANAGER.downloadAll(function () {
 
     var boxes = [];
     var bg = new Background(gameEngine);
-    var box = new Box1(gameEngine, 400, 545, 144, 144);
-    var box2 = new Box2(gameEngine, 544, 545, 144, 144);
-    var box3 = new Box2(gameEngine, 230, 545, 144, 144);
-    var plat = new Plat1(gameEngine, 150, 470, 545, 92);
+    var box = new Box1(gameEngine, 400, 640, 144, 144);
+    var box2 = new Box2(gameEngine, 544, 640, 144, 144);
+    var box3 = new Box2(gameEngine, 230, 640, 144, 144);
 
-    gameEngine.running = false;
-    gameEngine.dead = false;
+    var box4 = new Box2(gameEngine, 544, 568, 144, 144);
+    var plat = new Plat1(gameEngine, 650, 560, 553, 92);
+    var plat2 = new Plat2(gameEngine, 100, 580, 553, 92);
+    var floorplat1 = new Plat3(gameEngine, 0, 714, 350, 87);
 
     gameEngine.addEntity(bg);
+    gameEngine.addEntity(floorplat1);
     gameEngine.addEntity(box);
     gameEngine.addEntity(box2);
     gameEngine.addEntity(box3);
+    gameEngine.addEntity(box4);
     gameEngine.addEntity(plat);
+    gameEngine.addEntity(plat2);
+
+    boxes.push(floorplat1);
+    for (var i = 1; i < 11; i++) {
+      if (i % 3 !== 0) {
+        var plat3 = new Plat3(gameEngine, i * (349 * .75), 714, 350, 87);
+        gameEngine.addEntity(plat3);
+        boxes.push(plat3);
+      }
+    }
+
     boxes.push(box);
     boxes.push(box2);
     boxes.push(box3);
   //  boxes.push(box4);
     boxes.push(plat);
+    boxes.push(plat2);
 
     gameEngine.boxes = boxes;
 
