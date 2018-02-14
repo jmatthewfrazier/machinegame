@@ -115,6 +115,7 @@ PlayGame.prototype.draw = function (ctx) {
 function Background(game) {
      this.x = 0;
      this.y = 0;
+     this.game = game;
 }
 
 Background.prototype = new Entity();
@@ -161,8 +162,7 @@ Background.prototype.draw = function (ctx) {
 }
 
 // the "main" code begins here
-const gameEngine = new GameEngine();
-
+var gameEngine = new GameEngine();
 var ASSET_MANAGER = new AssetManager();
 
 ASSET_MANAGER.queueDownload("./img/box1.png");

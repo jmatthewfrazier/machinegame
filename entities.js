@@ -74,7 +74,7 @@ function Box2(game, x, y, width, height) {
 Box2.prototype = new Entity();
 Box2.prototype.constructor = Box2;
 
-Box12prototype.reset = function() {
+Box2.prototype.reset = function() {
   this.ground = 650;
   this.pushed = false;
 }
