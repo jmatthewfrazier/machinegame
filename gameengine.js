@@ -1,4 +1,3 @@
-// This game shell was happily copied from Googler Seth Ladd's "Bad Aliens" game and his Google IO talk in 2011
 
 window.requestAnimFrame = (function () {
     return window.requestAnimationFrame ||
@@ -16,6 +15,7 @@ function Timer() {
     this.gameTime = 0;
     this.maxStep = 0.05;
     this.wallLastTimestamp = 0;
+    this.paused = false;
 }
 
 Timer.prototype.tick = function () {
@@ -24,6 +24,9 @@ Timer.prototype.tick = function () {
     this.wallLastTimestamp = wallCurrent;
 
     var gameDelta = Math.min(wallDelta, this.maxStep);
+    if (this.paused){
+        gameDelta = 0;
+    }
     this.gameTime += gameDelta;
     return gameDelta;
 }
@@ -81,12 +84,19 @@ GameEngine.prototype.startInput = function () {
         } if (String.fromCharCode(e.which) === 'A') {
           that.left = true;
           that.leftScroll = true;
+        } if (e.keyCode === 27) {
+          if (that.timer.paused){
+            hide(20, 20, "menu");
+            that.timer.paused = false;
+          } else {
+            display(0.8, "menu");
+            that.timer.paused = true;
+          }
         }
 
 //        console.log(e);
         e.preventDefault();
     }, false);
-
 
     this.ctx.canvas.addEventListener("keyup", function (e) {
         if (String.fromCharCode(e.which) === ' ') that.space = false;
@@ -151,15 +161,28 @@ GameEngine.prototype.update = function () {
 
 GameEngine.prototype.loop = function () {
     this.clockTick = this.timer.tick();
-    this.update();
-    this.draw();
-    this.space;
-    this.right;
-    this.left;
-    this.mouse;
-    this.click;
-    this.leftScroll;
-    this.rightScroll;
+    if (this.clockTick > 0){
+        this.update();
+        this.draw();
+        this.space;
+        this.right;
+        this.left;
+        this.mouse;
+        this.click;
+        this.leftScroll;
+        this.rightScroll;
+    }
+}
+
+GameEngine.prototype.pause = function () {
+    display(0.8, "menu");
+    this.timer.paused = true;
+}
+
+GameEngine.prototype.unpause = function () {
+    hide(20, 20, "menu");
+    this.timer.paused = false;
+    document.getElementById("gameWorld").focus();
 }
 
 function Entity(game, x, y) {
