@@ -40,6 +40,7 @@ function GameEngine() {
     this.wheel = null;
     this.surfaceWidth = null;
     this.surfaceHeight = null;
+    this.running = false;
 }
 
 GameEngine.prototype.init = function (ctx) {
@@ -103,6 +104,7 @@ GameEngine.prototype.startInput = function () {
 
     this.ctx.canvas.addEventListener("click", function (e) {
         that.click = getXandY(e);
+        this.running = true;
     }, false);
 
     this.ctx.canvas.addEventListener("mousemove", function (e) {
