@@ -411,6 +411,7 @@ Unicorn.prototype.update = function () {
           this.leftMove = false;
       }
       if (this.game.space && !this.jumping) {
+          ASSET_MANAGER.getAsset("./asset_lib/_audio/jump.wav").play();
           this.jumping = true;
           this.onBox = false;
           this.base = this.y;
@@ -518,6 +519,9 @@ Unicorn.prototype.update = function () {
 
   if (this.rightMove) {
       this.x += this.speed * this.game.clockTick;
+      if (!this.jumping && !this.falling){
+        ASSET_MANAGER.getAsset("./asset_lib/_audio/step.wav").play();
+      }
       this.boundingbox = new BoundingBox(this.x + 100, this.y, this.boundingbox.width, this.boundingbox.height);
       this.justRight = true;
       this.justLeft = false;
@@ -585,6 +589,9 @@ Unicorn.prototype.update = function () {
 
   } else if (this.leftMove) {
       this.x -= this.speed * this.game.clockTick;
+      if (!this.jumping && !this.falling){
+        ASSET_MANAGER.getAsset("./asset_lib/_audio/step.wav").play();
+      }
       this.boundingbox = new BoundingBox(this.x + 90, this.y, this.boundingbox.width, this.boundingbox.height);
       this.justRight = false;
       this.justLeft = true;
