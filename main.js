@@ -196,7 +196,7 @@ ASSET_MANAGER.downloadAll(function () {
 
     var box4 = new Box2(gameEngine, 544, 555, 144, 144);
     var plat = new Plat1(gameEngine, 650, 540, 553, 92);
-    var plat2 = new Plat2(gameEngine, 100, 540, 553, 92);
+    var plat2 = new Plat2(gameEngine, 100, 580, 553, 92);
     var floorplat1 = new Plat3(gameEngine, 0, 700, 350, 87);
 
     gameEngine.addEntity(bg);
