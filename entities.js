@@ -28,7 +28,7 @@ Box1.prototype.reset = function() {
   this.speed = 25;
   this.pushedRight = false;
   this.pushedLeft = false;
-  //this.boundingbox = new BoundingBox(400, 627, this.width * .5, this.height * .5);
+  this.boundingbox = new BoundingBox(400, 627, this.width * .5, this.height * .5);
   this.blocked = false;
 }
 
@@ -78,14 +78,14 @@ function Box2(game, x, y, width, height) {
 Box2.prototype = new Entity();
 Box2.prototype.constructor = Box2;
 
-Box1.prototype.reset = function() {
+Box2.prototype.reset = function() {
   this.x = this.startX;
   this.y = this.startY;
   this.width = this.width;
   this.height = this.height;
   this.ground = 650;
   this.pushed = false;
-  //this.boundingbox = new BoundingBox(this.x, this.y, this.width * .5, this.height * .5);
+  this.boundingbox = new BoundingBox(this.x, this.y, this.width * .5, this.height * .5);
 }
 
 Box2.prototype.update = function () {
@@ -119,8 +119,9 @@ Plat1.prototype.constructor = Plat1;
 Plat1.prototype.reset = function () {
   this.x = this.startX;
   this.y = this.startY;
+  this.ogX = this.startX;
   this.speed = 75;
-  //this.boundingbox = new BoundingBox(this.x, this.y, this.width * .5, this.height * .5);
+  this.boundingbox = new BoundingBox(this.x, this.y, this.width * .5, this.height * .5);
 }
 
 Plat1.prototype.update = function () {
@@ -175,7 +176,7 @@ Plat2.prototype.reset = function () {
   this.x = this.startX;
   this.y = this.startY;
   this.speed = 75;
-  //this.boundingbox = new BoundingBox(this.x, this.y, this.width * .5, this.height * .5);
+  this.boundingbox = new BoundingBox(this.x, this.y, this.width * .5, this.height * .5);
 }
 
 Plat2.prototype.update = function () {
@@ -219,7 +220,7 @@ Plat3.prototype.constructor = Plat3;
 Plat3.prototype.reset = function () {
   this.x = this.startX;
   this.y = this.startY;
-  //this.boundingbox = new BoundingBox(this.x, this.y, this.width * .75, this.height * .75);
+  this.boundingbox = new BoundingBox(this.x, this.y, this.width * .75, this.height * .75);
 }
 
 Plat3.prototype.update = function () {
