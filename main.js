@@ -104,6 +104,10 @@ PlayGame.prototype.reset = function () {
 
 PlayGame.prototype.update = function () {
     if (this.game.click){
+        if(!this.game.running){
+            ASSET_MANAGER.getAsset("./asset_lib/_audio/Aquatic_Ambiance_2.mp3").loop = true;
+            ASSET_MANAGER.getAsset("./asset_lib/_audio/Aquatic_Ambiance_2.mp3").play();
+        }
     	this.game.running = true;
     	hide(0, 2000, "dialogue");
     }
@@ -197,6 +201,10 @@ ASSET_MANAGER.queueDownload("./img/woodplat.png");
 ASSET_MANAGER.queueDownload("./img/lightning.png");
 ASSET_MANAGER.queueDownload("./img/scrap.png");
 ASSET_MANAGER.queueDownload("./asset_lib/_audio/lightning.wav");
+ASSET_MANAGER.queueDownload("./asset_lib/_audio/explosion.wav");
+ASSET_MANAGER.queueDownload("./asset_lib/_audio/step.wav");
+ASSET_MANAGER.queueDownload("./asset_lib/_audio/jump.wav");
+ASSET_MANAGER.queueDownload("./asset_lib/_audio/Aquatic_Ambiance_2.mp3");
 
 ASSET_MANAGER.downloadAll(function () {
     console.log("starting up da sheild");
@@ -269,5 +277,4 @@ ASSET_MANAGER.downloadAll(function () {
 
     gameEngine.init(ctx);
     gameEngine.start();
-    ASSET_MANAGER.getAsset("./asset_lib/_audio/lightning.wav").play();
 });
