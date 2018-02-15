@@ -536,6 +536,7 @@ Unicorn.prototype.update = function () {
 
   Entity.prototype.update.call(this);
 }
+}
 
 Unicorn.prototype.draw = function (ctx) {
   if(!this.game.running) return;
@@ -556,7 +557,7 @@ Unicorn.prototype.draw = function (ctx) {
           this.jumping = false;
       }
     }
-     if (this.rightMove) {
+    if (this.rightMove) {
         this.walkAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y, .75);
     } else if (this.leftMove) {
       this.walkRevAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y, .75);
