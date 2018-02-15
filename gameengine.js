@@ -126,6 +126,17 @@ GameEngine.prototype.addEntity = function (entity) {
     this.entities.push(entity);
 }
 
+GameEngine.prototype.reset = function () {
+    for (var i = 0; i < this.entities.length; i++) {
+        this.entities[i].reset();
+    }
+}
+
+GameEngine.prototype.resetandHide = function(elementID){
+    this.reset();
+    this.togglePause();
+}
+
 GameEngine.prototype.draw = function () {
     this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
     this.ctx.save();
@@ -189,6 +200,9 @@ function Entity(game, x, y) {
 }
 
 Entity.prototype.update = function () {
+}
+
+Entity.prototype.reset = function () {
 }
 
 Entity.prototype.draw = function (ctx) {

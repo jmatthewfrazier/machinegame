@@ -90,6 +90,10 @@ function PlayGame(game, x, y) {
 PlayGame.prototype = new Entity();
 PlayGame.prototype.constructor = PlayGame;
 
+PlayGame.prototype.reset = function () {
+    this.game.running = false;
+}
+
 PlayGame.prototype.update = function () {
     if (this.game.click){
     	this.game.running = true;
@@ -113,13 +117,18 @@ PlayGame.prototype.draw = function (ctx) {
 }
 
 function Background(game) {
-     this.x = 0;
-     this.y = 0;
-     this.game = game;
+  this.x = 0;
+  this.y = 0;
+  this.game = game;
 }
 
 Background.prototype = new Entity();
 Background.prototype.constructor = Background;
+
+Background.prototype.reset = function () {
+  this.x = 0;
+  this.y = 0;
+}
 
 Background.prototype.update = function () {
 	let canvas = document.getElementById("gameWorld");
@@ -177,6 +186,7 @@ ASSET_MANAGER.queueDownload("./img/Image_0005.jpg");
 ASSET_MANAGER.queueDownload("./img/Image_0009.png");
 ASSET_MANAGER.queueDownload("./img/Image_0010.png");
 ASSET_MANAGER.queueDownload("./img/woodplat.png");
+ASSET_MANAGER.queueDownload("./asset_lib/_audio/lightning.wav");
 
 
 ASSET_MANAGER.downloadAll(function () {
@@ -236,4 +246,5 @@ ASSET_MANAGER.downloadAll(function () {
 
     gameEngine.init(ctx);
     gameEngine.start();
+    ASSET_MANAGER.getAsset("./asset_lib/_audio/lightning.wav").play();
 });
