@@ -220,7 +220,7 @@ Plat3.prototype.constructor = Plat3;
 Plat3.prototype.reset = function () {
   this.x = this.startX;
   this.y = this.startY;
-  this.boundingbox = new BoundingBox(this.x, this.y, this.width * .75, this.height * .75);
+  this.boundingbox.x = this.startX;
 }
 
 Plat3.prototype.update = function () {
@@ -228,10 +228,10 @@ Plat3.prototype.update = function () {
 }
 
 Plat3.prototype.draw = function (ctx) {
-  if (!this.game.running) return;
-
+    if (!this.game.running) return;
     this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, .75);
-
+    ctx.strokeStyle = "red";
+    ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
 
 }
 
@@ -285,7 +285,7 @@ Unicorn.prototype.reset = function () {
   this.lastplattouch = this.game.boxes[0];
   this.x = 0;
   this.y = this.platform.boundingbox.top - this.animation.frameHeight + 25;
-  //this.boundingbox = new BoundingBox(this.x + 90, this.y, this.animation.frameWidth - 145, this.animation.frameHeight - 20);
+  this.boundingbox = new BoundingBox(this.x + 90, this.y, this.animation.frameWidth - 145, this.animation.frameHeight - 20);
 }
 
 Unicorn.prototype.update = function () {
