@@ -28,6 +28,7 @@ Box1.prototype.reset = function() {
   this.speed = 25;
   this.pushedRight = false;
   this.pushedLeft = false;
+  //this.boundingbox = new BoundingBox(400, 627, this.width * .5, this.height * .5);
   this.blocked = false;
 }
 
@@ -54,6 +55,7 @@ Box1.prototype.update = function () {
 }
 
 Box1.prototype.draw = function (ctx) {
+    if (!this.game.running) return;
     ctx.strokeStyle = "blue";
     this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, .5); //400, 640
     ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
@@ -62,6 +64,8 @@ Box1.prototype.draw = function (ctx) {
 function Box2(game, x, y, width, height) {
     this.x = x;
     this.y = y;
+    this.startX = x;
+    this.startY = y;
     this.width = width;
     this.height = height;
     this.animation = new Animation(ASSET_MANAGER.getAsset("./img/box2.png"), 0, 0, 144, 144, 1, 1, true, false);
@@ -74,9 +78,14 @@ function Box2(game, x, y, width, height) {
 Box2.prototype = new Entity();
 Box2.prototype.constructor = Box2;
 
-Box2.prototype.reset = function() {
+Box1.prototype.reset = function() {
+  this.x = this.startX;
+  this.y = this.startY;
+  this.width = this.width;
+  this.height = this.height;
   this.ground = 650;
   this.pushed = false;
+  //this.boundingbox = new BoundingBox(this.x, this.y, this.width * .5, this.height * .5);
 }
 
 Box2.prototype.update = function () {
@@ -84,6 +93,7 @@ Box2.prototype.update = function () {
 }
 
 Box2.prototype.draw = function (ctx) {
+    if (!this.game.running) return;
     ctx.strokeStyle = "green";
     ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
     this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, .5);
@@ -92,6 +102,8 @@ Box2.prototype.draw = function (ctx) {
 function Plat1(game, x, y, width, height) {
     this.x = x;
     this.y = y;
+    this.startX = x;
+    this.startY = y;
     this.width = width;
     this.height = height;
     this.ogX = x;
@@ -103,6 +115,13 @@ function Plat1(game, x, y, width, height) {
 
 Plat1.prototype = new Entity();
 Plat1.prototype.constructor = Plat1;
+
+Plat1.prototype.reset = function () {
+  this.x = this.startX;
+  this.y = this.startY;
+  this.speed = 75;
+  //this.boundingbox = new BoundingBox(this.x, this.y, this.width * .5, this.height * .5);
+}
 
 Plat1.prototype.update = function () {
     //if I'm further left than where I started out, go the other way!
@@ -134,6 +153,8 @@ Plat1.prototype.draw = function (ctx) {
 function Plat2(game, x, y, width, height) {
   this.x = x;
   this.y = y;
+  this.startX = x;
+  this.startY = y;
   this.width = width;
   this.height = height;
   this.ogY = y;
@@ -145,6 +166,13 @@ function Plat2(game, x, y, width, height) {
 
 Plat2.prototype = new Entity();
 Plat2.prototype.constructor = Plat2;
+
+Plat2.prototype.reset = function () {
+  this.x = this.startX;
+  this.y = this.startY;
+  this.speed = 75;
+  //this.boundingbox = new BoundingBox(this.x, this.y, this.width * .5, this.height * .5);
+}
 
 Plat2.prototype.update = function () {
     if (this.y >= this.ogY) {
@@ -165,6 +193,7 @@ Plat2.prototype.update = function () {
 }
 
 Plat2.prototype.draw = function (ctx) {
+  if (!this.game.running) return;
     ctx.strokestyle = "purple";
     ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
     this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, .5);
@@ -173,6 +202,8 @@ Plat2.prototype.draw = function (ctx) {
 function Plat3(game, x, y, width, height) {
     this.x = x;
     this.y = y;
+    this.startX = x;
+    this.startY = y;
     this.animation = new Animation(ASSET_MANAGER.getAsset("./img/Image_0010.png"), 0, 0, 350, 87, 1, 1, true, false);
     this.boundingbox = new BoundingBox(this.x, this.y, width * .75, height * .75);
     Entity.call(this, game, this.x, this.y);
@@ -181,14 +212,21 @@ function Plat3(game, x, y, width, height) {
 Plat3.prototype = new Entity();
 Plat3.prototype.constructor = Plat3;
 
+Plat3.prototype.reset = function () {
+  this.x = this.startX;
+  this.y = this.startY;
+  //this.boundingbox = new BoundingBox(this.x, this.y, this.width * .75, this.height * .75);
+}
+
 Plat3.prototype.update = function () {
 
 }
 
 Plat3.prototype.draw = function (ctx) {
-    //ctx.strokestyle = "black";
+  if (!this.game.running) return;
+
     this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, .75);
-    //ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.width * .75, this.height * .75);
+
 
 }
 
@@ -224,8 +262,36 @@ function Unicorn(game) {
 Unicorn.prototype = new Entity();
 Unicorn.prototype.constructor = Unicorn;
 
+Unicorn.prototype.reset = function () {
+  this.dead = false;
+  this.jumping = false;
+  this.rightMove = false;
+  this.leftMove = false;
+  this.speed = 100;
+  this.radius = 100;
+  //this.ground = 550;
+  this.height = 0;
+  this.jumpHeight = 90;
+  this.boxes = true;
+  this.falling = false;
+  this.onBox = true;
+  this.platform = this.game.boxes[0];
+  this.lastplattouch = this.game.boxes[0];
+  this.x = 0;
+  this.y = this.platform.boundingbox.top - this.animation.frameHeight + 25;
+  //this.boundingbox = new BoundingBox(this.x + 90, this.y, this.animation.frameWidth - 145, this.animation.frameHeight - 20);
+}
+
 Unicorn.prototype.update = function () {
+
     if (this.game.running) {
+      if (this.y >= 900) {
+        this.dead = true;
+      }
+      if (this.dead) {
+        this.game.reset();
+        return;
+      }
     if (this.game.right) {
         this.rightMove = true;
     } else {
@@ -415,6 +481,7 @@ Unicorn.prototype.update = function () {
 }
 
 Unicorn.prototype.draw = function (ctx) {
+  if(!this.game.running) return;
     if (this.boxes) {
         ctx.strokeStyle = "red";
         ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
@@ -441,5 +508,7 @@ Unicorn.prototype.draw = function (ctx) {
     } else {
         this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, .75);
     }
+
+
     Entity.prototype.draw.call(this);
 }
