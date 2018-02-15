@@ -231,27 +231,30 @@ Plat3.prototype.draw = function (ctx) {
 }
 
 function Unicorn(game) {
-    this.animation = new Animation(ASSET_MANAGER.getAsset("./img/idle.png"), 0, 0, 187, 91, 0.1, 109, true, false);
-    this.jumpAnimation = new Animation(ASSET_MANAGER.getAsset("./img/idle.png"), 0, 0, 187, 91, 0.1, 16, false, false);
-    this.animationRev = new Animation(ASSET_MANAGER.getAsset("./img/idle copy.png"), 0, 0, 187, 91, 0.1, 105, true, false);
-    this.walkAnimation = new Animation(ASSET_MANAGER.getAsset("./img/walk.png"), 0, 0, 187, 91, 0.05, 16, true, false);
-    this.jumpRevAnimation = new Animation(ASSET_MANAGER.getAsset("./img/idle copy.png"), 0, 0, 187, 91, 0.1, 16, false, false);
-    this.walkRevAnimation = new Animation(ASSET_MANAGER.getAsset("./img/walk_left.png"), 0, 0, 187, 91, 0.05, 16, true, true);
+    this.animation = new Animation(ASSET_MANAGER.getAsset("./img/pc_idle.png"), 0, 0, 192, 192, 0.2, 16, true, false);
+    this.jumpAnimation = new Animation(ASSET_MANAGER.getAsset("./img/pc_jump.png"), 0, 0, 192, 192, 0.1, 18, false, false);
+    this.animationRev = new Animation(ASSET_MANAGER.getAsset("./img/pc_idle_l.png"), 0, 0, 192, 192, 0.2, 16, true, false);
+    this.walkAnimation = new Animation(ASSET_MANAGER.getAsset("./img/pc_walk.png"), 0, 0, 192, 192, 0.05, 8, true, false);
+    this.jumpRevAnimation = new Animation(ASSET_MANAGER.getAsset("./img/pc_jump_l.png"), 0, 0, 192, 192, 0.1, 18, false, false);
+    this.walkRevAnimation = new Animation(ASSET_MANAGER.getAsset("./img/pc_walk_l.png"), 0, 0, 192, 192, 0.05, 8, true, true);
+    this.resize = 192 * 0.5;
     this.jumping = false;
     this.rightMove = false;
     this.leftMove = false;
+    this.rjump = false;
+    this.ljump = false;
     this.speed = 100;
     this.radius = 100;
     //this.ground = 550;
     this.height = 0;
-    this.jumpHeight = 90;
+    this.jumpHeight = 100;
     this.boxes = true;
     this.falling = false;
     this.onBox = true;
     this.platform = game.boxes[0];
     this.lastplattouch = game.boxes[0];
-    this.boundingbox = new BoundingBox(this.x + 90, this.y, this.animation.frameWidth - 145, this.animation.frameHeight - 20);
-    Entity.call(this, game, 0, this.platform.boundingbox.top - this.animation.frameHeight + 25);
+    this.boundingbox = new BoundingBox(this.x + 60, this.y + 10, this.resize - 60, this.resize - 22);
+    Entity.call(this, game, 0, this.platform.boundingbox.top - this.animation.frameHeight);
 }
 
 /**
@@ -267,6 +270,8 @@ Unicorn.prototype.reset = function () {
   this.jumping = false;
   this.rightMove = false;
   this.leftMove = false;
+  this.rjump = false;
+  this.ljump = false;
   this.speed = 100;
   this.radius = 100;
   //this.ground = 550;
@@ -278,7 +283,7 @@ Unicorn.prototype.reset = function () {
   this.platform = this.game.boxes[0];
   this.lastplattouch = this.game.boxes[0];
   this.x = 0;
-  this.y = this.platform.boundingbox.top - this.animation.frameHeight + 25;
+  this.y = this.platform.boundingbox.top - this.animation.frameHeight;
   //this.boundingbox = new BoundingBox(this.x + 90, this.y, this.animation.frameWidth - 145, this.animation.frameHeight - 20);
 }
 
@@ -307,9 +312,20 @@ Unicorn.prototype.update = function () {
           this.onBox = false;
           this.base = this.y;
       }
+
+      this.boundingbox = new BoundingBox(this.x + 30, this.y + 10, this.resize - 60, this.resize - 22);
+
       if (this.jumping && this.justRight) {
           this.onBox = false;
-          var height = 0;
+
+          if (this.ljump) {
+              this.jumpAnimation.elapsedTime += this.jumpRevAnimation.elapsedTime;
+              this.jumpRevAnimation.elapsedTime = 0;
+          }
+
+          this.rjump = true;
+          this.ljump = false;
+
           var duration = this.jumpAnimation.elapsedTime + this.game.clockTick;
           if (duration > this.jumpAnimation.totalTime / 2) {
                duration = this.jumpAnimation.totalTime - duration;
@@ -319,7 +335,7 @@ Unicorn.prototype.update = function () {
           height = (4 * duration - 4 * duration * duration) * this.jumpHeight;
           this.lastbottom = this.boundingbox.bottom;
           this.y = this.base - height;
-          this.boundingbox = new BoundingBox(this.x + 90, this.y, this.boundingbox.width, this.boundingbox.height);
+          this.boundingbox = new BoundingBox(this.x + 30, this.y + 10, this.resize - 60, this.resize - 22);
 
           for (var i = 0; i < this.game.boxes.length; i++) {
               var box = this.game.boxes[i];
@@ -328,53 +344,64 @@ Unicorn.prototype.update = function () {
                   this.jumpAnimation.elapsedTime = 0;
                   this.onBox = true;
                   this.platform = box;
-                  this.y = box.boundingbox.top - this.animation.frameHeight + 25;
+                  this.y = box.boundingbox.top - this.animation.frameHeight;
               }
           }
 
           if (this.boundingbox.left >= this.platform.boundingbox.right) {
                 this.falling = true;
           }
-      } else if (this.jumping && this.justLeft) {
-          this.onBox = false;
-      var duration = this.jumpRevAnimation.elapsedTime + this.game.clockTick;
-      if (duration > this.jumpRevAnimation.totalTime / 2) {
-          duration = this.jumpRevAnimation.totalTime - duration;
       }
-      duration = duration / this.jumpRevAnimation.totalTime;
 
-      this.height = (4 * duration - 4 * duration * duration) * this.jumpHeight;
-      this.lastbottom = this.boundingbox.bottom;
-      this.y = this.base - this.height;
-      this.boundingbox = new BoundingBox(this.x + 90, this.y, this.boundingbox.width, this.boundingbox.height);
+      if (this.jumping && this.justLeft) {
+          this.onBox = false;
 
-      for (var i = 0; i < this.game.boxes.length; i++) {
-          var box = this.game.boxes[i];
-          if (this.boundingbox.collide(box.boundingbox) && this.lastbottom <= box.boundingbox.top && this.boundingbox.left < this.boundingbox.right) {
-              this.jumping = false;
-              this.y = box.boundingbox.top - this.animation.frameHeight + 25;
-              this.jumpAnimation.elapsedTime = 0;
-              this.onBox = true;
-              this.platform = box;
+          if (this.rjump) {
+            this.jumpRevAnimation.elapsedTime += this.jumpAnimation.elapsedTime;
+            this.jumpAnimation.elapsedTime = 0;
+          }
+
+          this.ljump = true;
+          this.rjump = false;
+
+          var duration = this.jumpRevAnimation.elapsedTime + this.game.clockTick;
+          if (duration > this.jumpRevAnimation.totalTime / 2) {
+              duration = this.jumpRevAnimation.totalTime - duration;
+          }
+          duration = duration / this.jumpRevAnimation.totalTime;
+
+          this.height = (4 * duration - 4 * duration * duration) * this.jumpHeight;
+          this.lastbottom = this.boundingbox.bottom;
+          this.y = this.base - this.height;
+          this.boundingbox = new BoundingBox(this.x + 30, this.y + 10, this.resize - 60, this.resize - 22);
+
+          for (var i = 0; i < this.game.boxes.length; i++) {
+              var box = this.game.boxes[i];
+              if (this.boundingbox.collide(box.boundingbox) && this.lastbottom <= box.boundingbox.top && this.boundingbox.left < this.boundingbox.right) {
+                  this.jumping = false;
+                  this.y = box.boundingbox.top - this.animation.frameHeight;
+                  this.jumpAnimation.elapsedTime = 0;
+                  this.onBox = true;
+                  this.platform = box;
+              }
+          }
+
+          if (this.boundingbox.right <= this.platform.boundingbox.left) {
+              this.falling = true;
           }
       }
-
-      if (this.boundingbox.right <= this.platform.boundingbox.left) {
-          this.falling = true;
-      }
-  }
 
   if (this.falling) {
       this.y += 5;
       this.lastbottom = this.boundingbox.bottom;
-      this.boundingbox = new BoundingBox(this.x + 90, this.y, this.boundingbox.width, this.boundingbox.height);
+      this.boundingbox = new BoundingBox(this.x + 30, this.y + 10, this.resize - 60, this.resize - 22);
 
       //yo, check to see if I fall onto another box or a platform, would ya?
       for (var i = 0; i < this.game.boxes.length; i++) {
           var box = this.game.boxes[i];
           if (this.boundingbox.collide(box.boundingbox) && this.lastbottom <= box.boundingbox.top) {
               this.falling = false;
-              this.y = box.boundingbox.top - this.animation.frameHeight + 25;
+              this.y = box.boundingbox.top - this.animation.frameHeight;
               this.onBox = true;
               this.platform = box;
           }
@@ -399,7 +426,7 @@ Unicorn.prototype.update = function () {
 
   if (this.rightMove) {
       this.x += this.speed * this.game.clockTick;
-      this.boundingbox = new BoundingBox(this.x + 100, this.y, this.boundingbox.width, this.boundingbox.height);
+      this.boundingbox = new BoundingBox(this.x + 30, this.y + 10, this.resize - 60, this.resize - 22);
       this.justRight = true;
       this.justLeft = false;
 
@@ -433,7 +460,7 @@ Unicorn.prototype.update = function () {
           var box = this.game.boxes[i];
           if (this.boundingbox.collide(box.boundingbox) && this.lastbottom <= box.boundingbox.top) {
               this.jumping = false;
-              this.y = box.boundingbox.top - this.animation.frameHeight + 25;
+              this.y = box.boundingbox.top - this.animation.frameHeight;
               this.jumpAnimation.elapsedTime = 0;
               this.onBox = true;
               this.platform = box;
@@ -451,7 +478,7 @@ Unicorn.prototype.update = function () {
 
   } else if (this.leftMove) {
       this.x -= this.speed * this.game.clockTick;
-      this.boundingbox = new BoundingBox(this.x + 90, this.y, this.boundingbox.width, this.boundingbox.height);
+      this.boundingbox = new BoundingBox(this.x + 30, this.y + 10, this.resize - 60, this.resize - 22);
       this.justRight = false;
       this.justLeft = true;
 
@@ -486,7 +513,7 @@ Unicorn.prototype.update = function () {
           var box = this.game.boxes[i];
           if (this.boundingbox.collide(box.boundingbox) && this.lastbottom <= box.boundingbox.top) {
               this.jumping = false;
-              this.y = box.boundingbox.top - this.animation.frameHeight + 25;
+              this.y = box.boundingbox.top - this.animation.frameHeight;
               this.jumpAnimation.elapsedTime = 0;
               this.onBox = true;
               this.platform = box;
@@ -510,7 +537,7 @@ Unicorn.prototype.update = function () {
   }
 
   if (this.onBox) {
-      this.y = this.platform.boundingbox.top - this.animation.frameHeight + 25;
+      this.y = this.platform.boundingbox.top - this.boundingbox.height;
       if (this.platform instanceof Plat1) {
           if (this.platform.rightMove) {
               this.x += this.platform.speed * this.game.clockTick;
@@ -532,7 +559,8 @@ Unicorn.prototype.update = function () {
           }
       }
   }
-  this.boundingbox = new BoundingBox(this.x + 90, this.y, this.boundingbox.width, this.boundingbox.height);
+
+  this.boundingbox = new BoundingBox(this.x + 30, this.y + 10, this.resize - 60, this.resize - 22);
 
   Entity.prototype.update.call(this);
 }
@@ -545,26 +573,31 @@ Unicorn.prototype.draw = function (ctx) {
         ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
     }
     if (this.justLeft && this.jumping) {
-      this.jumpRevAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y, .75);
+      this.jumpRevAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y, .5);
         if (this.jumpRevAnimation.isDone()) {
             this.jumpRevAnimation.elapsedTime = 0;
+            this.jumpAnimation.elapsedTime = 0;
             this.jumping = false;
         }
     } else if (this.justRight && this.jumping) {
-      this.jumpAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y, .75);
+      this.jumpAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y, .5);
       if (this.jumpAnimation.isDone()) {
           this.jumpAnimation.elapsedTime = 0;
+          this.jumpRevAnimation.elapsedTime = 0;
           this.jumping = false;
       }
     }
-    if (this.rightMove) {
-        this.walkAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y, .75);
-    } else if (this.leftMove) {
-      this.walkRevAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y, .75);
-    } else if (this.justLeft) {
-        this.animationRev.drawFrame(this.game.clockTick, ctx, this.x, this.y, .75);
-    } else {
-        this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, .75);
+
+    if (!this.jumping) {
+      if (this.rightMove) {
+        this.walkAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y, .5);
+      } else if (this.leftMove) {
+        this.walkRevAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y, .5);
+      } else if (this.justLeft) {
+        this.animationRev.drawFrame(this.game.clockTick, ctx, this.x, this.y, .5);
+      } else {
+        this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, .5);
+      }
     }
 
 
