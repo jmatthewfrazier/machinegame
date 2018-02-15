@@ -196,6 +196,7 @@ ASSET_MANAGER.queueDownload("./img/Image_0010.png");
 ASSET_MANAGER.queueDownload("./img/woodplat.png");
 ASSET_MANAGER.queueDownload("./img/lightning.png");
 ASSET_MANAGER.queueDownload("./img/scrap.png");
+ASSET_MANAGER.queueDownload("./asset_lib/_audio/lightning.wav");
 
 ASSET_MANAGER.downloadAll(function () {
     console.log("starting up da sheild");
@@ -268,4 +269,5 @@ ASSET_MANAGER.downloadAll(function () {
 
     gameEngine.init(ctx);
     gameEngine.start();
+    ASSET_MANAGER.getAsset("./asset_lib/_audio/lightning.wav").play();
 });

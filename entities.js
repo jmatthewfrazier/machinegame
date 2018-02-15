@@ -86,8 +86,6 @@ Box2.prototype.reset = function() {
   this.ground = 650;
   this.pushed = false;
   this.boundingbox = new BoundingBox(this.x, this.y, this.width * .5, this.height * .5);
-
-  //this.boundingbox = new BoundingBox(this.x, this.y, this.width * .5, this.height * .5);
 }
 
 Box2.prototype.update = function () {
@@ -121,8 +119,9 @@ Plat1.prototype.constructor = Plat1;
 Plat1.prototype.reset = function () {
   this.x = this.startX;
   this.y = this.startY;
+  this.ogX = this.startX;
   this.speed = 75;
-  //this.boundingbox = new BoundingBox(this.x, this.y, this.width * .5, this.height * .5);
+  this.boundingbox = new BoundingBox(this.x, this.y, this.width * .5, this.height * .5);
 }
 
 Plat1.prototype.update = function () {
@@ -134,6 +133,10 @@ Plat1.prototype.update = function () {
     } else if (this.x >= this.ogX + 150) {
         this.rightMove = false;
         this.leftMove = true;
+    }
+
+    if (this.game.entities[this.game.entities.length - 2].scroll) {
+        this.ogX -= this.speed * this.game.clockTick;
     }
 
     //If I'm supposed to be moving right then I should move right and vice versa
@@ -173,7 +176,7 @@ Plat2.prototype.reset = function () {
   this.x = this.startX;
   this.y = this.startY;
   this.speed = 75;
-  //this.boundingbox = new BoundingBox(this.x, this.y, this.width * .5, this.height * .5);
+  this.boundingbox = new BoundingBox(this.x, this.y, this.width * .5, this.height * .5);
 }
 
 Plat2.prototype.update = function () {
@@ -217,7 +220,7 @@ Plat3.prototype.constructor = Plat3;
 Plat3.prototype.reset = function () {
   this.x = this.startX;
   this.y = this.startY;
-  //this.boundingbox = new BoundingBox(this.x, this.y, this.width * .75, this.height * .75);
+  this.boundingbox.x = this.startX;
 }
 
 Plat3.prototype.update = function () {
@@ -225,10 +228,10 @@ Plat3.prototype.update = function () {
 }
 
 Plat3.prototype.draw = function (ctx) {
-  if (!this.game.running) return;
-
-  this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, .75);
-
+    if (!this.game.running) return;
+    this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, .75);
+    ctx.strokeStyle = "red";
+    ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
 
 }
 
@@ -331,6 +334,7 @@ function Unicorn(game) {
     this.onBox = true;
     this.platform = game.boxes[0];
     this.lastplattouch = game.boxes[0];
+    this.scroll = false;
     this.boundingbox = new BoundingBox(this.x + 90, this.y, this.animation.frameWidth - 145, this.animation.frameHeight - 20);
     Entity.call(this, game, 0, this.platform.boundingbox.top - this.animation.frameHeight + 25);
 }
@@ -360,7 +364,7 @@ Unicorn.prototype.reset = function () {
   this.lastplattouch = this.game.boxes[0];
   this.x = 0;
   this.y = this.platform.boundingbox.top - this.animation.frameHeight + 25;
-  //this.boundingbox = new BoundingBox(this.x + 90, this.y, this.animation.frameWidth - 145, this.animation.frameHeight - 20);
+  this.boundingbox = new BoundingBox(this.x + 90, this.y, this.animation.frameWidth - 145, this.animation.frameHeight - 20);
 }
 
 Unicorn.prototype.update = function () {
@@ -540,6 +544,13 @@ Unicorn.prototype.update = function () {
           this.falling = true;
           this.onBox = false;
       }
+
+      if (this.x >= 500) {
+          this.scroll = true;
+      } else {
+          this.scroll = false;
+      }
+
       if (!this.game.right) {
           this.rightMove = false;
       }
@@ -610,6 +621,7 @@ Unicorn.prototype.update = function () {
   if (!this.rightMove && !this.leftMove) {
       this.lastplattouch.pushedRight = false;
       this.lastplattouch.pushedLeft = false;
+      this.scroll = false;
   }
 
   if (this.onBox) {
@@ -636,6 +648,15 @@ Unicorn.prototype.update = function () {
       }
   }
   this.boundingbox = new BoundingBox(this.x + 90, this.y, this.boundingbox.width, this.boundingbox.height);
+
+  if (this.scroll && this.rightMove) {
+      for (var i = 0; i < this.game.boxes.length; i++) {
+          var thing = this.game.boxes[i];
+          thing.x -= this.speed * this.game.clockTick;
+          thing.boundingbox = new BoundingBox(thing.x, thing.y, thing.boundingbox.width, thing.boundingbox.height);
+      }
+      this.speed = 0;
+  }
 
   Entity.prototype.update.call(this);
 }
