@@ -186,6 +186,7 @@ ASSET_MANAGER.queueDownload("./img/Image_0005.jpg");
 ASSET_MANAGER.queueDownload("./img/Image_0009.png");
 ASSET_MANAGER.queueDownload("./img/Image_0010.png");
 ASSET_MANAGER.queueDownload("./img/woodplat.png");
+ASSET_MANAGER.queueDownload("./asset_lib/_audio/lightning.wav");
 
 
 ASSET_MANAGER.downloadAll(function () {
@@ -245,4 +246,5 @@ ASSET_MANAGER.downloadAll(function () {
 
     gameEngine.init(ctx);
     gameEngine.start();
+    ASSET_MANAGER.getAsset("./asset_lib/_audio/lightning.wav").play();
 });
