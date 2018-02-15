@@ -132,6 +132,11 @@ GameEngine.prototype.reset = function () {
     }
 }
 
+GameEngine.prototype.resetandHide = function(elementID){
+    this.reset();
+    this.togglePause();
+}
+
 GameEngine.prototype.draw = function () {
     this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
     this.ctx.save();
