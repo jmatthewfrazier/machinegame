@@ -83,6 +83,14 @@ BoundingBox.prototype.collide = function (oth) {
     }
 }
 
+BoundingBox.prototype.collideLightning = function (oth) {
+  if ((this.right > oth.left && this.left < oth.right) || (this.right > oth.right && this.left < oth.left)) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
 function PlayGame(game, x, y) {
     Entity.call(this, game, x, y);
 }
@@ -96,6 +104,10 @@ PlayGame.prototype.reset = function () {
 
 PlayGame.prototype.update = function () {
     if (this.game.click){
+        if(!this.game.running){
+            ASSET_MANAGER.getAsset("./asset_lib/_audio/Aquatic_Ambiance_2.mp3").loop = true;
+            ASSET_MANAGER.getAsset("./asset_lib/_audio/Aquatic_Ambiance_2.mp3").play();
+        }
     	this.game.running = true;
     	hide(0, 2000, "dialogue");
     }
@@ -188,7 +200,13 @@ ASSET_MANAGER.queueDownload("./img/Image_0005.jpg");
 ASSET_MANAGER.queueDownload("./img/Image_0009.png");
 ASSET_MANAGER.queueDownload("./img/Image_0010.png");
 ASSET_MANAGER.queueDownload("./img/woodplat.png");
-
+ASSET_MANAGER.queueDownload("./img/lightning.png");
+ASSET_MANAGER.queueDownload("./img/scrap.png");
+ASSET_MANAGER.queueDownload("./asset_lib/_audio/lightning.wav");
+ASSET_MANAGER.queueDownload("./asset_lib/_audio/explosion.wav");
+ASSET_MANAGER.queueDownload("./asset_lib/_audio/step.wav");
+ASSET_MANAGER.queueDownload("./asset_lib/_audio/jump.wav");
+ASSET_MANAGER.queueDownload("./asset_lib/_audio/Aquatic_Ambiance_2.mp3");
 
 ASSET_MANAGER.downloadAll(function () {
     console.log("starting up da sheild");
@@ -210,6 +228,7 @@ ASSET_MANAGER.downloadAll(function () {
     var plat2 = new Plat2(gameEngine, 100, 580, 553, 92);
     var floorplat1 = new Plat3(gameEngine, 0, 700, 350, 87);
 
+
     gameEngine.addEntity(bg);
     gameEngine.addEntity(floorplat1);
     gameEngine.addEntity(box);
@@ -227,6 +246,19 @@ ASSET_MANAGER.downloadAll(function () {
         boxes.push(plat3);
       }
     }
+
+    // for (var j = 1; j < 6; j++) {
+    //   var scrap = new ScrapMetal(gameEngine, 250 * j, 665, 142, 87);
+    //   gameEngine.addEntity(scrap);
+    //   boxes.push(scrap);
+    // }
+
+    for (var j = 1; j < 6; j++) {
+      var light = new Lightning(gameEngine, 300 * j, 0, 192, 768);
+      gameEngine.addEntity(light);
+      boxes.push(light);
+    }
+
 
     boxes.push(box);
     boxes.push(box2);

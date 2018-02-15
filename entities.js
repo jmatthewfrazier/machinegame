@@ -28,7 +28,7 @@ Box1.prototype.reset = function() {
   this.speed = 25;
   this.pushedRight = false;
   this.pushedLeft = false;
-  //this.boundingbox = new BoundingBox(400, 627, this.width * .5, this.height * .5);
+  this.boundingbox = new BoundingBox(400, 627, this.width * .5, this.height * .5);
   this.blocked = false;
 }
 
@@ -37,7 +37,7 @@ Box1.prototype.update = function () {
     //If I have, make sure I don't move any further.
     for (var i = 0; i < this.game.boxes.length; i++) {
         var box = this.game.boxes[i];
-        if (this.boundingbox.collide(box.boundingbox) && !(box instanceof Box1)) {
+        if (this.boundingbox.collide(box.boundingbox) && !(box instanceof Box1) && !(box instanceof Lightning)) {
             this.pushedRight = false;
             this.blocked = true;
         }
@@ -78,14 +78,14 @@ function Box2(game, x, y, width, height) {
 Box2.prototype = new Entity();
 Box2.prototype.constructor = Box2;
 
-Box1.prototype.reset = function() {
+Box2.prototype.reset = function() {
   this.x = this.startX;
   this.y = this.startY;
   this.width = this.width;
   this.height = this.height;
   this.ground = 650;
   this.pushed = false;
-  //this.boundingbox = new BoundingBox(this.x, this.y, this.width * .5, this.height * .5);
+  this.boundingbox = new BoundingBox(this.x, this.y, this.width * .5, this.height * .5);
 }
 
 Box2.prototype.update = function () {
@@ -119,8 +119,9 @@ Plat1.prototype.constructor = Plat1;
 Plat1.prototype.reset = function () {
   this.x = this.startX;
   this.y = this.startY;
+  this.ogX = this.startX;
   this.speed = 75;
-  //this.boundingbox = new BoundingBox(this.x, this.y, this.width * .5, this.height * .5);
+  this.boundingbox = new BoundingBox(this.x, this.y, this.width * .5, this.height * .5);
 }
 
 Plat1.prototype.update = function () {
@@ -132,6 +133,10 @@ Plat1.prototype.update = function () {
     } else if (this.x >= this.ogX + 150) {
         this.rightMove = false;
         this.leftMove = true;
+    }
+
+    if (this.game.entities[this.game.entities.length - 2].scroll) {
+        this.ogX -= this.speed * this.game.clockTick;
     }
 
     //If I'm supposed to be moving right then I should move right and vice versa
@@ -171,7 +176,7 @@ Plat2.prototype.reset = function () {
   this.x = this.startX;
   this.y = this.startY;
   this.speed = 75;
-  //this.boundingbox = new BoundingBox(this.x, this.y, this.width * .5, this.height * .5);
+  this.boundingbox = new BoundingBox(this.x, this.y, this.width * .5, this.height * .5);
 }
 
 Plat2.prototype.update = function () {
@@ -215,7 +220,7 @@ Plat3.prototype.constructor = Plat3;
 Plat3.prototype.reset = function () {
   this.x = this.startX;
   this.y = this.startY;
-  //this.boundingbox = new BoundingBox(this.x, this.y, this.width * .75, this.height * .75);
+  this.boundingbox.x = this.startX;
 }
 
 Plat3.prototype.update = function () {
@@ -223,12 +228,91 @@ Plat3.prototype.update = function () {
 }
 
 Plat3.prototype.draw = function (ctx) {
-  if (!this.game.running) return;
-
+    if (!this.game.running) return;
     this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, .75);
-
+    ctx.strokeStyle = "red";
+    ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
 
 }
+
+function ScrapMetal(game, x, y, width, height) {
+  this.animation = new Animation(ASSET_MANAGER.getAsset("./img/scrap.png"), 0, 0, 142, 87, 1, 1, true, false);
+  this.x = x;
+  this.y = y;
+  this.startX = x;
+  this.startY = y;
+  this.width = width;
+  this.height = height;
+  this.boundingbox = new BoundingBox(this.x + 10, this.y + 10, (width * .5) - 20, (height * .5) - 20);
+  Entity.call(this, game, this.x, this.y);
+}
+
+ScrapMetal.prototype = new Entity();
+ScrapMetal.prototype.constructor = ScrapMetal;
+
+ScrapMetal.prototype.reset = function () {
+  this.x = this.startX;
+  this.y = this.startY;
+  this.boundingbox = new BoundingBox(this.x + 10, this.y + 10, (this.width * .5) - 20, (this.height * .5) - 20);
+}
+
+ScrapMetal.prototype.update = function () {
+
+}
+
+ScrapMetal.prototype.draw = function (ctx) {
+  if (!this.game.running) return;
+  ctx.strokeStyle = "green";
+  ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
+  this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, .5);
+}
+
+//192, 768
+
+function Lightning(game, x, y, width, height) {
+  this.animation = new Animation(ASSET_MANAGER.getAsset("./img/lightning.png"), 0, 0, 192, 768, 1, 8, true, false);
+  this.x = x;
+  this.y = y;
+  this.isDie = false;
+  this.startX = x;
+  this.startY = y;
+  this.width = width;
+  this.height = height;
+  this.boundingbox = new BoundingBox(this.x + 70, this.y, 42, (this.height * .95));
+  Entity.call(this, game, this.x, this.y);
+}
+
+Lightning.prototype = new Entity();
+Lightning.prototype.constructor = Lightning;
+
+Lightning.prototype.reset = function () {
+  this.x = this.startX;
+  this.y = this.startY;
+  this.isDie = false;
+  this.boundingbox = new BoundingBox(this.x + 70, this.y, 42, (this.height * .95));
+}
+
+Lightning.prototype.update = function () {
+  console.log(this.isDie);
+  if (this.animation.elapsedTime >= (this.animation.totalTime / 8) * 5) {
+    this.isDie = true;
+  //   this.boundingbox = new BoundingBox(this.x + 50, this.y, (this.width * .95) - 100, (this.height * .95));
+} else {
+  this.isDie = false;
+}
+  Entity.prototype.update.call(this);
+}
+
+Lightning.prototype.draw = function (ctx) {
+  if (!this.game.running) return;
+    ctx.strokeStyle = "green";
+    this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, .95);
+    ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
+}
+
+// function Lever(game, x, y, width, height) {
+//
+// }
 
 function Unicorn(game) {
     this.animation = new Animation(ASSET_MANAGER.getAsset("./img/pc_idle.png"), 0, 0, 192, 192, 0.2, 16, true, false);
@@ -255,6 +339,7 @@ function Unicorn(game) {
     this.lastplattouch = game.boxes[0];
     this.boundingbox = new BoundingBox(this.x + 60, this.y + 10, this.resize - 60, this.resize - 22);
     Entity.call(this, game, 0, this.platform.boundingbox.top - this.animation.frameHeight);
+    this.scroll = false;
 }
 
 /**
@@ -284,7 +369,7 @@ Unicorn.prototype.reset = function () {
   this.lastplattouch = this.game.boxes[0];
   this.x = 0;
   this.y = this.platform.boundingbox.top - this.animation.frameHeight;
-  //this.boundingbox = new BoundingBox(this.x + 90, this.y, this.animation.frameWidth - 145, this.animation.frameHeight - 20);
+  this.boundingbox = new BoundingBox(this.x + 30, this.y + 10, this.resize - 60, this.resize - 22);
 }
 
 Unicorn.prototype.update = function () {
@@ -308,6 +393,7 @@ Unicorn.prototype.update = function () {
           this.leftMove = false;
       }
       if (this.game.space && !this.jumping) {
+          ASSET_MANAGER.getAsset("./asset_lib/_audio/jump.wav").play();
           this.jumping = true;
           this.onBox = false;
           this.base = this.y;
@@ -405,6 +491,12 @@ Unicorn.prototype.update = function () {
               this.onBox = true;
               this.platform = box;
           }
+          if (this.boundingbox.collide(box.boundingbox) && box instanceof Lightning) {
+            if (box.isDie) {
+              this.dead = true;
+            }
+
+          }
       }
 
       //if my y coordinate falls equal to or lower than the ground, then I'm probably supposed to land on the ground
@@ -426,6 +518,9 @@ Unicorn.prototype.update = function () {
 
   if (this.rightMove) {
       this.x += this.speed * this.game.clockTick;
+      if (!this.jumping && !this.falling){
+        ASSET_MANAGER.getAsset("./asset_lib/_audio/step.wav").play();
+      }
       this.boundingbox = new BoundingBox(this.x + 30, this.y + 10, this.resize - 60, this.resize - 22);
       this.justRight = true;
       this.justLeft = false;
@@ -433,8 +528,16 @@ Unicorn.prototype.update = function () {
       //if I collide with a box, I'm going to remember that box
       for (var i = 0; i < this.game.boxes.length; i++) {
           var box = this.game.boxes[i];
-          if (this.boundingbox.collide(box.boundingbox) && this.boundingbox.right >= box.boundingbox.left && !(this.platform === box)) {
+          if (this.boundingbox.collide(box.boundingbox) && this.boundingbox.right >= box.boundingbox.left && !(this.platform === box) && !(box instanceof ScrapMetal)) {
               this.lastplattouch = box;
+          }
+          if (this.boundingbox.collide(box.boundingbox) && this.boundingbox.right >= box.boundingbox.left && box instanceof ScrapMetal) {
+            this.dead = true;
+          }
+          if (this.boundingbox.collide(box.boundingbox) && this.boundingbox.right >= box.boundingbox.left && box instanceof Lightning) {
+            if (box.isDie) {
+              this.dead = true;
+             }
           }
       }
 
@@ -472,12 +575,22 @@ Unicorn.prototype.update = function () {
           this.falling = true;
           this.onBox = false;
       }
+
+      if (this.x >= 500) {
+          this.scroll = true;
+      } else {
+          this.scroll = false;
+      }
+
       if (!this.game.right) {
           this.rightMove = false;
       }
 
   } else if (this.leftMove) {
       this.x -= this.speed * this.game.clockTick;
+      if (!this.jumping && !this.falling){
+        ASSET_MANAGER.getAsset("./asset_lib/_audio/step.wav").play();
+      }
       this.boundingbox = new BoundingBox(this.x + 30, this.y + 10, this.resize - 60, this.resize - 22);
       this.justRight = false;
       this.justLeft = true;
@@ -487,6 +600,14 @@ Unicorn.prototype.update = function () {
           var box = this.game.boxes[i];
           if (this.boundingbox.collide(box.boundingbox) && this.boundingbox.left <= box.boundingbox.right && !(this.platform === box)) {
               this.lastplattouch = box;
+          }
+          if (this.boundingbox.collide(box.boundingbox) && this.boundingbox.left <= box.boundingbox.right && box instanceof ScrapMetal) {
+            this.dead = true;
+          }
+          if ((this.boundingbox.collide(box.boundingbox) && this.boundingbox.left <= box.boundingbox.right) && box instanceof Lightning) {
+            if (box.isDie) {
+              this.dead = true;
+             }
           }
       }
 
@@ -534,10 +655,11 @@ Unicorn.prototype.update = function () {
   if (!this.rightMove && !this.leftMove) {
       this.lastplattouch.pushedRight = false;
       this.lastplattouch.pushedLeft = false;
+      this.scroll = false;
   }
 
   if (this.onBox) {
-      this.y = this.platform.boundingbox.top - this.boundingbox.height;
+      this.y = this.platform.boundingbox.top - this.boundingbox.height - 8;
       if (this.platform instanceof Plat1) {
           if (this.platform.rightMove) {
               this.x += this.platform.speed * this.game.clockTick;
@@ -551,7 +673,7 @@ Unicorn.prototype.update = function () {
   //except if that "box" is a platform, you should be able to move through its bounding box
   for (var i = 0; i < this.game.boxes.length; i++) {
       var box = this.game.boxes[i];
-      if (this.onBox && this.boundingbox.collide(box.boundingbox) && !(box instanceof Plat1) && !(box instanceof Plat2)) {
+      if (this.onBox && this.boundingbox.collide(box.boundingbox) && !(box instanceof Plat1) && !(box instanceof Plat2) && !(box instanceof Lightning)) {
           if (!(box === this.platform)) {
               this.speed = 0;
           } else {
@@ -561,6 +683,15 @@ Unicorn.prototype.update = function () {
   }
 
   this.boundingbox = new BoundingBox(this.x + 30, this.y + 10, this.resize - 60, this.resize - 22);
+
+  if (this.scroll && this.rightMove) {
+      for (var i = 0; i < this.game.boxes.length; i++) {
+          var thing = this.game.boxes[i];
+          thing.x -= this.speed * this.game.clockTick;
+          thing.boundingbox = new BoundingBox(thing.x, thing.y, thing.boundingbox.width, thing.boundingbox.height);
+      }
+      this.speed = 0;
+  }
 
   Entity.prototype.update.call(this);
 }
