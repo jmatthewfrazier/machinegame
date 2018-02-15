@@ -13,7 +13,7 @@ function Box1(game, x, y, width, height) {
     this.pushedRight = false;
     this.pushedLeft = false;
     this.blocked = false;
-    this.boundingbox = new BoundingBox(400, 640, width * .5, height * .5);
+    this.boundingbox = new BoundingBox(400, 627, width * .5, height * .5);
     Entity.call(this, game, this.x, this.y);
 }
 
@@ -186,9 +186,9 @@ Plat3.prototype.update = function () {
 }
 
 Plat3.prototype.draw = function (ctx) {
-    ctx.strokestyle = "black";
+    //ctx.strokestyle = "black";
     this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, .75);
-    ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.width * .75, this.height * .75);
+    //ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.width * .75, this.height * .75);
 
 }
 
@@ -204,16 +204,16 @@ function Unicorn(game) {
     this.leftMove = false;
     this.speed = 100;
     this.radius = 100;
-    this.ground = 550;
+    //this.ground = 550;
     this.height = 0;
     this.jumpHeight = 90;
     this.boxes = true;
     this.falling = false;
-    this.onBox = false;
+    this.onBox = true;
     this.platform = game.boxes[0];
     this.lastplattouch = game.boxes[0];
     this.boundingbox = new BoundingBox(this.x + 90, this.y, this.animation.frameWidth - 145, this.animation.frameHeight - 20);
-    Entity.call(this, game, 0, 550);
+    Entity.call(this, game, 0, this.platform.boundingbox.top - this.animation.frameHeight + 25);
 }
 
 /**
