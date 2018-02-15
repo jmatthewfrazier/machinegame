@@ -270,7 +270,7 @@ ScrapMetal.prototype.draw = function (ctx) {
 //192, 768
 
 function Lightning(game, x, y, width, height) {
-  this.animation = new Animation(ASSET_MANAGER.getAsset("./img/lightning.png"), 0, 0, 192, 768, 1, 8, true, false);
+  this.animation = new Animation(ASSET_MANAGER.getAsset("./img/lightning.png"), 0, 0, 192, 768, .7, 8, true, false);
   this.x = x;
   this.y = y;
   this.isDie = false;
@@ -278,7 +278,7 @@ function Lightning(game, x, y, width, height) {
   this.startY = y;
   this.width = width;
   this.height = height;
-  this.boundingbox = new BoundingBox(this.x + 70, this.y, 42, (this.height * .95));
+  this.boundingbox = new BoundingBox(this.x + 100, this.y, (this.width * .95) - 200, (this.height * .95));
   Entity.call(this, game, this.x, this.y);
 }
 
@@ -289,11 +289,10 @@ Lightning.prototype.reset = function () {
   this.x = this.startX;
   this.y = this.startY;
   this.isDie = false;
-  this.boundingbox = new BoundingBox(this.x + 70, this.y, 42, (this.height * .95));
+  this.boundingbox = new BoundingBox(this.x + 100, this.y, (this.width * .95) - 200, (this.height * .95));
 }
 
 Lightning.prototype.update = function () {
-  console.log(this.isDie);
   if (this.animation.elapsedTime >= (this.animation.totalTime / 8) * 5) {
     this.isDie = true;
   //   this.boundingbox = new BoundingBox(this.x + 50, this.y, (this.width * .95) - 100, (this.height * .95));
@@ -310,9 +309,33 @@ Lightning.prototype.draw = function (ctx) {
     ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
 }
 
-// function Lever(game, x, y, width, height) {
-//
-// }
+function Lever(game, x, y, width, height) {
+  this.animation = new Animation(ASSET_MANAGER.getAsset("./img/lever.png"), 0, 0, 192, 192, .5, 5, true, false);
+  this.x = x;
+  this.y = y;
+  this.startX = x;
+  this.startY = y;
+  this.width = width;
+  this.height = height;
+  this.boundingbox = new BoundingBox(this.x, this.y, (this.width * .5), (this.height * .5));
+  Entity.call(this, game, this.x, this.y);
+}
+
+Lever.prototype = new Entity();
+Lever.prototype.constructor = Lever;
+
+Lever.prototype.reset = function () {
+  this.x = this.startX;
+  this.y = this.startY;
+}
+
+Lever.prototype.update = function () {
+Entity.prototype.update.call(this);
+}
+
+Lever.prototype.draw = function() {
+
+}
 
 function Unicorn(game) {
     this.animation = new Animation(ASSET_MANAGER.getAsset("./img/idle.png"), 0, 0, 187, 91, 0.1, 109, true, false);
@@ -414,7 +437,12 @@ Unicorn.prototype.update = function () {
                   this.onBox = true;
                   this.platform = box;
                   this.y = box.boundingbox.top - this.animation.frameHeight + 25;
-              }
+               } //else if(box instanceof Lightning) {
+              //    if (box.isDie) {
+              //      this.dead = true;
+              //    }
+              //
+              // }
           }
 
           if (this.boundingbox.left >= this.platform.boundingbox.right) {
@@ -497,7 +525,7 @@ Unicorn.prototype.update = function () {
       //if I collide with a box, I'm going to remember that box
       for (var i = 0; i < this.game.boxes.length; i++) {
           var box = this.game.boxes[i];
-          if (this.boundingbox.collide(box.boundingbox) && this.boundingbox.right >= box.boundingbox.left && !(this.platform === box) && !(box instanceof ScrapMetal)) {
+          if (this.boundingbox.collide(box.boundingbox) && this.boundingbox.right >= box.boundingbox.left && !(this.platform === box) && !(box instanceof ScrapMetal) && !(box instanceof Lightning)) {
               this.lastplattouch = box;
           }
           if (this.boundingbox.collide(box.boundingbox) && this.boundingbox.right >= box.boundingbox.left && box instanceof ScrapMetal) {
@@ -564,7 +592,7 @@ Unicorn.prototype.update = function () {
       //if I collide with a box, I'm going to remember that box
       for (var i = 0; i < this.game.boxes.length; i++) {
           var box = this.game.boxes[i];
-          if (this.boundingbox.collide(box.boundingbox) && this.boundingbox.left <= box.boundingbox.right && !(this.platform === box)) {
+          if (this.boundingbox.collide(box.boundingbox) && this.boundingbox.left <= box.boundingbox.right && !(this.platform === box) && !(box instanceof ScrapMetal) && !(box instanceof Lightning)) {
               this.lastplattouch = box;
           }
           if (this.boundingbox.collide(box.boundingbox) && this.boundingbox.left <= box.boundingbox.right && box instanceof ScrapMetal) {
