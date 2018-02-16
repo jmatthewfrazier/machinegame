@@ -109,7 +109,10 @@ PlayGame.prototype.update = function () {
             ASSET_MANAGER.getAsset("./asset_lib/_audio/Aquatic_Ambiance_2.mp3").play();
         }
     	this.game.running = true;
-    	hide(0, 2000, "dialogue");
+    	// hide(0, 2000, "dialogue");
+      setTimeout(function () {
+        setFSize("dialogue", "300%");
+      }, 2100)
     }
 }
 

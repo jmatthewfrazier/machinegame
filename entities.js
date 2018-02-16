@@ -471,9 +471,9 @@ Plate.prototype.draw = function (ctx) {
       if (this.revAnimation.isDone()) {
           this.off = true;
           this.revAnimation.elapsedTime = 0;
-      } 
+      }
   }
-  
+
   ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
 }
 
