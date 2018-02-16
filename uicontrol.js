@@ -1,4 +1,5 @@
 function pushText(text, elementID){
+	ASSET_MANAGER.getAsset("./asset_lib/audio/talking.wav").play();
 	setText(text, elementID);
 	display(1, elementID);
 }

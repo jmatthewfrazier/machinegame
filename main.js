@@ -219,6 +219,7 @@ ASSET_MANAGER.queueDownload("./asset_lib/audio/explosion.wav");
 ASSET_MANAGER.queueDownload("./asset_lib/audio/solved.wav");
 ASSET_MANAGER.queueDownload("./asset_lib/audio/ded.wav");
 ASSET_MANAGER.queueDownload("./asset_lib/audio/step.wav");
+ASSET_MANAGER.queueDownload("./asset_lib/audio/talking.wav");
 ASSET_MANAGER.queueDownload("./asset_lib/audio/jump.wav");
 
 //MUSIC LAST
