@@ -612,7 +612,7 @@ Unicorn.prototype.update = function () {
       } else {
           this.leftMove = false;
       }
-      if (this.game.space && !this.jumping) {
+      if (this.game.space && !this.jumping && !this.falling) {
           ASSET_MANAGER.getAsset("./asset_lib/audio/jump.wav").play();
           this.jumping = true;
           this.onBox = false;
