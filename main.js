@@ -257,9 +257,9 @@ ASSET_MANAGER.downloadAll(function () {
     gameEngine.addEntity(lever);
     boxes.push(lever);
 
-    var lever = new Lever(gameEngine, 300, 575, 192, 192);
-    gameEngine.addEntity(lever);
-    boxes.push(lever);
+    // var lever = new Lever(gameEngine, 300, 575, 192, 192);
+    // gameEngine.addEntity(lever);
+    // boxes.push(lever);
 
     // for (var j = 1; j < 6; j++) {
     //   var scrap = new ScrapMetal(gameEngine, 250 * j, 665, 142, 87);
@@ -267,11 +267,11 @@ ASSET_MANAGER.downloadAll(function () {
     //   boxes.push(scrap);
     // }
 
-    // for (var j = 1; j < 6; j++) {
-    //   var light = new Lightning(gameEngine, 300 * j, 0, 192, 768);
-    //   gameEngine.addEntity(light);
-    //   boxes.push(light);
-    // }
+    for (var j = 1; j < 6; j++) {
+      var light = new Lightning(gameEngine, 300 * j, 0, 192, 768);
+      gameEngine.addEntity(light);
+      boxes.push(light);
+    }
 
 
     boxes.push(box);
