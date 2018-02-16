@@ -145,6 +145,7 @@ GameEngine.prototype.reset = function () {
 
 GameEngine.prototype.gameOver = function(){
     this.over = true;
+    document.getElementById("pause").style.display = "none";
     document.getElementById("pausedBanner").style.display = "none";
     document.getElementById("resume").style.display = "none";
     // document.getElementById("vol").style.display = "none";
@@ -155,6 +156,7 @@ GameEngine.prototype.gameOver = function(){
 
 GameEngine.prototype.success = function(){
     this.over = true;
+    document.getElementById("pause").style.display = "none";
     document.getElementById("pausedBanner").style.display = "none";
     document.getElementById("resume").style.display = "none";
     // document.getElementById("vol").style.display = "none";
@@ -167,6 +169,7 @@ GameEngine.prototype.success = function(){
 GameEngine.prototype.resetandHide = function(){
   if(this.over){
     this.over = false;
+    document.getElementById("pause").style.display = "inline-block";
     document.getElementById("pausedBanner").style.display = "inline-block";
     document.getElementById("resume").style.display = "inline-block";
     // document.getElementById("vol").style.display = "inline-block";
