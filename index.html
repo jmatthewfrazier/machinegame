@@ -22,9 +22,26 @@
 		<br/>
 		<button class="astext" onclick="gameEngine.resetandHide()">Restart</button>
     <br/>
-    <button id="ctrl" class="astext">Controls</button>
+    <button id="vol" class="astext">Volume</button>
+    <div id="volMenu" class="ctrlMenu" style="display:none;height:20%;">
+      <input id="muteMusic" class="checkbox" type="checkbox">
+      Mute music
+      <br/>
+      Music Volume
+      <br/>
+      <input id="volMusic" class="slider" type="range" min="1" max="100" value="70">
+      <br/>
+      <input id="muteMaster" class="checkbox" type="checkbox">
+      Mute all
+      <br/>
+      Master Volume
+      <br/>
+      <input id="volMaster" class="slider" type="range" min="1" max="100" value="100">
+      <br/>
+    </div>
     <br/>
-    <div id="ctrlMenu" style="display: none;">
+    <button id="ctrl" class="astext">Controls</button>
+    <div id="ctrlMenu" class="ctrlMenu" style="display: none;">
       A - Move left
       <br/>
       D - Move right

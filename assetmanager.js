@@ -3,6 +3,7 @@ function AssetManager() {
     this.errorCount = 0;
     this.cache = [];
     this.downloadQueue = [];
+    this.sounds = [];
 }
 
 AssetManager.prototype.queueDownload = function (path) {
@@ -28,7 +29,7 @@ AssetManager.prototype.downloadAll = function (callback) {
         } else if (fileType(path) === "img"){
             item = new Image();
         }
-        
+
         item.addEventListener(load, function () {
             console.log("Loaded " + this.src);
             that.successCount++;
@@ -42,6 +43,9 @@ AssetManager.prototype.downloadAll = function (callback) {
         });
 
         item.src = path;
+        if (fileType(path) === "audio"){
+          this.sounds.push(item);
+        }
         this.cache[path] = item;
     }
 }

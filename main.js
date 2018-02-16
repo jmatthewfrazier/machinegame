@@ -105,9 +105,9 @@ PlayGame.prototype.reset = function () {
 PlayGame.prototype.update = function () {
     if (this.game.click){
         if(!this.game.running){
-            ASSET_MANAGER.getAsset("./asset_lib/audio/Aquatic_Ambiance_2.mp3").volume = 0.5;
-            ASSET_MANAGER.getAsset("./asset_lib/audio/Aquatic_Ambiance_2.mp3").loop = true;
-            ASSET_MANAGER.getAsset("./asset_lib/audio/Aquatic_Ambiance_2.mp3").play();
+            music.volume = 0.5;
+            music.loop = true;
+            music.play();
         }
     	this.game.running = true;
     	// hide(0, 2000, "dialogue");
@@ -119,7 +119,7 @@ PlayGame.prototype.update = function () {
 
 PlayGame.prototype.draw = function (ctx) {
     if (!this.game.running) {
-        ctx.font = "70% pixel1";
+        ctx.font = "100% pixel1";
         ctx.textAlign = "center";
         ctx.fillStyle = "white";
         if (this.game.mouse) { ctx.fillStyle = "#ddd"; }
@@ -200,8 +200,6 @@ ASSET_MANAGER.queueDownload("./img/pc_idle_l.png");
 ASSET_MANAGER.queueDownload("./img/pc_walk_l.png");
 ASSET_MANAGER.queueDownload("./img/pc_jump.png");
 ASSET_MANAGER.queueDownload("./img/pc_jump_l.png");
-ASSET_MANAGER.queueDownload("./img/pc_push.png");
-ASSET_MANAGER.queueDownload("./img/pc_push_l.png");
 ASSET_MANAGER.queueDownload("./img/kid_talk_l.png");
 ASSET_MANAGER.queueDownload("./img/Image_0005.jpg");
 ASSET_MANAGER.queueDownload("./img/Image_0009.png");
@@ -221,6 +219,8 @@ ASSET_MANAGER.queueDownload("./asset_lib/audio/explosion.wav");
 ASSET_MANAGER.queueDownload("./asset_lib/audio/solved.wav");
 ASSET_MANAGER.queueDownload("./asset_lib/audio/step.wav");
 ASSET_MANAGER.queueDownload("./asset_lib/audio/jump.wav");
+
+//MUSIC LAST
 ASSET_MANAGER.queueDownload("./asset_lib/audio/Aquatic_Ambiance_2.mp3");
 
 ASSET_MANAGER.downloadAll(function () {
@@ -401,3 +401,5 @@ ASSET_MANAGER.downloadAll(function () {
     gameEngine.init(ctx);
     gameEngine.start();
 });
+
+var music = ASSET_MANAGER.sounds.pop();
