@@ -296,7 +296,7 @@ ASSET_MANAGER.downloadAll(function () {
 
   var kid = new Child(gameEngine, 7600, 620, 192, 192);
 
-  var end = new EndLevel(gameEngine, 1200, 620, 500, 500);
+  var end = new EndLevel(gameEngine, 7700, 620, 500, 500);
 
   var floorplat1 = new Plat3(gameEngine, 0, 700, 350, 87);
 

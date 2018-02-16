@@ -593,10 +593,10 @@ Unicorn.prototype.update = function () {
       if (this.y >= 900) {
         this.dead = true;
       }
-      if (this.x >= 7600) {
-        this.game.success();
-        return;
-      }
+      // if (this.x >= 7600) {
+      //   this.game.gameOver();
+      //   return;
+      // }
       if (this.dead) {
         ASSET_MANAGER.getAsset("./asset_lib/audio/ded.wav").play();
         this.game.gameOver();
@@ -612,7 +612,7 @@ Unicorn.prototype.update = function () {
       } else {
           this.leftMove = false;
       }
-      if (this.game.space && !this.jumping && !this.falling) {
+      if (this.game.space && !this.jumping) {
           ASSET_MANAGER.getAsset("./asset_lib/audio/jump.wav").play();
           this.jumping = true;
           this.onBox = false;
@@ -768,7 +768,10 @@ Unicorn.prototype.update = function () {
           if (this.boundingbox.collide(box.boundingbox) && this.boundingbox.right >= box.boundingbox.left && box instanceof Child) {
               pushText("please help, there is a machine", "dialogue");
           }
-
+          if (this.boundingbox.collide(box.boundingbox) && this.boundingbox.right >= box.boundingbox.left && box instanceof EndLevel) {
+              this.game.success();
+              return;
+          }
       }
 
       //if I walk right into a box on the ground and that box is of type Box1 and it's not blocked by another box,
