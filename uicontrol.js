@@ -1,7 +1,6 @@
-function pushText(text, timeMS, elementID){
+function pushText(text, elementID){
 	setText(text, elementID);
 	display(1, elementID);
-	hide(timeMS, 2000, elementID);
 }
 
 function setText(text, elementID) {
@@ -16,19 +15,22 @@ function display(op, elementID) {
     em.style.opacity = op;
 }
 
+function setFSize(elementID, size){
+	document.getElementById(elementID).style.fontSize = size;
+}
+
 function hide(time, wait, elementID){
 	let em = document.getElementById(elementID);
 	setTimeout(function() {
     	em.style.opacity = 0;
+    	setTimeout(function() {
+    		em.style.display = "none";
+  		}, wait);
   	}, time);
-	setTimeout(function() {
-    	em.style.display = "none";
-  	}, time + wait);
 }
 
 window.onload = function(){
 	const canvas = document.getElementById("gameWorld");
-
 	canvas.onblur = function() {
 		canvas.focus();
 	}

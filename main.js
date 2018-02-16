@@ -19,8 +19,6 @@ function Animation(spriteSheet, startX, startY, frameWidth, frameHeight, frameDu
     this.jumping = false;
     this.justRight = true;
     this.justLeft = false;
-    this.rightScrolling = false;
-    this.leftScrolling = false;
 }
 
 Animation.prototype.drawFrame = function (tick, ctx, x, y, scaleBy) {
@@ -85,6 +83,14 @@ BoundingBox.prototype.collide = function (oth) {
     }
 }
 
+BoundingBox.prototype.collideLightning = function (oth) {
+  if ((this.right > oth.left && this.left < oth.right) || (this.right > oth.right && this.left < oth.left)) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
 function PlayGame(game, x, y) {
     Entity.call(this, game, x, y);
 }
@@ -92,16 +98,27 @@ function PlayGame(game, x, y) {
 PlayGame.prototype = new Entity();
 PlayGame.prototype.constructor = PlayGame;
 
+PlayGame.prototype.reset = function () {
+    this.game.running = false;
+}
+
 PlayGame.prototype.update = function () {
     if (this.game.click){
+        if(!this.game.running){
+            ASSET_MANAGER.getAsset("./asset_lib/_audio/Aquatic_Ambiance_2.mp3").loop = true;
+            ASSET_MANAGER.getAsset("./asset_lib/_audio/Aquatic_Ambiance_2.mp3").play();
+        }
     	this.game.running = true;
-    	hide(0, 2000, "dialogue");
+    	// hide(0, 2000, "dialogue");
+      setTimeout(function () {
+        setFSize("dialogue", "300%");
+      }, 2100)
     }
 }
 
 PlayGame.prototype.draw = function (ctx) {
     if (!this.game.running) {
-        ctx.font = "300% sans-serif";
+        ctx.font = "70% pixel1";
         ctx.textAlign = "center";
         ctx.fillStyle = "white";
         if (this.game.mouse) { ctx.fillStyle = "#ddd"; }
@@ -115,15 +132,23 @@ PlayGame.prototype.draw = function (ctx) {
 }
 
 function Background(game) {
-     this.x = 0;
-     this.y = 0;
-     Entity.call(this, game, 0, 0);
+  this.x = 0;
+  this.y = 0;
+  this.game = game;
 }
 
 Background.prototype = new Entity();
 Background.prototype.constructor = Background;
 
+Background.prototype.reset = function () {
+  this.x = 0;
+  this.y = 0;
+}
+
 Background.prototype.update = function () {
+	let canvas = document.getElementById("gameWorld");
+	canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
   if (this.game.running) {
     if (this.game.rightScroll) this.rightScrolling = true;
     if (this.game.leftScroll) this.leftScrolling = true;
@@ -142,26 +167,25 @@ Background.prototype.update = function () {
     if (this.x < 0) this.x = 698;
   }
 
+
     Entity.prototype.update.call(this);
 }
 
 Background.prototype.draw = function (ctx) {
-
-    ctx.drawImage(ASSET_MANAGER.getAsset("./img/Image_0005.jpg"), this.x, this.y);
-    ctx.drawImage(ASSET_MANAGER.getAsset("./img/Image_0005.jpg"), this.x + 699, this.y);
-    ctx.drawImage(ASSET_MANAGER.getAsset("./img/Image_0005.jpg"), this.x - 699, this.y);
-    ctx.drawImage(ASSET_MANAGER.getAsset("./img/Image_0009.png"), this.x, this.y);
-    ctx.drawImage(ASSET_MANAGER.getAsset("./img/Image_0009.png"), this.x + 699, this.y);
-    ctx.drawImage(ASSET_MANAGER.getAsset("./img/Image_0009.png"), this.x - 699, this.y);
-    // ctx.drawImage(ASSET_MANAGER.getAsset("./img/Image_0010.png"), this.x, this.y);
-    // ctx.drawImage(ASSET_MANAGER.getAsset("./img/Image_0010.png"), this.x + 699, this.y);
-    // ctx.drawImage(ASSET_MANAGER.getAsset("./img/Image_0010.png"), this.x - 699, this.y);
+	let size = window.innerWidth;
+	let fillNum = (size/700) + 2;
+	let x = this.x - 699;
+	let y = this.y;
+	for (i = 0; i < fillNum; i++){
+		ctx.drawImage(ASSET_MANAGER.getAsset("./img/Image_0005.jpg"), x, y);
+		ctx.drawImage(ASSET_MANAGER.getAsset("./img/Image_0009.png"), x, y);
+		x += 699;
+	}
 
 }
 
 // the "main" code begins here
-const gameEngine = new GameEngine();
-
+var gameEngine = new GameEngine();
 var ASSET_MANAGER = new AssetManager();
 
 ASSET_MANAGER.queueDownload("./img/box1.png");
@@ -169,15 +193,30 @@ ASSET_MANAGER.queueDownload("./img/box2.png");
 ASSET_MANAGER.queueDownload("./img/lizard.png");
 ASSET_MANAGER.queueDownload("./img/lizard_right.png");
 ASSET_MANAGER.queueDownload("./img/gwen_idle.png");
-ASSET_MANAGER.queueDownload("./img/idle.png");
-ASSET_MANAGER.queueDownload("./img/walk.png");
-ASSET_MANAGER.queueDownload("./img/idle copy.png");
-ASSET_MANAGER.queueDownload("./img/walk_left.png");
+ASSET_MANAGER.queueDownload("./img/pc_idle.png");
+ASSET_MANAGER.queueDownload("./img/pc_walk.png");
+ASSET_MANAGER.queueDownload("./img/pc_idle_l.png");
+ASSET_MANAGER.queueDownload("./img/pc_walk_l.png");
+ASSET_MANAGER.queueDownload("./img/pc_jump.png");
+ASSET_MANAGER.queueDownload("./img/pc_jump_l.png");
 ASSET_MANAGER.queueDownload("./img/Image_0005.jpg");
 ASSET_MANAGER.queueDownload("./img/Image_0009.png");
 ASSET_MANAGER.queueDownload("./img/Image_0010.png");
 ASSET_MANAGER.queueDownload("./img/woodplat.png");
-
+ASSET_MANAGER.queueDownload("./img/lightning.png");
+ASSET_MANAGER.queueDownload("./img/scrap.png");
+ASSET_MANAGER.queueDownload("./img/plate.png");
+ASSET_MANAGER.queueDownload("./img/plate_rev.png");
+ASSET_MANAGER.queueDownload("./img/lever.png");
+ASSET_MANAGER.queueDownload("./img/lever_still.png");
+ASSET_MANAGER.queueDownload("./img/lever_still_rev.png");
+ASSET_MANAGER.queueDownload("./img/door_open.png");
+ASSET_MANAGER.queueDownload("./img/door_closed.png");
+ASSET_MANAGER.queueDownload("./asset_lib/_audio/lightning.wav");
+ASSET_MANAGER.queueDownload("./asset_lib/_audio/explosion.wav");
+ASSET_MANAGER.queueDownload("./asset_lib/_audio/step.wav");
+ASSET_MANAGER.queueDownload("./asset_lib/_audio/jump.wav");
+ASSET_MANAGER.queueDownload("./asset_lib/_audio/Aquatic_Ambiance_2.mp3");
 
 ASSET_MANAGER.downloadAll(function () {
     console.log("starting up da sheild");
@@ -189,14 +228,17 @@ ASSET_MANAGER.downloadAll(function () {
     canvas.height = window.innerHeight;
 
     var boxes = [];
+    var levers = [];
     var bg = new Background(gameEngine);
-    var box = new Box1(gameEngine, 400, 545, 144, 144);
-    var box2 = new Box2(gameEngine, 544, 545, 144, 144);
-    var box3 = new Box2(gameEngine, 230, 545, 144, 144);
-    var plat = new Plat1(gameEngine, 150, 470, 545, 92);
+    var box = new Box1(gameEngine, 400, 627, 144, 144);
+    var box2 = new Box2(gameEngine, 544, 627, 144, 144);
+    var box3 = new Box2(gameEngine, 230, 627, 144, 144);
 
-    gameEngine.running = false;
-    gameEngine.dead = false;
+    var box4 = new Box2(gameEngine, 544, 555, 144, 144);
+    var plat = new Plat1(gameEngine, 650, 540, 553, 92);
+    var plat2 = new Plat2(gameEngine, 100, 580, 553, 92);
+    var floorplat1 = new Plat3(gameEngine, 0, 700, 350, 87);
+
 
     var ground = new Ground(gameEngine, 0, 550, 350, 87, 0);
     gameEngine.addEntity(ground);
@@ -207,15 +249,54 @@ ASSET_MANAGER.downloadAll(function () {
     }
 
     gameEngine.addEntity(bg);
+    gameEngine.addEntity(floorplat1);
     gameEngine.addEntity(box);
     gameEngine.addEntity(box2);
     gameEngine.addEntity(box3);
+    gameEngine.addEntity(box4);
     gameEngine.addEntity(plat);
+    gameEngine.addEntity(plat2);
+
+    boxes.push(floorplat1);
+    for (var i = 1; i < 11; i++) {
+      if (i % 3 !== 0) {
+        var plat3 = new Plat3(gameEngine, i * (349 * .75), 700, 350, 87);
+        gameEngine.addEntity(plat3);
+        boxes.push(plat3);
+      }
+    }
+
+    var lever = new Lever(gameEngine, 1100, 575, 192, 192);
+    gameEngine.addEntity(lever);
+    boxes.push(lever);
+
+    var lever = new Lever(gameEngine, 300, 575, 192, 192);
+    gameEngine.addEntity(lever);
+    boxes.push(lever);
+
+    // for (var j = 1; j < 6; j++) {
+    //   var scrap = new ScrapMetal(gameEngine, 250 * j, 665, 142, 87);
+    //   gameEngine.addEntity(scrap);
+    //   boxes.push(scrap);
+    // }
+
+    // for (var j = 1; j < 6; j++) {
+    //   var light = new Lightning(gameEngine, 300 * j, 0, 192, 768);
+    //   gameEngine.addEntity(light);
+    //   boxes.push(light);
+    // }
+
+    var plate = new Plate(gameEngine, 100, 605, 192, 192);
+    gameEngine.addEntity(plate);
+    boxes.push(plate);
+
+
     boxes.push(box);
     boxes.push(box2);
     boxes.push(box3);
-  //  boxes.push(box4);
+    boxes.push(box4);
     boxes.push(plat);
+    boxes.push(plat2);
 
     gameEngine.boxes = boxes;
 
