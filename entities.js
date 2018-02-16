@@ -136,7 +136,11 @@ Plat1.prototype.update = function () {
     }
 
     if (this.game.entities[this.game.entities.length - 2].scroll) {
-        this.ogX -= this.speed * this.game.clockTick;
+        if (this.game.entities[this.game.entities.length -2].pushing) {
+            this.ogX -= this.game.entities[this.game.entities.length - 2].speed * this.game.clockTick;
+        } else {
+            this.ogX -= this.speed * this.game.clockTick;
+        }
     }
 
     //If I'm supposed to be moving right then I should move right and vice versa
@@ -146,6 +150,7 @@ Plat1.prototype.update = function () {
         this.x -= this.speed * this.game.clockTick;
     }
     this.boundingbox = new BoundingBox(this.x, this.y, this.width * .5, this.height * .5);
+
 }
 
 Plat1.prototype.draw = function (ctx) {
