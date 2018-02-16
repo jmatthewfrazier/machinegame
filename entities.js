@@ -593,10 +593,10 @@ Unicorn.prototype.update = function () {
       if (this.y >= 900) {
         this.dead = true;
       }
-      // if (this.x >= 7600) {
-      //   this.game.gameOver();
-      //   return;
-      // }
+      if (this.x >= 7600) {
+        this.game.success();
+        return;
+      }
       if (this.dead) {
         ASSET_MANAGER.getAsset("./asset_lib/audio/ded.wav").play();
         this.game.gameOver();
@@ -612,7 +612,7 @@ Unicorn.prototype.update = function () {
       } else {
           this.leftMove = false;
       }
-      if (this.game.space && !this.jumping) {
+      if (this.game.space && !this.jumping && !this.falling) {
           ASSET_MANAGER.getAsset("./asset_lib/audio/jump.wav").play();
           this.jumping = true;
           this.onBox = false;

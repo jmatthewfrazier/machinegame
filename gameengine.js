@@ -154,9 +154,14 @@ GameEngine.prototype.gameOver = function(){
     this.togglePause();
 }
 
-GameEngine.prototype.endLevel = function() {
-    this.done = true;
-    document.getElementById("endGame").style.display = "inline-block";
+GameEngine.prototype.success = function(){
+    this.over = true;
+    document.getElementById("pausedBanner").style.display = "none";
+    document.getElementById("resume").style.display = "none";
+    // document.getElementById("vol").style.display = "none";
+    // document.getElementById("ctrl").style.display = "none";
+    document.getElementById("done").style.display = "inline-block";
+    document.getElementById("nxtLvl").style.display = "inline-block";
     this.togglePause();
 }
 
@@ -168,6 +173,8 @@ GameEngine.prototype.resetandHide = function(){
     // document.getElementById("vol").style.display = "inline-block";
     // document.getElementById("ctrl").style.display = "inline-block";
     document.getElementById("endGame").style.display = "none";
+    document.getElementById("done").style.display = "none";
+    document.getElementById("nxtLvl").style.display = "none";
   }
   this.reset();
   this.togglePause();
