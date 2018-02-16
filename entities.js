@@ -99,35 +99,6 @@ Box2.prototype.draw = function (ctx) {
     this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, .5);
 }
 
-<<<<<<< HEAD
-function Ground(game, x, y, width, height, next) {
-    this.x = x;
-    this.y = y;
-    this.width = width;
-    this.height = height;
-    this.next = next;
-    this.animation = new Animation(ASSET_MANAGER.getAsset("./img/Image_0010.png"), this.x, this.y, this.width, this.height, 1, 1, true, false);
-    this.boundingbox = new BoundingBox(this.x, this.y, width, height)
-    Entity.call(this, game, this.x, this.y);
-}
-
-Ground.prototype = new Entity();
-Ground.prototype.constuctor = Ground;
-
-Ground.prototype.update = function () {
-
-  Entity.prototype.update.call(this);
-}
-
-Ground.prototype.draw = function (ctx) {
-  if (this.next % 3 !== 0 ||this.next === 0) {
-    this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1);
-    this.boundingbox = new BoundingBox(this.x, this.y, this.width, this.height);
-  }
-}
-
-=======
->>>>>>> Background
 function Plat1(game, x, y, width, height) {
     this.x = x;
     this.y = y;
