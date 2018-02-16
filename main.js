@@ -200,6 +200,8 @@ ASSET_MANAGER.queueDownload("./img/pc_idle_l.png");
 ASSET_MANAGER.queueDownload("./img/pc_walk_l.png");
 ASSET_MANAGER.queueDownload("./img/pc_jump.png");
 ASSET_MANAGER.queueDownload("./img/pc_jump_l.png");
+ASSET_MANAGER.queueDownload("./img/pc_push_l.png");
+ASSET_MANAGER.queueDownload("./img/pc_push.png");
 ASSET_MANAGER.queueDownload("./img/kid_talk_l.png");
 ASSET_MANAGER.queueDownload("./img/Image_0005.jpg");
 ASSET_MANAGER.queueDownload("./img/Image_0009.png");
@@ -245,7 +247,7 @@ ASSET_MANAGER.downloadAll(function () {
   var box1_3 = new Box1(gameEngine, 5950, 627, 144, 144);
 
 //BOX 2 (NO PUSH)
-  var box2_5 = new Box2(gameEngine, 250, 627, 144, 144);
+  var box2_5 = new Box2(gameEngine, 300, 627, 144, 144);
   var box2_0 = new Box2(gameEngine, 700, 555, 144, 144);
   var box2_1 = new Box2(gameEngine, 700, 627, 144, 144);
   var box2_2 = new Box2(gameEngine, 3800, 627, 144, 144);
@@ -293,6 +295,8 @@ ASSET_MANAGER.downloadAll(function () {
 //NPC
 
   var kid = new Child(gameEngine, 7600, 620, 192, 192);
+
+  var end = new EndLevel(gameEngine, 1200, 620, 500, 500);
 
   var floorplat1 = new Plat3(gameEngine, 0, 700, 350, 87);
 
@@ -349,6 +353,8 @@ ASSET_MANAGER.downloadAll(function () {
 
   gameEngine.addEntity(kid);
 
+  gameEngine.addEntity(end);
+
     boxes.push(box1_0);
     boxes.push(box1_1);
     boxes.push(box1_2);
@@ -388,6 +394,8 @@ ASSET_MANAGER.downloadAll(function () {
     boxes.push(plate_0);
 
     boxes.push(kid);
+
+    boxes.push(end);
 
     gameEngine.boxes = boxes;
 

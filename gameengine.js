@@ -42,6 +42,7 @@ function GameEngine() {
     this.surfaceWidth = null;
     this.surfaceHeight = null;
     this.over = false;
+    this.done = false;
     this.running = false;
 }
 
@@ -149,6 +150,12 @@ GameEngine.prototype.gameOver = function(){
     document.getElementById("resume").style.display = "none";
     // document.getElementById("vol").style.display = "none";
     // document.getElementById("ctrl").style.display = "none";
+    document.getElementById("endGame").style.display = "inline-block";
+    this.togglePause();
+}
+
+GameEngine.prototype.endLevel = function() {
+    this.done = true;
     document.getElementById("endGame").style.display = "inline-block";
     this.togglePause();
 }

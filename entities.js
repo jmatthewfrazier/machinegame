@@ -496,6 +496,34 @@ Plate.prototype.draw = function (ctx) {
   //ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
 }
 
+function EndLevel(game, x, y, width, height) {
+  this.x = x;
+  this.y = y;
+  this.startX = x;
+  this.startY = y;
+  this.width = width;
+  this.height = height;
+  this.boundingbox = new BoundingBox(this.x, this.y, this.width, this.height);
+  Entity.call(this, game, this.x, this.y);
+}
+
+EndLevel.prototype = new Entity();
+EndLevel.prototype.constructor = EndLevel;
+
+EndLevel.prototype.reset = function () {
+  this.x = this.startX;
+  this.y = this.startY;
+  this.boundingbox = new BoundingBox(this.x, this.y, this.width, this.height);
+}
+
+Plate.prototype.update = function () {
+  Entity.prototype.update.call(this);
+}
+
+Plate.prototype.draw = function (ctx) {
+
+}
+
 function Unicorn(game) {
     this.animation = new Animation(ASSET_MANAGER.getAsset("./img/pc_idle.png"), 0, 0, 192, 192, 0.2, 16, true, false);
     this.jumpAnimation = new Animation(ASSET_MANAGER.getAsset("./img/pc_jump.png"), 0, 0, 192, 192, 0.1, 18, false, false);
@@ -565,6 +593,10 @@ Unicorn.prototype.update = function () {
       if (this.y >= 900) {
         this.dead = true;
       }
+      // if (this.x >= 7600) {
+      //   this.game.gameOver();
+      //   return;
+      // }
       if (this.dead) {
         ASSET_MANAGER.getAsset("./asset_lib/audio/ded.wav").play();
         this.game.gameOver();
@@ -736,6 +768,7 @@ Unicorn.prototype.update = function () {
           if (this.boundingbox.collide(box.boundingbox) && this.boundingbox.right >= box.boundingbox.left && box instanceof Child) {
               pushText("please help, there is a machine", "dialogue");
           }
+
       }
 
       //if I walk right into a box on the ground and that box is of type Box1 and it's not blocked by another box,
