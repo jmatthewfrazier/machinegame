@@ -114,6 +114,7 @@ GameEngine.prototype.startInput = function () {
     this.ctx.canvas.addEventListener("click", function (e) {
         that.click = getXandY(e);
         this.running = true;
+        hide(0, 2000, "dialogue");
     }, false);
 
     this.ctx.canvas.addEventListener("mousemove", function (e) {

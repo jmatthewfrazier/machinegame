@@ -156,17 +156,17 @@ Plat1.prototype.draw = function (ctx) {
 }
 
 function Plat2(game, x, y, width, height) {
-  this.x = x;
-  this.y = y;
-  this.startX = x;
-  this.startY = y;
-  this.width = width;
-  this.height = height;
-  this.ogY = y;
-  this.speed = 75;
-  this.animation = new Animation(ASSET_MANAGER.getAsset("./img/woodplat.png"), 0, 0, 553, 92, 1, 1, true, false);
-  this.boundingbox = new BoundingBox(this.x, this.y, width * .5, height * .5);
-  Entity.call(this, game, this.x, this.y);
+    this.x = x;
+    this.y = y;
+    this.startX = x;
+    this.startY = y;
+    this.width = width;
+    this.height = height;
+    this.ogY = y;
+    this.speed = 75;
+    this.animation = new Animation(ASSET_MANAGER.getAsset("./img/woodplat.png"), 0, 0, 553, 92, 1, 1, true, false);
+    this.boundingbox = new BoundingBox(this.x, this.y, width * .5, height * .5);
+    Entity.call(this, game, this.x, this.y);
 }
 
 Plat2.prototype = new Entity();
@@ -209,8 +209,11 @@ function Plat3(game, x, y, width, height) {
     this.y = y;
     this.startX = x;
     this.startY = y;
+    this.width = width;
+    this.height = height;
     this.animation = new Animation(ASSET_MANAGER.getAsset("./img/Image_0010.png"), 0, 0, 350, 87, 1, 1, true, false);
     this.boundingbox = new BoundingBox(this.x, this.y, width * .75, height * .75);
+    console.log(this.boundingbox)
     Entity.call(this, game, this.x, this.y);
 }
 
@@ -220,7 +223,10 @@ Plat3.prototype.constructor = Plat3;
 Plat3.prototype.reset = function () {
   this.x = this.startX;
   this.y = this.startY;
-  this.boundingbox.x = this.startX;
+  this.boundingbox = new BoundingBox(this.startX, this.startY, this.width * .75, this.height * .75);
+  //this.boundingbox.x = new BoundingBox(this.x, this.y, this.width * .75, this.height * .75);
+  //this.boundingbox.x = this.x;
+  console.log("Plat3 Reset: ", this.boundingbox);
 }
 
 Plat3.prototype.update = function () {
@@ -232,7 +238,6 @@ Plat3.prototype.draw = function (ctx) {
     this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, .75);
     ctx.strokeStyle = "red";
     ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
-
 }
 
 function Child(game,x ,y, width, height) {
@@ -329,7 +334,7 @@ Lightning.prototype.update = function () {
     this.isDie = true;
   //   this.boundingbox = new BoundingBox(this.x + 50, this.y, (this.width * .95) - 100, (this.height * .95));
 } else {
-  this.isDie = false;
+    this.isDie = false;
 }
   Entity.prototype.update.call(this);
 }
@@ -537,7 +542,10 @@ Unicorn.prototype.reset = function () {
   this.lastplattouch = this.game.boxes[0];
   this.x = 0;
   this.y = this.platform.boundingbox.top - this.animation.frameHeight;
-  this.boundingbox = new BoundingBox(this.x + 30, this.y + 10, this.resize - 60, this.resize - 22);
+  this.boundingbox = new BoundingBox(this.x + 60, this.y + 10, this.resize - 60, this.resize - 22);
+  console.log(this.onBox && this.platform === this.game.boxes[0]);
+  console.log(this.platform.boundingbox.left);
+  this.scroll = false;
 }
 
 Unicorn.prototype.update = function () {
@@ -567,7 +575,7 @@ Unicorn.prototype.update = function () {
           this.base = this.y;
       }
 
-      this.boundingbox = new BoundingBox(this.x + 30, this.y + 10, this.resize - 60, this.resize - 22);
+      //this.boundingbox = new BoundingBox(this.x + 60, this.y + 10, this.resize - 60, this.resize - 22);
 
       if (this.jumping && this.justRight) {
           this.onBox = false;
@@ -748,6 +756,11 @@ Unicorn.prototype.update = function () {
 
       //if I move right off of a box or a platform, I should fall off of the box. Right?
       if (this.boundingbox.left > this.platform.boundingbox.right && this.onBox && !this.jumping) {
+          console.log("PLAYER BBLEFT: ", this.boundingbox.left);
+          //console.log(this.platform === this.game.boxes[0]);
+          console.log("PLATFORM BBRIGHT: ", this.platform.boundingbox.right);
+          //console.log(this.platform.boundingbox.width);
+          console.log("PLAYER X: ", this.x);
           this.falling = true;
           this.onBox = false;
       }
@@ -892,10 +905,18 @@ Unicorn.prototype.update = function () {
       for (var i = 0; i < this.game.boxes.length; i++) {
           var thing = this.game.boxes[i];
           thing.x -= this.speed * this.game.clockTick;
-          thing.boundingbox = new BoundingBox(thing.x, thing.y, thing.boundingbox.width, thing.boundingbox.height);
+          if (thing instanceof Lever) {
+              thing.boundingbox = new BoundingBox(thing.x + 55, thing.y + 85, (thing.width) - 115, (thing.height) - 140);
+              thing.doorbounding = new BoundingBox(thing.x + 150, thing.y - 50, (thing.width) - 100, (thing.height) - 20);
+          } else if (thing instanceof Lightning) {
+              thing.boundingbox = new BoundingBox(thing.x + 100, thing.y, (thing.width * .95) - 200, (thing.height * .95));
+          } else {
+              thing.boundingbox = new BoundingBox(thing.x, thing.y, thing.boundingbox.width, thing.boundingbox.height);
+          }
       }
       this.speed = 0;
   }
+  //console.log(this.platform === this.game.boxes[0]);
 
   Entity.prototype.update.call(this);
 }

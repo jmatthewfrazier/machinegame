@@ -109,7 +109,10 @@ PlayGame.prototype.update = function () {
             ASSET_MANAGER.getAsset("./asset_lib/_audio/Aquatic_Ambiance_2.mp3").play();
         }
     	this.game.running = true;
-    	hide(0, 2000, "dialogue");
+    	// hide(0, 2000, "dialogue");
+      setTimeout(function () {
+        setFSize("dialogue", "300%");
+      }, 2100)
     }
 }
 
@@ -262,9 +265,9 @@ ASSET_MANAGER.downloadAll(function () {
     gameEngine.addEntity(lever);
     boxes.push(lever);
 
-    var lever = new Lever(gameEngine, 300, 575, 192, 192);
-    gameEngine.addEntity(lever);
-    boxes.push(lever);
+    // var lever = new Lever(gameEngine, 300, 575, 192, 192);
+    // gameEngine.addEntity(lever);
+    // boxes.push(lever);
 
     var kid = new Child(gameEngine, 200, 620, 192, 192);
     gameEngine.addEntity(kid);
@@ -276,11 +279,11 @@ ASSET_MANAGER.downloadAll(function () {
     //   boxes.push(scrap);
     // }
 
-    // for (var j = 1; j < 6; j++) {
-    //   var light = new Lightning(gameEngine, 300 * j, 0, 192, 768);
-    //   gameEngine.addEntity(light);
-    //   boxes.push(light);
-    // }
+    for (var j = 1; j < 6; j++) {
+      var light = new Lightning(gameEngine, 300 * j, 0, 192, 768);
+      gameEngine.addEntity(light);
+      boxes.push(light);
+    }
 
     var plate = new Plate(gameEngine, 100, 605, 192, 192);
     gameEngine.addEntity(plate);
