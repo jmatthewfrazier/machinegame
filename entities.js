@@ -374,7 +374,8 @@ Lever.prototype.reset = function () {
   this.right = true;
   this.pull = false;
   this.game.action = false;
-  this.boundingbox = new BoundingBox(this.x + 45, this.y + 80, (this.width) - 115, (this.height) - 140);
+  this.boundingbox = new BoundingBox(this.x + 55, this.y + 80, (this.width) - 115, (this.height) - 140);
+  this.doorbounding = new BoundingBox(this.x + 150, this.y - 50, this.width - 100, this.height - 20);
 
 }
 
@@ -760,6 +761,23 @@ Unicorn.prototype.update = function () {
       this.lastplattouch.pushedRight = false;
       this.lastplattouch.pushedLeft = false;
       this.scroll = false;
+
+      for (var i = 0; i < this.game.boxes.length; i++) {
+          var box = this.game.boxes[i];
+          if (this.boundingbox.collide(box.boundingbox) && (box instanceof Lever)) {
+            if (this.game.action) {
+              box.pull = true;
+            }
+          }
+          if (this.boundingbox.collide(box.boundingbox)  && box instanceof ScrapMetal) {
+            this.dead = true;
+          }
+          if (this.boundingbox.collide(box.boundingbox) && box instanceof Lightning) {
+            if (box.isDie) {
+              this.dead = true;
+             }
+          }
+      }
   }
 
   if (this.onBox) {
