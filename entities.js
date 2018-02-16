@@ -566,7 +566,8 @@ Unicorn.prototype.update = function () {
         this.dead = true;
       }
       if (this.dead) {
-        this.game.reset();
+        ASSET_MANAGER.getAsset("./asset_lib/audio/ded.wav").play();
+        this.game.gameOver();
         return;
       }
       if (this.game.right) {

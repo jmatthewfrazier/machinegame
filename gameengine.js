@@ -41,6 +41,7 @@ function GameEngine() {
     this.wheel = null;
     this.surfaceWidth = null;
     this.surfaceHeight = null;
+    this.over = false;
     this.running = false;
 }
 
@@ -142,9 +143,27 @@ GameEngine.prototype.reset = function () {
     }
 }
 
-GameEngine.prototype.resetandHide = function(){
-    this.reset();
+GameEngine.prototype.gameOver = function(){
+    this.over = true;
+    document.getElementById("pausedBanner").style.display = "none";
+    document.getElementById("resume").style.display = "none";
+    // document.getElementById("vol").style.display = "none";
+    // document.getElementById("ctrl").style.display = "none";
+    document.getElementById("endGame").style.display = "inline-block";
     this.togglePause();
+}
+
+GameEngine.prototype.resetandHide = function(){
+  if(this.over){
+    this.over = false;
+    document.getElementById("pausedBanner").style.display = "inline-block";
+    document.getElementById("resume").style.display = "inline-block";
+    // document.getElementById("vol").style.display = "inline-block";
+    // document.getElementById("ctrl").style.display = "inline-block";
+    document.getElementById("endGame").style.display = "none";
+  }
+  this.reset();
+  this.togglePause();
 }
 
 GameEngine.prototype.draw = function () {
