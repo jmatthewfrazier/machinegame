@@ -36,6 +36,7 @@ function GameEngine() {
     this.showOutlines = false;
     this.ctx = null;
     this.click = null;
+    this.action = null;
     this.mouse = null;
     this.wheel = null;
     this.surfaceWidth = null;
@@ -79,6 +80,7 @@ GameEngine.prototype.startInput = function () {
 
     this.ctx.canvas.addEventListener("keydown", function (e) {
         if (String.fromCharCode(e.which) === ' ') that.space = true;
+        if (String.fromCharCode(e.which) === 'E') that.action = true;
         if (String.fromCharCode(e.which) === 'D') {
           that.right = true;
           that.rightScroll = true;
@@ -97,6 +99,8 @@ GameEngine.prototype.startInput = function () {
         if (String.fromCharCode(e.which) === ' ') that.space = false;
         if (String.fromCharCode(e.which) === 'D') that.right = false;
         if (String.fromCharCode(e.which) === 'A') that.left = false;
+      //  if (String.fromCharCode(e.which) === 'E') that.action = false;
+
 
 //        console.log(e);
         e.preventDefault();
@@ -176,6 +180,7 @@ GameEngine.prototype.loop = function () {
         this.left;
         this.mouse;
         this.click;
+        this.action;
         this.leftScroll;
         this.rightScroll;
     }
