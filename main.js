@@ -296,8 +296,7 @@ ASSET_MANAGER.downloadAll(function () {
     gameEngine.addEntity(unicorn);
     gameEngine.addEntity(pg);
 
-    setText("THE MACHINE", "dialogue");
-    display(1, "dialogue");
+    pushText("THE MACHINE", "dialogue");
 
     gameEngine.init(ctx);
     gameEngine.start();
