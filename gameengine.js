@@ -95,7 +95,9 @@ GameEngine.prototype.startInput = function () {
             that.togglePause();
           }
         } else if (e.keyCode === 27) {
-          that.togglePause();
+          if (!that.over){
+            that.togglePause();
+          }
         }
 
 //        console.log(e);
