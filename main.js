@@ -196,6 +196,8 @@ ASSET_MANAGER.queueDownload("./img/pc_idle_l.png");
 ASSET_MANAGER.queueDownload("./img/pc_walk_l.png");
 ASSET_MANAGER.queueDownload("./img/pc_jump.png");
 ASSET_MANAGER.queueDownload("./img/pc_jump_l.png");
+ASSET_MANAGER.queueDownload("./img/pc_push.png");
+ASSET_MANAGER.queueDownload("./img/pc_push_l.png");
 ASSET_MANAGER.queueDownload("./img/Image_0005.jpg");
 ASSET_MANAGER.queueDownload("./img/Image_0009.png");
 ASSET_MANAGER.queueDownload("./img/Image_0010.png");
@@ -228,10 +230,10 @@ ASSET_MANAGER.downloadAll(function () {
     var levers = [];
     var bg = new Background(gameEngine);
     var box = new Box1(gameEngine, 400, 627, 144, 144);
-    var box2 = new Box2(gameEngine, 544, 627, 144, 144);
-    var box3 = new Box2(gameEngine, 230, 627, 144, 144);
+    // var box2 = new Box2(gameEngine, 544, 627, 144, 144);
+    // var box3 = new Box2(gameEngine, 230, 627, 144, 144);
 
-    var box4 = new Box2(gameEngine, 544, 555, 144, 144);
+    // var box4 = new Box2(gameEngine, 544, 555, 144, 144);
     var plat = new Plat1(gameEngine, 650, 540, 553, 92);
     var plat2 = new Plat2(gameEngine, 100, 580, 553, 92);
     var floorplat1 = new Plat3(gameEngine, 0, 700, 350, 87);
@@ -240,9 +242,9 @@ ASSET_MANAGER.downloadAll(function () {
     gameEngine.addEntity(bg);
     gameEngine.addEntity(floorplat1);
     gameEngine.addEntity(box);
-    gameEngine.addEntity(box2);
-    gameEngine.addEntity(box3);
-    gameEngine.addEntity(box4);
+    // gameEngine.addEntity(box2);
+    // gameEngine.addEntity(box3);
+    // gameEngine.addEntity(box4);
     gameEngine.addEntity(plat);
     gameEngine.addEntity(plat2);
 
@@ -255,13 +257,13 @@ ASSET_MANAGER.downloadAll(function () {
       }
     }
 
-    var lever = new Lever(gameEngine, 1100, 575, 192, 192);
-    gameEngine.addEntity(lever);
-    boxes.push(lever);
+    // var lever = new Lever(gameEngine, 1100, 575, 192, 192);
+    // gameEngine.addEntity(lever);
+    // boxes.push(lever);
 
-    var lever = new Lever(gameEngine, 300, 575, 192, 192);
-    gameEngine.addEntity(lever);
-    boxes.push(lever);
+    // var lever = new Lever(gameEngine, 300, 575, 192, 192);
+    // gameEngine.addEntity(lever);
+    // boxes.push(lever);
 
     // for (var j = 1; j < 6; j++) {
     //   var scrap = new ScrapMetal(gameEngine, 250 * j, 665, 142, 87);
@@ -281,9 +283,9 @@ ASSET_MANAGER.downloadAll(function () {
 
 
     boxes.push(box);
-    boxes.push(box2);
-    boxes.push(box3);
-    boxes.push(box4);
+    // boxes.push(box2);
+    // boxes.push(box3);
+    // boxes.push(box4);
     boxes.push(plat);
     boxes.push(plat2);
 

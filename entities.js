@@ -484,6 +484,8 @@ function Unicorn(game) {
     this.walkAnimation = new Animation(ASSET_MANAGER.getAsset("./img/pc_walk.png"), 0, 0, 192, 192, 0.05, 8, true, false);
     this.jumpRevAnimation = new Animation(ASSET_MANAGER.getAsset("./img/pc_jump_l.png"), 0, 0, 192, 192, 0.1, 18, false, false);
     this.walkRevAnimation = new Animation(ASSET_MANAGER.getAsset("./img/pc_walk_l.png"), 0, 0, 192, 192, 0.05, 8, true, true);
+    this.pushRightAnimation = new Animation(ASSET_MANAGER.getAsset("./img/pc_push.png"), 0, 0, 192, 192, 0.05, 8, true, true);
+    this.pushLeftAnimation = new Animation(ASSET_MANAGER.getAsset("./img/pc_push_l.png"), 0, 0, 192, 192, 0.05, 8, true, true);
     this.resize = 192 * 0.5;
     this.jumping = false;
     this.rightMove = false;
@@ -500,6 +502,7 @@ function Unicorn(game) {
     this.onBox = true;
     this.platform = game.boxes[0];
     this.lastplattouch = game.boxes[0];
+    this.pushing = false;
     this.boundingbox = new BoundingBox(this.x + 60, this.y + 10, this.resize - 60, this.resize - 22);
     Entity.call(this, game, 0, this.platform.boundingbox.top - this.animation.frameHeight);
     this.scroll = false;
@@ -530,6 +533,7 @@ Unicorn.prototype.reset = function () {
   this.onBox = true;
   this.platform = this.game.boxes[0];
   this.lastplattouch = this.game.boxes[0];
+  this.pushing = false;
   this.x = 0;
   this.y = this.platform.boundingbox.top - this.animation.frameHeight;
   this.boundingbox = new BoundingBox(this.x + 30, this.y + 10, this.resize - 60, this.resize - 22);
@@ -560,6 +564,7 @@ Unicorn.prototype.update = function () {
           this.jumping = true;
           this.onBox = false;
           this.base = this.y;
+          this.pushing = false;
       }
 
       this.boundingbox = new BoundingBox(this.x + 30, this.y + 10, this.resize - 60, this.resize - 22);
@@ -716,6 +721,7 @@ Unicorn.prototype.update = function () {
           if (this.lastplattouch instanceof Box1 && !this.jumping && !this.lastplattouch.blocked && !(this.platform instanceof Box1)) {
               this.lastplattouch.pushedLeft = false;
               this.lastplattouch.pushedRight = true;
+              this.pushing = true;
               this.speed = 25;
           } else {
               this.speed = 0;
@@ -792,6 +798,7 @@ Unicorn.prototype.update = function () {
               this.speed = 25;
               this.lastplattouch.pushedRight = false;
               this.lastplattouch.pushedLeft = true;
+              this.pushing = true;
           } else {
               this.speed = 0;
           }
@@ -828,6 +835,7 @@ Unicorn.prototype.update = function () {
   if (!this.rightMove && !this.leftMove) {
       this.lastplattouch.pushedRight = false;
       this.lastplattouch.pushedLeft = false;
+      this.pushing = false;
       this.scroll = false;
 
       for (var i = 0; i < this.game.boxes.length; i++) {
@@ -837,7 +845,7 @@ Unicorn.prototype.update = function () {
               box.pull = true;
             }
           }
-          if (this.boundingbox.collide(box.boundingbox)  && box instanceof ScrapMetal) {
+          if (this.boundingbox.collide(box.boundingbox) && box instanceof ScrapMetal) {
             this.dead = true;
           }
           if (this.boundingbox.collide(box.boundingbox) && box instanceof Lightning) {
@@ -911,9 +919,17 @@ Unicorn.prototype.draw = function (ctx) {
 
     if (!this.jumping) {
       if (this.rightMove) {
-        this.walkAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y, .5);
+        if (this.pushing) {
+          this.pushRightAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y, .5);
+        } else {
+          this.walkAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y, .5);
+        }
       } else if (this.leftMove) {
-        this.walkRevAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y, .5);
+        if (this.pushing) {
+          this.pushLeftAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y, .5);
+        } else {
+          this.walkRevAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y, .5);
+        }
       } else if (this.justLeft) {
         this.animationRev.drawFrame(this.game.clockTick, ctx, this.x, this.y, .5);
       } else {
