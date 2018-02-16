@@ -239,15 +239,6 @@ ASSET_MANAGER.downloadAll(function () {
     var plat2 = new Plat2(gameEngine, 100, 580, 553, 92);
     var floorplat1 = new Plat3(gameEngine, 0, 700, 350, 87);
 
-
-    var ground = new Ground(gameEngine, 0, 550, 350, 87, 0);
-    gameEngine.addEntity(ground);
-
-    for( var i = 1; i < 11; i++) {
-      var ground_n = new Ground(gameEngine, i * 349, 550, 350, 87, i);
-      gameEngine.addEntity(ground_n);
-    }
-
     gameEngine.addEntity(bg);
     gameEngine.addEntity(floorplat1);
     gameEngine.addEntity(box);
