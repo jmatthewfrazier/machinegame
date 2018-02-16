@@ -293,7 +293,6 @@ Lightning.prototype.reset = function () {
 }
 
 Lightning.prototype.update = function () {
-  console.log(this.isDie);
   if (this.animation.elapsedTime >= (this.animation.totalTime / 8) * 5) {
     this.isDie = true;
   //   this.boundingbox = new BoundingBox(this.x + 50, this.y, (this.width * .95) - 100, (this.height * .95));
@@ -313,6 +312,74 @@ Lightning.prototype.draw = function (ctx) {
 // function Lever(game, x, y, width, height) {
 //
 // }
+
+function Plate(game, x, y, width, height) {
+  this.up = new Animation(ASSET_MANAGER.getAsset("./img/plate.png"), 0, 0, 192, 192, 0.5, 1, true, false);
+  this.animation = new Animation(ASSET_MANAGER.getAsset("./img/plate.png"), 0, 0, 192, 192, 0.5, 3, false, false);
+  this.down = new Animation(ASSET_MANAGER.getAsset("./img/plate_rev.png"), 0, 0, 192, 192, 0.5, 1, true, false);
+  this.revAnimation = new Animation(ASSET_MANAGER.getAsset("./img/plate_rev.png"), 0, 0, 192, 192, 0.5, 3, false, false);
+  this.x = x;
+  this.y = y;
+  this.pressed = false;
+  this.off = true;
+  this.startX = x;
+  this.startY = y;
+  this.width = width;
+  this.height = height;
+  this.scale = 0.75
+  this.boundingbox = new BoundingBox(this.x, this.y + 80, this.width * this.scale, 10);
+  Entity.call(this, game, this.x, this.y);
+}
+
+Plate.prototype = new Entity();
+Plate.prototype.constructor = Plate;
+
+Plate.prototype.reset = function () {
+  this.x = this.startX;
+  this.y = this.startY;
+  this.pressed = false;
+  this.off = true;
+  this.boundingbox = new BoundingBox(this.x, this.y + 80, this.width * this.scale, 10);
+}
+
+Plate.prototype.update = function () {
+  this. pressed = false;
+  for (var i = 0; i < this.game.entities.length; i++) {
+      var box = this.game.entities[i];
+      if (((box instanceof Box1) || (box instanceof Unicorn)) && this.boundingbox.collide(box.boundingbox)) this.pressed = true;
+      if (this.pressed) {
+          this.boundingbox = new BoundingBox(this.x, this.y + 87, this.width * this.scale, 3);
+      } else {
+          this.boundingbox = new BoundingBox(this.x, this.y + 80, this.width * this.scale, 10);
+      }
+  }
+  Entity.prototype.update.call(this);
+}
+
+Plate.prototype.draw = function (ctx) {
+  if (!this.game.running) return;
+  ctx.strokeStyle = "blue";
+
+  if (!this.pressed && this.off) {
+      this.up.drawFrame(this.game.clockTick, ctx, this.x, this.y, this.scale);
+  } else if (this.pressed && this.off) {
+      this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, this.scale);
+      if (this.animation.isDone()) {
+          this.off = false;
+          this.animation.elapsedTime = 0;
+      }
+  } else if (this.pressed && !this.off) {
+      this.down.drawFrame(this.game.clockTick, ctx, this.x, this.y, this.scale);
+  } else if (!this.pressed && !this.off) {
+      this.revAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y, this.scale);
+      if (this.revAnimation.isDone()) {
+          this.off = true;
+          this.revAnimation.elapsedTime = 0;
+      } 
+  }
+  
+  ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
+}
 
 function Unicorn(game) {
     this.animation = new Animation(ASSET_MANAGER.getAsset("./img/pc_idle.png"), 0, 0, 192, 192, 0.2, 16, true, false);
@@ -673,7 +740,7 @@ Unicorn.prototype.update = function () {
   //except if that "box" is a platform, you should be able to move through its bounding box
   for (var i = 0; i < this.game.boxes.length; i++) {
       var box = this.game.boxes[i];
-      if (this.onBox && this.boundingbox.collide(box.boundingbox) && !(box instanceof Plat1) && !(box instanceof Plat2) && !(box instanceof Lightning)) {
+      if (this.onBox && this.boundingbox.collide(box.boundingbox) && !(box instanceof Plat1) && !(box instanceof Plat2) && !(box instanceof Lightning) && !(box instanceof Plate)) {
           if (!(box === this.platform)) {
               this.speed = 0;
           } else {

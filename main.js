@@ -202,6 +202,8 @@ ASSET_MANAGER.queueDownload("./img/Image_0010.png");
 ASSET_MANAGER.queueDownload("./img/woodplat.png");
 ASSET_MANAGER.queueDownload("./img/lightning.png");
 ASSET_MANAGER.queueDownload("./img/scrap.png");
+ASSET_MANAGER.queueDownload("./img/plate.png");
+ASSET_MANAGER.queueDownload("./img/plate_rev.png");
 ASSET_MANAGER.queueDownload("./asset_lib/_audio/lightning.wav");
 ASSET_MANAGER.queueDownload("./asset_lib/_audio/explosion.wav");
 ASSET_MANAGER.queueDownload("./asset_lib/_audio/step.wav");
@@ -258,6 +260,10 @@ ASSET_MANAGER.downloadAll(function () {
       gameEngine.addEntity(light);
       boxes.push(light);
     }
+
+    var plate = new Plate(gameEngine, 100, 605, 192, 192);
+    gameEngine.addEntity(plate);
+    boxes.push(plate);
 
 
     boxes.push(box);
