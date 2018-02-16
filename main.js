@@ -115,7 +115,7 @@ PlayGame.prototype.update = function () {
 
 PlayGame.prototype.draw = function (ctx) {
     if (!this.game.running) {
-        ctx.font = "300% sans-serif";
+        ctx.font = "70% pixel1";
         ctx.textAlign = "center";
         ctx.fillStyle = "white";
         if (this.game.mouse) { ctx.fillStyle = "#ddd"; }
@@ -203,6 +203,8 @@ ASSET_MANAGER.queueDownload("./img/Image_0010.png");
 ASSET_MANAGER.queueDownload("./img/woodplat.png");
 ASSET_MANAGER.queueDownload("./img/lightning.png");
 ASSET_MANAGER.queueDownload("./img/scrap.png");
+ASSET_MANAGER.queueDownload("./img/plate.png");
+ASSET_MANAGER.queueDownload("./img/plate_rev.png");
 ASSET_MANAGER.queueDownload("./img/lever.png");
 ASSET_MANAGER.queueDownload("./img/lever_still.png");
 ASSET_MANAGER.queueDownload("./img/lever_still_rev.png");
@@ -279,6 +281,10 @@ ASSET_MANAGER.downloadAll(function () {
     //   gameEngine.addEntity(light);
     //   boxes.push(light);
     // }
+
+    var plate = new Plate(gameEngine, 100, 605, 192, 192);
+    gameEngine.addEntity(plate);
+    boxes.push(plate);
 
 
     boxes.push(box);
