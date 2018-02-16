@@ -721,7 +721,7 @@ Unicorn.prototype.update = function () {
             }
           }
           if (this.boundingbox.collide(box.boundingbox) && this.boundingbox.right >= box.boundingbox.left && box instanceof Child) {
-              pushText("hello", 1000, "dialogue");
+              pushText("hello", "dialogue");
           }
       }
 
@@ -804,7 +804,7 @@ Unicorn.prototype.update = function () {
             }
           }
           if (this.boundingbox.collide(box.boundingbox) && this.boundingbox.right <= box.boundingbox.left && box instanceof Child) {
-              pushText("hello", 1000, "dialogue");
+              pushText("hello", "dialogue");
           }
       }
 
@@ -870,7 +870,7 @@ Unicorn.prototype.update = function () {
              }
           }
           if (this.boundingbox.collide(box.boundingbox) && box instanceof Child) {
-              pushText("hello", 1000, "dialogue");
+              pushText("hello", "dialogue");
           }
       }
   }
@@ -906,8 +906,8 @@ Unicorn.prototype.update = function () {
           var thing = this.game.boxes[i];
           thing.x -= this.speed * this.game.clockTick;
           if (thing instanceof Lever) {
-              thing.boundingbox = new BoundingBox(thing.x + 55, thing.y + 85, (thing.width) - 115, (thing.height) - 140);
-              thing.doorbounding = new BoundingBox(thing.x + 150, thing.y - 50, (thing.width) - 100, (thing.height) - 20);
+              thing.boundingbox = new BoundingBox(thing.x + 55, thing.y + 80, (thing.width) - 115, (thing.height) - 140);
+              thing.doorbounding = new BoundingBox(thing.x + 250, thing.y - 50, (thing.width) - 100, (thing.height) - 20);
           } else if (thing instanceof Lightning) {
               thing.boundingbox = new BoundingBox(thing.x + 100, thing.y, (thing.width * .95) - 200, (thing.height * .95));
           } else {
