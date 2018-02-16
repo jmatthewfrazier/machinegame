@@ -84,10 +84,15 @@ GameEngine.prototype.startInput = function () {
         if (String.fromCharCode(e.which) === 'D') {
           that.right = true;
           that.rightScroll = true;
-        } if (String.fromCharCode(e.which) === 'A') {
+        } else if (String.fromCharCode(e.which) === 'A') {
           that.left = true;
           that.leftScroll = true;
-        } if (e.keyCode === 27) {
+        }else if (String.fromCharCode(e.which) === 'X') {
+          that.reset();
+          if (that.timer.paused){
+            that.togglePause();
+          }
+        } else if (e.keyCode === 27) {
           that.togglePause();
         }
 
@@ -136,7 +141,7 @@ GameEngine.prototype.reset = function () {
     }
 }
 
-GameEngine.prototype.resetandHide = function(elementID){
+GameEngine.prototype.resetandHide = function(){
     this.reset();
     this.togglePause();
 }

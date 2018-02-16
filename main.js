@@ -115,7 +115,7 @@ PlayGame.prototype.update = function () {
 
 PlayGame.prototype.draw = function (ctx) {
     if (!this.game.running) {
-        ctx.font = "300% sans-serif";
+        ctx.font = "70% pixel1";
         ctx.textAlign = "center";
         ctx.fillStyle = "white";
         if (this.game.mouse) { ctx.fillStyle = "#ddd"; }

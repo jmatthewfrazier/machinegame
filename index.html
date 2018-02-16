@@ -3,22 +3,36 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Game Project Shell</title>
+    <title>THE MACHINE</title>
     <script type="text/javascript" src="./gameengine.js"></script>
     <script type="text/javascript" src="./assetmanager.js"></script>
     <script type="text/javascript" src="./entities.js"></script>
     <script type="text/javascript" src="./main.js"></script>
     <script type="text/javascript" src="./uicontrol.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="misc_styling.min.js"></script>
     <link rel="stylesheet" type="text/css" href="index.css"/>
 </head>
 <body style="overflow:hidden;margin:0 auto;">
-	<div id="pause" onclick="gameEngine.togglePause()">Pause</div>
+	<div id="pause" onclick="gameEngine.togglePause()">*</div>
 	<div id="menu" style="display: none;">
 		<h3>Paused</h3>
 		<br/>
 		<button class="astext" onclick="gameEngine.togglePause()">Resume</button>
 		<br/>
 		<button class="astext" onclick="gameEngine.resetandHide()">Restart</button>
+    <br/>
+    <button id="ctrl" class="astext">Controls</button>
+    <br/>
+    <div id="ctrlMenu" style="display: none;">
+      A - Move left
+      <br/>
+      D - Move right
+      <br/>
+      X - Reset
+      <br/>
+      esc - Menu
+    </div>
 	</div>
     <div id="dialogue" style="opacity: 0;"></div>
     <canvas id="gameWorld" tabindex="1" style="background-color: black"></canvas>
