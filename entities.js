@@ -354,6 +354,7 @@ function Lever(game, x, y, width, height) {
   this.left = false;
   this.right = true;
   this.boundingbox = new BoundingBox(this.x + 55, this.y + 80, (this.width) - 115, (this.height) - 140);
+  this.doorbounding = new BoundingBox(this.x + 150, this.y - 50, this.width - 100, this.height - 20);
   Entity.call(this, game, this.x, this.y);
 }
 
@@ -373,7 +374,7 @@ Lever.prototype.reset = function () {
   this.right = true;
   this.pull = false;
   this.game.action = false;
-  this.boundingbox = new BoundingBox(this.x + 45, this.y + 45, (this.width) - 95, (this.height) - 95);
+  this.boundingbox = new BoundingBox(this.x + 45, this.y + 80, (this.width) - 115, (this.height) - 140);
 
 }
 
@@ -404,6 +405,7 @@ Lever.prototype.draw = function(ctx) {
   }
 
   ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
+  ctx.strokeRect(this.doorbounding.x, this.doorbounding.y, this.doorbounding.width, this.doorbounding.height);
 }
 
 function Unicorn(game) {
