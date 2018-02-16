@@ -3,6 +3,10 @@ function pushText(text, elementID){
 	display(1, elementID);
 }
 
+function talk(text, entity, height, ctx){
+	ctx.fillText(text, entity.x, entity.y + height);
+}
+
 function setText(text, elementID) {
 	let em = document.getElementById(elementID);
 	em.innerHTML = text;

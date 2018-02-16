@@ -16,15 +16,31 @@
 <body style="overflow:hidden;margin:0 auto;">
 	<div id="pause" onclick="gameEngine.togglePause()">*</div>
 	<div id="menu" style="display: none;">
-		<h3>Paused</h3>
+		<h3 id="pausedBanner" >Paused</h3>
+    <h3 id="endGame" style="display:none;">Game Over</h3>
 		<br/>
-		<button class="astext" onclick="gameEngine.togglePause()">Resume</button>
-		<br/>
+		<button id="resume" class="astext" onclick="gameEngine.togglePause()">Resume
+    </button>
 		<button class="astext" onclick="gameEngine.resetandHide()">Restart</button>
-    <br/>
+    <button id="vol" class="astext">Volume</button>
+    <div id="volMenu" class="ctrlMenu" style="display:none;height:20%;">
+      <input id="muteMusic" class="checkbox" type="checkbox">
+      Mute music
+      <br/>
+      Music Volume
+      <br/>
+      <input id="volMusic" class="slider" type="range" min="1" max="100" value="70">
+      <br/>
+      <input id="muteMaster" class="checkbox" type="checkbox">
+      Mute all
+      <br/>
+      Master Volume
+      <br/>
+      <input id="volMaster" class="slider" type="range" min="1" max="100" value="100">
+      <br/>
+    </div>
     <button id="ctrl" class="astext">Controls</button>
-    <br/>
-    <div id="ctrlMenu" style="display: none;">
+    <div id="ctrlMenu" class="ctrlMenu" style="display: none;">
       A - Move left
       <br/>
       D - Move right

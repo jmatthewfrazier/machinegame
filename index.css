@@ -36,7 +36,7 @@
 	z-index: 4;
 	position:fixed;
 }
-#ctrlMenu{
+.ctrlMenu{
 	font-family: 'pixel1';
 	font-size: 90%;
 	background-color: darkgrey;
@@ -49,7 +49,7 @@
 	text-align: center;
 	line-height: 100%;
 	vertical-align: middle;
-	position:fixed;
+	position:relative;
 }
 #pause{
     /*background-color: #ddd;*/
@@ -87,4 +87,39 @@
 }
 .astext:hover{
     color:darkgrey;
+}
+.slider {
+    -webkit-appearance: none;
+    width: 90%;
+    height: 25px;
+    background: #d3d3d3;
+    outline: none;
+    opacity: 0.7;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+}
+
+.slider:hover {
+    opacity: 1;
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 25px;
+    height: 25px;
+    background: black;
+    cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+    width: 25px;
+    height: 25px;
+    background: black;
+    cursor: pointer;
+}
+.checkbox {
+  cursor: pointer;
+		width: 25px;
+    height: 25px;
 }
