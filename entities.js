@@ -13,7 +13,7 @@ function Box1(game, x, y, width, height) {
     this.pushedRight = false;
     this.pushedLeft = false;
     this.blocked = false;
-    this.boundingbox = new BoundingBox(400, 627, width * .5, height * .5);
+    this.boundingbox = new BoundingBox(this.x, this.y, width * .5, height * .5);
     Entity.call(this, game, this.x, this.y);
 }
 
@@ -28,7 +28,7 @@ Box1.prototype.reset = function() {
   this.speed = 26;
   this.pushedRight = false;
   this.pushedLeft = false;
-  this.boundingbox = new BoundingBox(400, 627, this.width * .5, this.height * .5);
+  this.boundingbox = new BoundingBox(this.x, this.y, this.width * .5, this.height * .5);
   this.blocked = false;
 }
 
@@ -56,9 +56,9 @@ Box1.prototype.update = function () {
 
 Box1.prototype.draw = function (ctx) {
     if (!this.game.running) return;
-    ctx.strokeStyle = "blue";
+    // ctx.strokeStyle = "blue";
     this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, .5); //400, 640
-    ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
+    // ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
 }
 
 function Box2(game, x, y, width, height) {
@@ -94,8 +94,8 @@ Box2.prototype.update = function () {
 
 Box2.prototype.draw = function (ctx) {
     if (!this.game.running) return;
-    ctx.strokeStyle = "green";
-    ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
+    // ctx.strokeStyle = "green";
+    // ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
     this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, .5);
 }
 
@@ -150,8 +150,8 @@ Plat1.prototype.update = function () {
 
 Plat1.prototype.draw = function (ctx) {
     if (!this.game.running) return;
-    ctx.strokestyle = "purple";
-    ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
+    // ctx.strokestyle = "purple";
+    // ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
     this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, .5);
 }
 
@@ -199,8 +199,8 @@ Plat2.prototype.update = function () {
 
 Plat2.prototype.draw = function (ctx) {
   if (!this.game.running) return;
-    ctx.strokestyle = "purple";
-    ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
+    // ctx.strokestyle = "purple";
+    // ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
     this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, .5);
 }
 
@@ -234,8 +234,8 @@ Plat3.prototype.update = function () {
 Plat3.prototype.draw = function (ctx) {
     if (!this.game.running) return;
     this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, .75);
-    ctx.strokeStyle = "red";
-    ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
+    // ctx.strokeStyle = "red";
+    // ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
 }
 
 function Child(game,x ,y, width, height) {
@@ -266,19 +266,19 @@ Child.prototype.update = function() {
 Child.prototype.draw = function (ctx) {
   if (!this.game.running) return;
   this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, .5);
-  ctx.strokeStyle = "green";
-  ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
+  // ctx.strokeStyle = "green";
+  // ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
 }
 
 function ScrapMetal(game, x, y, width, height) {
-  this.animation = new Animation(ASSET_MANAGER.getAsset("./img/scrap.png"), 0, 0, 142, 87, 1, 1, true, false);
+  this.animation = new Animation(ASSET_MANAGER.getAsset("./img/scrap.png"), 0, 0, 192, 192, 1, 1, true, false);
   this.x = x;
   this.y = y;
   this.startX = x;
   this.startY = y;
   this.width = width;
   this.height = height;
-  this.boundingbox = new BoundingBox(this.x + 10, this.y + 10, (width * .5) - 20, (height * .5) - 20);
+  this.boundingbox = new BoundingBox(this.x + 20, this.y + 30, (width * .5) - 40, (height * .5) - 20);
   Entity.call(this, game, this.x, this.y);
 }
 
@@ -288,7 +288,7 @@ ScrapMetal.prototype.constructor = ScrapMetal;
 ScrapMetal.prototype.reset = function () {
   this.x = this.startX;
   this.y = this.startY;
-  this.boundingbox = new BoundingBox(this.x + 10, this.y + 10, (this.width * .5) - 20, (this.height * .5) - 20);
+  this.boundingbox = new BoundingBox(this.x + 20, this.y + 30, (this.width * .5) - 40, (this.height * .5) - 20);
 }
 
 ScrapMetal.prototype.update = function () {
@@ -297,9 +297,9 @@ ScrapMetal.prototype.update = function () {
 
 ScrapMetal.prototype.draw = function (ctx) {
   if (!this.game.running) return;
-  ctx.strokeStyle = "green";
-  ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
-  this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, .5);
+  //ctx.strokeStyle = "green";
+  // ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
+   this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, .5);
 }
 
 //192, 768
@@ -342,9 +342,9 @@ Lightning.prototype.update = function () {
 
 Lightning.prototype.draw = function (ctx) {
   if (!this.game.running) return;
-    ctx.strokeStyle = "green";
+    // ctx.strokeStyle = "green";
     this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, .95);
-    ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
+    // ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
 }
 
 
@@ -399,7 +399,7 @@ Lever.prototype.update = function () {
   Entity.prototype.update.call(this);
 }
 
-Lever.prototype.draw = function(ctx) {
+ Lever.prototype.draw = function(ctx) {
   if (!this.game.running) return;
 
   if (this.pull) {
@@ -419,8 +419,8 @@ Lever.prototype.draw = function(ctx) {
       this.animation_door_open.drawFrame(this.game.clockTick, ctx, this.x + 200, this.y - 50, 1);
   }
 
-  ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
-  ctx.strokeRect(this.doorbounding.x, this.doorbounding.y, this.doorbounding.width, this.doorbounding.height);
+  // ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
+  // ctx.strokeRect(this.doorbounding.x, this.doorbounding.y, this.doorbounding.width, this.doorbounding.height);
 }
 
 function Plate(game, x, y, width, height) {
@@ -488,7 +488,7 @@ Plate.prototype.draw = function (ctx) {
       }
   }
 
-  ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
+  //ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
 }
 
 function Unicorn(game) {
@@ -728,7 +728,7 @@ Unicorn.prototype.update = function () {
             }
           }
           if (this.boundingbox.collide(box.boundingbox) && this.boundingbox.right >= box.boundingbox.left && box instanceof Child) {
-              pushText("hello", "dialogue");
+              pushText("please help, there is a machine", "dialogue");
           }
       }
 
@@ -809,7 +809,7 @@ Unicorn.prototype.update = function () {
             }
           }
           if (this.boundingbox.collide(box.boundingbox) && this.boundingbox.right <= box.boundingbox.left && box instanceof Child) {
-              pushText("hello", "dialogue");
+              pushText("please help, there is a machine", "dialogue");
           }
       }
 
@@ -877,7 +877,7 @@ Unicorn.prototype.update = function () {
              }
           }
           if (this.boundingbox.collide(box.boundingbox) && box instanceof Child) {
-              pushText("hello", "dialogue");
+              pushText("please help, there is a machine", "dialogue");
           }
       }
   }
@@ -917,6 +917,10 @@ Unicorn.prototype.update = function () {
               thing.doorbounding = new BoundingBox(thing.x + 250, thing.y - 50, (thing.width) - 100, (thing.height) - 20);
           } else if (thing instanceof Lightning) {
               thing.boundingbox = new BoundingBox(thing.x + 100, thing.y, (thing.width * .95) - 200, (thing.height * .95));
+          } else if (thing instanceof ScrapMetal) {
+              thing.boundingbox = new BoundingBox(thing.x + 20, thing.y + 30, (thing.width * .5) - 40, (thing.height * .5) - 20);
+          } else if (thing instanceof Plate) {
+              thing.boundingbox = new BoundingBox(thing.x, thing.y + 80, thing.width * thing.scale, 10);
           } else {
               thing.boundingbox = new BoundingBox(thing.x, thing.y, thing.boundingbox.width, thing.boundingbox.height);
           }
@@ -932,8 +936,8 @@ Unicorn.prototype.update = function () {
 Unicorn.prototype.draw = function (ctx) {
   if(!this.game.running) return;
     if (this.boxes) {
-        ctx.strokeStyle = "red";
-        ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
+        // ctx.strokeStyle = "red";
+        // ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
     }
     if (this.justLeft && this.jumping) {
       this.jumpRevAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y, .5);

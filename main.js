@@ -236,68 +236,157 @@ ASSET_MANAGER.downloadAll(function () {
 
     var bg = new Background(gameEngine);
 
+//BOX 1 (PUSHING)
 
-    var box = new Box1(gameEngine, 400, 627, 144, 144);
-    // var box2 = new Box2(gameEngine, 544, 627, 144, 144);
-    // var box3 = new Box2(gameEngine, 230, 627, 144, 144);
-    // var box4 = new Box2(gameEngine, 544, 555, 144, 144);
-    var plat = new Plat1(gameEngine, 650, 540, 553, 92);
-    var plat2 = new Plat2(gameEngine, 100, 580, 553, 92);
-    var floorplat1 = new Plat3(gameEngine, 0, 700, 350, 87);
+  var box1_0 = new Box1(gameEngine, 500, 627, 144, 144);
+  var box1_1 = new Box1(gameEngine, 1678, 627, 144, 144);
+  var box1_2 = new Box1(gameEngine, 4900, 627, 144, 144);
+  var box1_3 = new Box1(gameEngine, 5950, 627, 144, 144);
 
-    gameEngine.addEntity(bg);
-    gameEngine.addEntity(floorplat1);
-    gameEngine.addEntity(box);
-    // gameEngine.addEntity(box2);
-    // gameEngine.addEntity(box3);
-    // gameEngine.addEntity(box4);
-    gameEngine.addEntity(plat);
-    gameEngine.addEntity(plat2);
+//BOX 2 (NO PUSH)
+  var box2_5 = new Box2(gameEngine, 250, 627, 144, 144);
+  var box2_0 = new Box2(gameEngine, 700, 555, 144, 144);
+  var box2_1 = new Box2(gameEngine, 700, 627, 144, 144);
+  var box2_2 = new Box2(gameEngine, 3800, 627, 144, 144);
+  var box2_7 = new Box2(gameEngine, 6200, 627, 144, 144);
+  var box2_8 = new Box2(gameEngine, 6200, 555, 144, 144);
+  var box2_3 = new Box2(gameEngine, 6372, 555, 144, 144);
+  var box2_4 = new Box2(gameEngine, 6372, 627, 144, 144);
+  var box2_6 = new Box2(gameEngine, 6372, 483, 144, 144);
 
-    boxes.push(floorplat1);
-    for (var i = 1; i < 23; i++) {
-      if (i !== 3 && i !== 7 && i !== 15 && i !== 20) {
-        var plat3 = new Plat3(gameEngine, i * (349 * .75), 700, 350, 87);
-        gameEngine.addEntity(plat3);
-        boxes.push(plat3);
-      }
+//PLAT1
+
+  var plat1_0 = new Plat1(gameEngine, 800, 540, 553, 92);
+  var plat1_1 = new Plat1(gameEngine, 1700, 540, 553, 92);
+  var plat1_2 = new Plat1(gameEngine, 3950, 540, 553, 92);
+
+//PLAT2
+
+  var plat2_0 = new Plat2(gameEngine, 5275, 600, 553, 92);
+  var plat2_1 = new Plat2(gameEngine, 5500, 500, 553, 92);
+
+//SCRAP METAL
+
+  var scrap_0 = new ScrapMetal(gameEngine, 1400, 640, 192, 192);
+  var scrap_1 = new ScrapMetal(gameEngine, 2390, 640, 192, 192);
+  var scrap_2 = new ScrapMetal(gameEngine, 2740, 640, 192, 192);
+  var scrap_3 = new ScrapMetal(gameEngine, 3550, 640, 192, 192);
+  var scrap_4 = new ScrapMetal(gameEngine, 4510, 640, 192, 192);
+
+//LIGHTNING
+
+  var light_0 = new Lightning(gameEngine, 1212, 0, 192, 768);
+  var light_1 = new Lightning(gameEngine, 4200, 0, 192, 768);
+  var light_2 = new Lightning(gameEngine, 4358, 0, 192, 768);
+  var light_3 = new Lightning(gameEngine, 4725, 0, 192, 768);
+  var light_4 = new Lightning(gameEngine, 2500, 0, 192, 768);
+
+//LEVER
+
+  var lever_0 = new Lever(gameEngine, 3111, 575, 192, 192);
+
+//PLATE
+
+  var plate_0 = new Plate(gameEngine, 7200, 605, 192, 192);
+
+//NPC
+
+  var kid = new Child(gameEngine, 7600, 620, 192, 192);
+
+  var floorplat1 = new Plat3(gameEngine, 0, 700, 350, 87);
+
+  gameEngine.addEntity(bg);
+  gameEngine.addEntity(floorplat1);
+
+
+  boxes.push(floorplat1);
+  for (var i = 1; i < 50; i++) {
+    if (i !== 3 && i !== 7 && i !== 15 && i !== 20) {
+      var plat3 = new Plat3(gameEngine, i * (349 * .75), 700, 350, 87);
+      gameEngine.addEntity(plat3);
+      boxes.push(plat3);
     }
+  }
 
-    // var lever = new Lever(gameEngine, 1100, 575, 192, 192);
-    // gameEngine.addEntity(lever);
-    // boxes.push(lever);
+  gameEngine.addEntity(box1_0);
+  gameEngine.addEntity(box1_1);
+  gameEngine.addEntity(box1_2);
+  gameEngine.addEntity(box1_3);
 
-    // var lever = new Lever(gameEngine, 300, 575, 192, 192);
-    // gameEngine.addEntity(lever);
-    // boxes.push(lever);
+  gameEngine.addEntity(box2_0);
+  gameEngine.addEntity(box2_1);
+  gameEngine.addEntity(box2_2);
+  gameEngine.addEntity(box2_3);
+  gameEngine.addEntity(box2_4);
+  gameEngine.addEntity(box2_5);
+  gameEngine.addEntity(box2_6);
+  gameEngine.addEntity(box2_7);
+  gameEngine.addEntity(box2_8);
 
-    var kid = new Child(gameEngine, 200, 620, 192, 192);
-    gameEngine.addEntity(kid);
+  gameEngine.addEntity(plat1_0);
+  gameEngine.addEntity(plat1_1);
+  gameEngine.addEntity(plat1_2);
+
+  gameEngine.addEntity(plat2_0);
+  gameEngine.addEntity(plat2_1);
+
+  gameEngine.addEntity(scrap_0);
+  gameEngine.addEntity(scrap_1);
+  gameEngine.addEntity(scrap_2);
+  gameEngine.addEntity(scrap_3);
+  gameEngine.addEntity(scrap_4);
+
+  gameEngine.addEntity(light_0);
+  gameEngine.addEntity(light_1);
+  gameEngine.addEntity(light_2);
+  gameEngine.addEntity(light_3);
+  gameEngine.addEntity(light_4);
+
+  gameEngine.addEntity(lever_0);
+
+  gameEngine.addEntity(plate_0);
+
+  gameEngine.addEntity(kid);
+
+    boxes.push(box1_0);
+    boxes.push(box1_1);
+    boxes.push(box1_2);
+    boxes.push(box1_3);
+
+    boxes.push(box2_0);
+    boxes.push(box2_1);
+    boxes.push(box2_2);
+    boxes.push(box2_3);
+    boxes.push(box2_4);
+    boxes.push(box2_5);
+    boxes.push(box2_6);
+    boxes.push(box2_7);
+    boxes.push(box2_8);
+
+    boxes.push(plat1_0);
+    boxes.push(plat1_1);
+    boxes.push(plat1_2);
+
+    boxes.push(plat2_0);
+    boxes.push(plat2_1);
+
+    boxes.push(scrap_0);
+    boxes.push(scrap_1);
+    boxes.push(scrap_2);
+    boxes.push(scrap_3);
+    boxes.push(scrap_4);
+
+    boxes.push(light_0);
+    boxes.push(light_1);
+    boxes.push(light_2);
+    boxes.push(light_3);
+    boxes.push(light_4);
+
+    boxes.push(lever_0);
+
+    boxes.push(plate_0);
+
     boxes.push(kid);
-
-    // for (var j = 1; j < 6; j++) {
-    //   var scrap = new ScrapMetal(gameEngine, 250 * j, 665, 142, 87);
-    //   gameEngine.addEntity(scrap);
-    //   boxes.push(scrap);
-    // }
-
-    for (var j = 1; j < 6; j++) {
-      var light = new Lightning(gameEngine, 300 * j, 0, 192, 768);
-      gameEngine.addEntity(light);
-      boxes.push(light);
-    }
-
-    var plate = new Plate(gameEngine, 100, 605, 192, 192);
-    gameEngine.addEntity(plate);
-    boxes.push(plate);
-
-
-    boxes.push(box);
-    // boxes.push(box2);
-    // boxes.push(box3);
-    // boxes.push(box4);
-    boxes.push(plat);
-    boxes.push(plat2);
 
     gameEngine.boxes = boxes;
 
