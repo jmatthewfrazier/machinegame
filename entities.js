@@ -156,17 +156,17 @@ Plat1.prototype.draw = function (ctx) {
 }
 
 function Plat2(game, x, y, width, height) {
-  this.x = x;
-  this.y = y;
-  this.startX = x;
-  this.startY = y;
-  this.width = width;
-  this.height = height;
-  this.ogY = y;
-  this.speed = 75;
-  this.animation = new Animation(ASSET_MANAGER.getAsset("./img/woodplat.png"), 0, 0, 553, 92, 1, 1, true, false);
-  this.boundingbox = new BoundingBox(this.x, this.y, width * .5, height * .5);
-  Entity.call(this, game, this.x, this.y);
+    this.x = x;
+    this.y = y;
+    this.startX = x;
+    this.startY = y;
+    this.width = width;
+    this.height = height;
+    this.ogY = y;
+    this.speed = 75;
+    this.animation = new Animation(ASSET_MANAGER.getAsset("./img/woodplat.png"), 0, 0, 553, 92, 1, 1, true, false);
+    this.boundingbox = new BoundingBox(this.x, this.y, width * .5, height * .5);
+    Entity.call(this, game, this.x, this.y);
 }
 
 Plat2.prototype = new Entity();
@@ -297,7 +297,7 @@ Lightning.prototype.update = function () {
     this.isDie = true;
   //   this.boundingbox = new BoundingBox(this.x + 50, this.y, (this.width * .95) - 100, (this.height * .95));
 } else {
-  this.isDie = false;
+    this.isDie = false;
 }
   Entity.prototype.update.call(this);
 }
@@ -790,7 +790,11 @@ Unicorn.prototype.update = function () {
       for (var i = 0; i < this.game.boxes.length; i++) {
           var thing = this.game.boxes[i];
           thing.x -= this.speed * this.game.clockTick;
-          thing.boundingbox = new BoundingBox(thing.x, thing.y, thing.boundingbox.width, thing.boundingbox.height);
+          if (thing instanceof Lever) {
+              thing.boundingbox = new BoundingBox(thing.x + 55, thing.y + 85, (thing.width) - 115, (thing.height) - 140);;
+          } else {
+              thing.boundingbox = new BoundingBox(thing.x, thing.y, thing.boundingbox.width, thing.boundingbox.height);
+          }
       }
       this.speed = 0;
   }
