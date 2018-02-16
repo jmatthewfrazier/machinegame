@@ -331,6 +331,9 @@ Lightning.prototype.reset = function () {
 
 Lightning.prototype.update = function () {
   if (this.animation.elapsedTime >= (this.animation.totalTime / 8) * 5) {
+    if (!this.isDie){
+      ASSET_MANAGER.getAsset("./asset_lib/audio/lightning.wav").play();
+    }
     this.isDie = true;
   //   this.boundingbox = new BoundingBox(this.x + 50, this.y, (this.width * .95) - 100, (this.height * .95));
 } else {
@@ -391,6 +394,9 @@ Lever.prototype.reset = function () {
 
 Lever.prototype.update = function () {
   //if (this.game.action) this.pull = true;
+  if (this.game.action && !this.pull){
+    ASSET_MANAGER.getAsset("./asset_lib/audio/solved.wav").play();
+  }
   if (!this.game.action) this.pull = false;
   Entity.prototype.update.call(this);
 }

@@ -105,6 +105,7 @@ PlayGame.prototype.reset = function () {
 PlayGame.prototype.update = function () {
     if (this.game.click){
         if(!this.game.running){
+            ASSET_MANAGER.getAsset("./asset_lib/audio/Aquatic_Ambiance_2.mp3").volume = 0.5;
             ASSET_MANAGER.getAsset("./asset_lib/audio/Aquatic_Ambiance_2.mp3").loop = true;
             ASSET_MANAGER.getAsset("./asset_lib/audio/Aquatic_Ambiance_2.mp3").play();
         }
@@ -217,6 +218,7 @@ ASSET_MANAGER.queueDownload("./img/door_open.png");
 ASSET_MANAGER.queueDownload("./img/door_closed.png");
 ASSET_MANAGER.queueDownload("./asset_lib/audio/lightning.wav");
 ASSET_MANAGER.queueDownload("./asset_lib/audio/explosion.wav");
+ASSET_MANAGER.queueDownload("./asset_lib/audio/solved.wav");
 ASSET_MANAGER.queueDownload("./asset_lib/audio/step.wav");
 ASSET_MANAGER.queueDownload("./asset_lib/audio/jump.wav");
 ASSET_MANAGER.queueDownload("./asset_lib/audio/Aquatic_Ambiance_2.mp3");
