@@ -1,7 +1,6 @@
-function pushText(text, timeMS, elementID){
+function pushText(text, elementID){
 	setText(text, elementID);
 	display(1, elementID);
-	hide(timeMS, 2000, elementID);
 }
 
 function setText(text, elementID) {
@@ -14,6 +13,10 @@ function display(op, elementID) {
 	var em = document.getElementById(elementID);
 	em.style.display= "block";
     em.style.opacity = op;
+}
+
+function setFSize(elementID, size){
+	document.getElementById(elementID).style.fontSize = size;
 }
 
 function hide(time, wait, elementID){

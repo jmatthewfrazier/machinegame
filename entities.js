@@ -37,7 +37,7 @@ Box1.prototype.update = function () {
     //If I have, make sure I don't move any further.
     for (var i = 0; i < this.game.boxes.length; i++) {
         var box = this.game.boxes[i];
-        if (this.boundingbox.collide(box.boundingbox) && !(box instanceof Box1) && !(box instanceof Lightning) && !(box instanceof Lever)) {
+        if (this.boundingbox.collide(box.boundingbox) && !(box instanceof Box1) && !(box instanceof Lightning) && !(box instanceof Lever) && !(box instanceof Child)) {
             this.pushedRight = false;
             this.blocked = true;
         }
@@ -156,17 +156,17 @@ Plat1.prototype.draw = function (ctx) {
 }
 
 function Plat2(game, x, y, width, height) {
-  this.x = x;
-  this.y = y;
-  this.startX = x;
-  this.startY = y;
-  this.width = width;
-  this.height = height;
-  this.ogY = y;
-  this.speed = 75;
-  this.animation = new Animation(ASSET_MANAGER.getAsset("./img/woodplat.png"), 0, 0, 553, 92, 1, 1, true, false);
-  this.boundingbox = new BoundingBox(this.x, this.y, width * .5, height * .5);
-  Entity.call(this, game, this.x, this.y);
+    this.x = x;
+    this.y = y;
+    this.startX = x;
+    this.startY = y;
+    this.width = width;
+    this.height = height;
+    this.ogY = y;
+    this.speed = 75;
+    this.animation = new Animation(ASSET_MANAGER.getAsset("./img/woodplat.png"), 0, 0, 553, 92, 1, 1, true, false);
+    this.boundingbox = new BoundingBox(this.x, this.y, width * .5, height * .5);
+    Entity.call(this, game, this.x, this.y);
 }
 
 Plat2.prototype = new Entity();
@@ -209,8 +209,11 @@ function Plat3(game, x, y, width, height) {
     this.y = y;
     this.startX = x;
     this.startY = y;
+    this.width = width;
+    this.height = height;
     this.animation = new Animation(ASSET_MANAGER.getAsset("./img/Image_0010.png"), 0, 0, 350, 87, 1, 1, true, false);
     this.boundingbox = new BoundingBox(this.x, this.y, width * .75, height * .75);
+    console.log(this.boundingbox)
     Entity.call(this, game, this.x, this.y);
 }
 
@@ -220,7 +223,10 @@ Plat3.prototype.constructor = Plat3;
 Plat3.prototype.reset = function () {
   this.x = this.startX;
   this.y = this.startY;
-  this.boundingbox.x = this.startX;
+  this.boundingbox = new BoundingBox(this.startX, this.startY, this.width * .75, this.height * .75);
+  //this.boundingbox.x = new BoundingBox(this.x, this.y, this.width * .75, this.height * .75);
+  //this.boundingbox.x = this.x;
+  console.log("Plat3 Reset: ", this.boundingbox);
 }
 
 Plat3.prototype.update = function () {
@@ -232,7 +238,38 @@ Plat3.prototype.draw = function (ctx) {
     this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, .75);
     ctx.strokeStyle = "red";
     ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
+}
 
+function Child(game,x ,y, width, height) {
+  this.animation = new Animation(ASSET_MANAGER.getAsset("./img/kid_talk_l.png"), 0, 0, 192, 192, 1, 6, true, false);
+  this.x = x;
+  this.y = y;
+  this.startX = x;
+  this.startY = y;
+  this.width = width;
+  this.height = height;
+  this.boundingbox = new BoundingBox(this.x + 20, this.y + 20, width - 130, height - 130);
+  Entity.call(this, game, this.x, this.y);
+}
+
+Child.prototype = new Entity();
+Child.prototype.constructor = Child;
+
+Child.prototype.reset = function() {
+  this.x = this.startX;
+  this.y = this.startY;
+  this.boundingbox = new BoundingBox(this.x + 20, this.y + 20, this.width - 130, this.height - 130);
+}
+
+Child.prototype.update = function() {
+  Entity.prototype.update.call(this);
+}
+
+Child.prototype.draw = function (ctx) {
+  if (!this.game.running) return;
+  this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, .5);
+  ctx.strokeStyle = "green";
+  ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
 }
 
 function ScrapMetal(game, x, y, width, height) {
@@ -297,7 +334,7 @@ Lightning.prototype.update = function () {
     this.isDie = true;
   //   this.boundingbox = new BoundingBox(this.x + 50, this.y, (this.width * .95) - 100, (this.height * .95));
 } else {
-  this.isDie = false;
+    this.isDie = false;
 }
   Entity.prototype.update.call(this);
 }
@@ -309,33 +346,6 @@ Lightning.prototype.draw = function (ctx) {
     ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
 }
 
-// function Door(game, x, y, width, height) {
-//   this.animation_door_open = new Animation(ASSET_MANAGER.getAsset("./img/door.png"), 0, 0, 192, 192, .5, 1, true, false);
-//   this.animation_door_closed = new Animation(ASSET_MANAGER.getAsset("./img/door.png"), 0, 0, 192, 192, .5, 1, true, false);
-//   this.x = x;
-//   this.y = y;
-//   this.width = width;
-//   this.height = height;
-//   this.boundingbox = new BoundingBox(this.x, this.y, this.width, this.height);
-// }
-//
-// Door.prototype = new Entity()
-// Door.prototype.constructor = Door;
-//
-// Door.prototype.reset = function() {
-//   this.animation_door_open = new Animation(ASSET_MANAGER.getAsset("./img/door.png"), 0, 0, 192, 192, .5, 1, true, false);
-//   this.animation_door_closed = new Animation(ASSET_MANAGER.getAsset("./img/door.png"), 0, 0, 192, 192, .5, 1, true, false);
-//   this.x = x;
-//   this.y = y;
-// }
-//
-// Door.prototype.update = function() {
-//
-// }
-//
-// Door.prototype.draw = function(ctx) {
-//
-// }
 
 function Lever(game, x, y, width, height) {
   this.animation = new Animation(ASSET_MANAGER.getAsset("./img/lever.png"), 0, 0, 192, 192, .5, 5, false, false);
@@ -354,7 +364,7 @@ function Lever(game, x, y, width, height) {
   this.left = false;
   this.right = true;
   this.boundingbox = new BoundingBox(this.x + 55, this.y + 80, (this.width) - 115, (this.height) - 140);
-  this.doorbounding = new BoundingBox(this.x + 150, this.y - 50, this.width - 100, this.height - 20);
+  this.doorbounding = new BoundingBox(this.x + 250, this.y - 50, this.width - 100, this.height - 20);
   Entity.call(this, game, this.x, this.y);
 }
 
@@ -375,7 +385,7 @@ Lever.prototype.reset = function () {
   this.pull = false;
   this.game.action = false;
   this.boundingbox = new BoundingBox(this.x + 55, this.y + 80, (this.width) - 115, (this.height) - 140);
-  this.doorbounding = new BoundingBox(this.x + 150, this.y - 50, this.width - 100, this.height - 20);
+  this.doorbounding = new BoundingBox(this.x + 250, this.y - 50, this.width - 100, this.height - 20);
 
 }
 
@@ -390,7 +400,7 @@ Lever.prototype.draw = function(ctx) {
 
   if (this.pull) {
     this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1);
-    this.animation_door_closed.drawFrame(this.game.clockTick, ctx, this.x + 100, this.y - 50, 1);
+    this.animation_door_closed.drawFrame(this.game.clockTick, ctx, this.x + 200, this.y - 50, 1);
     if (this.animation.elapsedTime >= this.animation.totalTime) {
       this.game.action = false;
       this.on = true;
@@ -399,10 +409,10 @@ Lever.prototype.draw = function(ctx) {
     }
   } else if (!this.pull && this.left) {
       this.animation_still_rev.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1);
-      this.animation_door_closed.drawFrame(this.game.clockTick, ctx, this.x + 100, this.y - 50, 1);
+      this.animation_door_closed.drawFrame(this.game.clockTick, ctx, this.x + 200, this.y - 50, 1);
   } else {
       this.animation_still.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1);
-      this.animation_door_open.drawFrame(this.game.clockTick, ctx, this.x + 100, this.y - 50, 1);
+      this.animation_door_open.drawFrame(this.game.clockTick, ctx, this.x + 200, this.y - 50, 1);
   }
 
   ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
@@ -471,9 +481,9 @@ Plate.prototype.draw = function (ctx) {
       if (this.revAnimation.isDone()) {
           this.off = true;
           this.revAnimation.elapsedTime = 0;
-      } 
+      }
   }
-  
+
   ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
 }
 
@@ -536,7 +546,10 @@ Unicorn.prototype.reset = function () {
   this.pushing = false;
   this.x = 0;
   this.y = this.platform.boundingbox.top - this.animation.frameHeight;
-  this.boundingbox = new BoundingBox(this.x + 30, this.y + 10, this.resize - 60, this.resize - 22);
+  this.boundingbox = new BoundingBox(this.x + 60, this.y + 10, this.resize - 60, this.resize - 22);
+  console.log(this.onBox && this.platform === this.game.boxes[0]);
+  console.log(this.platform.boundingbox.left);
+  this.scroll = false;
 }
 
 Unicorn.prototype.update = function () {
@@ -560,14 +573,14 @@ Unicorn.prototype.update = function () {
           this.leftMove = false;
       }
       if (this.game.space && !this.jumping) {
-          ASSET_MANAGER.getAsset("./asset_lib/_audio/jump.wav").play();
+          ASSET_MANAGER.getAsset("./asset_lib/audio/jump.wav").play();
           this.jumping = true;
           this.onBox = false;
           this.base = this.y;
           this.pushing = false;
       }
 
-      this.boundingbox = new BoundingBox(this.x + 30, this.y + 10, this.resize - 60, this.resize - 22);
+      //this.boundingbox = new BoundingBox(this.x + 60, this.y + 10, this.resize - 60, this.resize - 22);
 
       if (this.jumping && this.justRight) {
           this.onBox = false;
@@ -631,7 +644,7 @@ Unicorn.prototype.update = function () {
 
           for (var i = 0; i < this.game.boxes.length; i++) {
               var box = this.game.boxes[i];
-              if (this.boundingbox.collide(box.boundingbox) && this.lastbottom <= box.boundingbox.top && this.boundingbox.left < this.boundingbox.right) {
+              if (this.boundingbox.collide(box.boundingbox) && this.lastbottom <= box.boundingbox.top && this.boundingbox.left < this.boundingbox.right && !(box instanceof Child)) {
                   this.jumping = false;
                   this.y = box.boundingbox.top - this.animation.frameHeight;
                   this.jumpAnimation.elapsedTime = 0;
@@ -653,7 +666,7 @@ Unicorn.prototype.update = function () {
       //yo, check to see if I fall onto another box or a platform, would ya?
       for (var i = 0; i < this.game.boxes.length; i++) {
           var box = this.game.boxes[i];
-          if (this.boundingbox.collide(box.boundingbox) && this.lastbottom <= box.boundingbox.top && !(box instanceof Lever)) {
+          if (this.boundingbox.collide(box.boundingbox) && this.lastbottom <= box.boundingbox.top && !(box instanceof Lever) && !(box instanceof Child)) {
               this.falling = false;
               this.y = box.boundingbox.top - this.animation.frameHeight;
               this.onBox = true;
@@ -687,7 +700,7 @@ Unicorn.prototype.update = function () {
   if (this.rightMove) {
       this.x += this.speed * this.game.clockTick;
       if (!this.jumping && !this.falling){
-        ASSET_MANAGER.getAsset("./asset_lib/_audio/step.wav").play();
+        ASSET_MANAGER.getAsset("./asset_lib/audio/step.wav").play();
       }
       this.boundingbox = new BoundingBox(this.x + 30, this.y + 10, this.resize - 60, this.resize - 22);
       this.justRight = true;
@@ -696,7 +709,7 @@ Unicorn.prototype.update = function () {
       //if I collide with a box, I'm going to remember that box
       for (var i = 0; i < this.game.boxes.length; i++) {
           var box = this.game.boxes[i];
-          if (this.boundingbox.collide(box.boundingbox) && this.boundingbox.right >= box.boundingbox.left && !(this.platform === box) && !(box instanceof ScrapMetal) && !(box instanceof Lightning) && !(box instanceof Lever)) {
+          if (this.boundingbox.collide(box.boundingbox) && this.boundingbox.right >= box.boundingbox.left && !(this.platform === box) && !(box instanceof ScrapMetal) && !(box instanceof Lightning) && !(box instanceof Lever) && !(box instanceof Child)) {
               this.lastplattouch = box;
           }
           if (this.boundingbox.collide(box.boundingbox) && this.boundingbox.right >= box.boundingbox.left && box instanceof ScrapMetal) {
@@ -711,6 +724,9 @@ Unicorn.prototype.update = function () {
             if (this.game.action) {
               box.pull = true;
             }
+          }
+          if (this.boundingbox.collide(box.boundingbox) && this.boundingbox.right >= box.boundingbox.left && box instanceof Child) {
+              pushText("hello", "dialogue");
           }
       }
 
@@ -746,6 +762,11 @@ Unicorn.prototype.update = function () {
 
       //if I move right off of a box or a platform, I should fall off of the box. Right?
       if (this.boundingbox.left > this.platform.boundingbox.right && this.onBox && !this.jumping) {
+          console.log("PLAYER BBLEFT: ", this.boundingbox.left);
+          //console.log(this.platform === this.game.boxes[0]);
+          console.log("PLATFORM BBRIGHT: ", this.platform.boundingbox.right);
+          //console.log(this.platform.boundingbox.width);
+          console.log("PLAYER X: ", this.x);
           this.falling = true;
           this.onBox = false;
       }
@@ -763,7 +784,7 @@ Unicorn.prototype.update = function () {
   } else if (this.leftMove) {
       this.x -= this.speed * this.game.clockTick;
       if (!this.jumping && !this.falling){
-        ASSET_MANAGER.getAsset("./asset_lib/_audio/step.wav").play();
+        ASSET_MANAGER.getAsset("./asset_lib/audio/step.wav").play();
       }
       this.boundingbox = new BoundingBox(this.x + 30, this.y + 10, this.resize - 60, this.resize - 22);
       this.justRight = false;
@@ -772,7 +793,7 @@ Unicorn.prototype.update = function () {
       //if I collide with a box, I'm going to remember that box
       for (var i = 0; i < this.game.boxes.length; i++) {
           var box = this.game.boxes[i];
-          if (this.boundingbox.collide(box.boundingbox) && this.boundingbox.left <= box.boundingbox.right && !(this.platform === box) && !(box instanceof ScrapMetal) && !(box instanceof Lightning) && !(box instanceof Lever)) {
+          if (this.boundingbox.collide(box.boundingbox) && this.boundingbox.left <= box.boundingbox.right && !(this.platform === box) && !(box instanceof ScrapMetal) && !(box instanceof Lightning) && !(box instanceof Lever) && !(box instanceof Child)) {
               this.lastplattouch = box;
           }
           if (this.boundingbox.collide(box.boundingbox) && this.boundingbox.left <= box.boundingbox.right && box instanceof ScrapMetal) {
@@ -787,6 +808,9 @@ Unicorn.prototype.update = function () {
             if (this.game.action) {
               box.pull = true;
             }
+          }
+          if (this.boundingbox.collide(box.boundingbox) && this.boundingbox.right <= box.boundingbox.left && box instanceof Child) {
+              pushText("hello", "dialogue");
           }
       }
 
@@ -853,6 +877,9 @@ Unicorn.prototype.update = function () {
               this.dead = true;
              }
           }
+          if (this.boundingbox.collide(box.boundingbox) && box instanceof Child) {
+              pushText("hello", "dialogue");
+          }
       }
   }
 
@@ -871,7 +898,7 @@ Unicorn.prototype.update = function () {
   //except if that "box" is a platform, you should be able to move through its bounding box
   for (var i = 0; i < this.game.boxes.length; i++) {
       var box = this.game.boxes[i];
-      if (this.onBox && this.boundingbox.collide(box.boundingbox) && !(box instanceof Plat1) && !(box instanceof Plat2) && !(box instanceof Lightning) && !(box instanceof Plate) && !(box instanceof Lever)) {
+      if (this.onBox && this.boundingbox.collide(box.boundingbox) && !(box instanceof Plat1) && !(box instanceof Plat2) && !(box instanceof Lightning) && !(box instanceof Plate) && !(box instanceof Lever) && !(box instanceof Child)) {
           if (!(box === this.platform)) {
               this.speed = 0;
           } else {
@@ -886,10 +913,18 @@ Unicorn.prototype.update = function () {
       for (var i = 0; i < this.game.boxes.length; i++) {
           var thing = this.game.boxes[i];
           thing.x -= this.speed * this.game.clockTick;
-          thing.boundingbox = new BoundingBox(thing.x, thing.y, thing.boundingbox.width, thing.boundingbox.height);
+          if (thing instanceof Lever) {
+              thing.boundingbox = new BoundingBox(thing.x + 55, thing.y + 80, (thing.width) - 115, (thing.height) - 140);
+              thing.doorbounding = new BoundingBox(thing.x + 250, thing.y - 50, (thing.width) - 100, (thing.height) - 20);
+          } else if (thing instanceof Lightning) {
+              thing.boundingbox = new BoundingBox(thing.x + 100, thing.y, (thing.width * .95) - 200, (thing.height * .95));
+          } else {
+              thing.boundingbox = new BoundingBox(thing.x, thing.y, thing.boundingbox.width, thing.boundingbox.height);
+          }
       }
       this.speed = 0;
   }
+  //console.log(this.platform === this.game.boxes[0]);
 
   Entity.prototype.update.call(this);
 }

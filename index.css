@@ -1,10 +1,19 @@
+@font-face {
+  font-family: 'pixel1';
+    src:  url('04b-31.ttf.woff') format('woff'),
+    url('04b-31.ttf.svg#04b-31') format('svg'),
+    url('04b-31.ttf.eot'),
+    url('04b-31.eot?#iefix') format('embedded-opentype');
+    font-weight: normal;
+    font-style: normal;
+}
 #dialogue{
-	font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+	font-family: 'pixel1';
 	font-size: 700%;
-	color: white; 
-	border-radius: 5px; 
-	width: 100%; 
-	height: 20%; 
+	color: white;
+	border-radius: 5px;
+	width: 100%;
+	height: 20%;
 	margin:0 auto;
 	transition: 2s opacity;
 	text-align: center;
@@ -13,12 +22,12 @@
 	top:5%;
 }
 #menu{
-	font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+	font-family: 'pixel1';
 	font-size: 200%;
-	background-color: white;
-	color: grey;  
-	width: 60%; 
-	height: 100%; 
+	background-color: black;
+	color: white;
+	width: 60%;
+	height: 100%;
 	margin: auto;
 	right: 0;
 	left: 0;
@@ -27,31 +36,55 @@
 	z-index: 4;
 	position:fixed;
 }
+#ctrlMenu{
+	font-family: 'pixel1';
+	font-size: 90%;
+	background-color: darkgrey;
+	color: black;
+	width: 50%;
+	height: 15%;
+	margin: auto;
+	right: 0;
+	left: 0;
+	text-align: center;
+	line-height: 100%;
+	vertical-align: middle;
+	position:fixed;
+}
 #pause{
-    background-color: #ddd;
-    /*color:white;*/
-	width: 50px;
-	height: 50px;
+    /*background-color: #ddd;*/
+    color:white;
+		width: 50px;
+		height: 50px;
+		font-size: 50px;
     z-index: 2;
     text-align: center;
     vertical-align: middle;
     line-height: 50px;
+		cursor: pointer;
     top:5px;
     right:5px;
     position: absolute;
     border-radius: 5px;
-    font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+    font-family: 'pixel1';
+}
+#pause:hover{
+	color:darkgrey;
 }
 .astext {
+		font-family: 'pixel1';
     background:none;
     margin: auto;
     right: 0;
     left: 0;
     border: none;
-    color: grey;
+		color:white;
     padding: 15px 32px;
     text-align: center;
     text-decoration: none;
     display: flex;
     font-size: 90%;
+}
+.astext:hover{
+    color:darkgrey;
 }

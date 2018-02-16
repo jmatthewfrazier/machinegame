@@ -105,17 +105,20 @@ PlayGame.prototype.reset = function () {
 PlayGame.prototype.update = function () {
     if (this.game.click){
         if(!this.game.running){
-            ASSET_MANAGER.getAsset("./asset_lib/_audio/Aquatic_Ambiance_2.mp3").loop = true;
-            ASSET_MANAGER.getAsset("./asset_lib/_audio/Aquatic_Ambiance_2.mp3").play();
+            ASSET_MANAGER.getAsset("./asset_lib/audio/Aquatic_Ambiance_2.mp3").loop = true;
+            ASSET_MANAGER.getAsset("./asset_lib/audio/Aquatic_Ambiance_2.mp3").play();
         }
     	this.game.running = true;
-    	hide(0, 2000, "dialogue");
+    	// hide(0, 2000, "dialogue");
+      setTimeout(function () {
+        setFSize("dialogue", "300%");
+      }, 2100)
     }
 }
 
 PlayGame.prototype.draw = function (ctx) {
     if (!this.game.running) {
-        ctx.font = "300% sans-serif";
+        ctx.font = "70% pixel1";
         ctx.textAlign = "center";
         ctx.fillStyle = "white";
         if (this.game.mouse) { ctx.fillStyle = "#ddd"; }
@@ -198,6 +201,7 @@ ASSET_MANAGER.queueDownload("./img/pc_jump.png");
 ASSET_MANAGER.queueDownload("./img/pc_jump_l.png");
 ASSET_MANAGER.queueDownload("./img/pc_push.png");
 ASSET_MANAGER.queueDownload("./img/pc_push_l.png");
+ASSET_MANAGER.queueDownload("./img/kid_talk_l.png");
 ASSET_MANAGER.queueDownload("./img/Image_0005.jpg");
 ASSET_MANAGER.queueDownload("./img/Image_0009.png");
 ASSET_MANAGER.queueDownload("./img/Image_0010.png");
@@ -211,11 +215,11 @@ ASSET_MANAGER.queueDownload("./img/lever_still.png");
 ASSET_MANAGER.queueDownload("./img/lever_still_rev.png");
 ASSET_MANAGER.queueDownload("./img/door_open.png");
 ASSET_MANAGER.queueDownload("./img/door_closed.png");
-ASSET_MANAGER.queueDownload("./asset_lib/_audio/lightning.wav");
-ASSET_MANAGER.queueDownload("./asset_lib/_audio/explosion.wav");
-ASSET_MANAGER.queueDownload("./asset_lib/_audio/step.wav");
-ASSET_MANAGER.queueDownload("./asset_lib/_audio/jump.wav");
-ASSET_MANAGER.queueDownload("./asset_lib/_audio/Aquatic_Ambiance_2.mp3");
+ASSET_MANAGER.queueDownload("./asset_lib/audio/lightning.wav");
+ASSET_MANAGER.queueDownload("./asset_lib/audio/explosion.wav");
+ASSET_MANAGER.queueDownload("./asset_lib/audio/step.wav");
+ASSET_MANAGER.queueDownload("./asset_lib/audio/jump.wav");
+ASSET_MANAGER.queueDownload("./asset_lib/audio/Aquatic_Ambiance_2.mp3");
 
 ASSET_MANAGER.downloadAll(function () {
     console.log("starting up da sheild");
@@ -227,17 +231,17 @@ ASSET_MANAGER.downloadAll(function () {
     canvas.height = window.innerHeight;
 
     var boxes = [];
-    var levers = [];
+
     var bg = new Background(gameEngine);
+
+
     var box = new Box1(gameEngine, 400, 627, 144, 144);
     // var box2 = new Box2(gameEngine, 544, 627, 144, 144);
     // var box3 = new Box2(gameEngine, 230, 627, 144, 144);
-
     // var box4 = new Box2(gameEngine, 544, 555, 144, 144);
     var plat = new Plat1(gameEngine, 650, 540, 553, 92);
     var plat2 = new Plat2(gameEngine, 100, 580, 553, 92);
     var floorplat1 = new Plat3(gameEngine, 0, 700, 350, 87);
-
 
     gameEngine.addEntity(bg);
     gameEngine.addEntity(floorplat1);
@@ -249,8 +253,8 @@ ASSET_MANAGER.downloadAll(function () {
     gameEngine.addEntity(plat2);
 
     boxes.push(floorplat1);
-    for (var i = 1; i < 11; i++) {
-      if (i % 3 !== 0) {
+    for (var i = 1; i < 23; i++) {
+      if (i !== 3 && i !== 7 && i !== 15 && i !== 20) {
         var plat3 = new Plat3(gameEngine, i * (349 * .75), 700, 350, 87);
         gameEngine.addEntity(plat3);
         boxes.push(plat3);
@@ -265,17 +269,21 @@ ASSET_MANAGER.downloadAll(function () {
     // gameEngine.addEntity(lever);
     // boxes.push(lever);
 
+    var kid = new Child(gameEngine, 200, 620, 192, 192);
+    gameEngine.addEntity(kid);
+    boxes.push(kid);
+
     // for (var j = 1; j < 6; j++) {
     //   var scrap = new ScrapMetal(gameEngine, 250 * j, 665, 142, 87);
     //   gameEngine.addEntity(scrap);
     //   boxes.push(scrap);
     // }
 
-    // for (var j = 1; j < 6; j++) {
-    //   var light = new Lightning(gameEngine, 300 * j, 0, 192, 768);
-    //   gameEngine.addEntity(light);
-    //   boxes.push(light);
-    // }
+    for (var j = 1; j < 6; j++) {
+      var light = new Lightning(gameEngine, 300 * j, 0, 192, 768);
+      gameEngine.addEntity(light);
+      boxes.push(light);
+    }
 
     var plate = new Plate(gameEngine, 100, 605, 192, 192);
     gameEngine.addEntity(plate);
