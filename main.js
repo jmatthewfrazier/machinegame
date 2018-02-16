@@ -196,6 +196,7 @@ ASSET_MANAGER.queueDownload("./img/pc_idle_l.png");
 ASSET_MANAGER.queueDownload("./img/pc_walk_l.png");
 ASSET_MANAGER.queueDownload("./img/pc_jump.png");
 ASSET_MANAGER.queueDownload("./img/pc_jump_l.png");
+ASSET_MANAGER.queueDownload("./img/kid_talk_l.png");
 ASSET_MANAGER.queueDownload("./img/Image_0005.jpg");
 ASSET_MANAGER.queueDownload("./img/Image_0009.png");
 ASSET_MANAGER.queueDownload("./img/Image_0010.png");
@@ -223,17 +224,19 @@ ASSET_MANAGER.downloadAll(function () {
     canvas.height = window.innerHeight;
 
     var boxes = [];
-    var levers = [];
+
     var bg = new Background(gameEngine);
+
+
     var box = new Box1(gameEngine, 400, 627, 144, 144);
     var box2 = new Box2(gameEngine, 544, 627, 144, 144);
     var box3 = new Box2(gameEngine, 230, 627, 144, 144);
-
     var box4 = new Box2(gameEngine, 544, 555, 144, 144);
+
+
     var plat = new Plat1(gameEngine, 650, 540, 553, 92);
     var plat2 = new Plat2(gameEngine, 100, 580, 553, 92);
     var floorplat1 = new Plat3(gameEngine, 0, 700, 350, 87);
-
 
     gameEngine.addEntity(bg);
     gameEngine.addEntity(floorplat1);
@@ -245,8 +248,8 @@ ASSET_MANAGER.downloadAll(function () {
     gameEngine.addEntity(plat2);
 
     boxes.push(floorplat1);
-    for (var i = 1; i < 11; i++) {
-      if (i % 3 !== 0) {
+    for (var i = 1; i < 23; i++) {
+      if (i !== 3 && i !== 7 && i !== 15 && i !== 20) {
         var plat3 = new Plat3(gameEngine, i * (349 * .75), 700, 350, 87);
         gameEngine.addEntity(plat3);
         boxes.push(plat3);
@@ -260,6 +263,10 @@ ASSET_MANAGER.downloadAll(function () {
     var lever = new Lever(gameEngine, 300, 575, 192, 192);
     gameEngine.addEntity(lever);
     boxes.push(lever);
+
+    var kid = new Child(gameEngine, 200, 620, 192, 192);
+    gameEngine.addEntity(kid);
+    boxes.push(kid);
 
     // for (var j = 1; j < 6; j++) {
     //   var scrap = new ScrapMetal(gameEngine, 250 * j, 665, 142, 87);

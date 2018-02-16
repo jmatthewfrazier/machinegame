@@ -235,6 +235,36 @@ Plat3.prototype.draw = function (ctx) {
 
 }
 
+function Child(game,x ,y, width, height) {
+  this.animation = new Animation(ASSET_MANAGER.getAsset("./img/kid_talk_l.png"), 0, 0, 192, 192, 1, 6, true, false);
+  this.x = x;
+  this.y = y;
+  this.startX = x;
+  this.startY = y;
+  this.width = width;
+  this.height = height;
+  this.boundingbox = new BoundingBox(this.x, this.y, width, height);
+  Entity.call(this, game, this.x, this.y);
+}
+
+Child.prototype = new Entity();
+Child.prototype.constructor = Child;
+
+Child.prototype.reset = function() {
+  this.x = this.startX;
+  this.y = this.startY;
+  this.boundingbox = new BoundingBox(this.x, this.y, width, height);
+}
+
+Child.prototype.update = function() {
+  Entity.prototype.update.call(this);
+}
+
+Child.prototype.draw = function (ctx) {
+  if (!this.game.running) return;
+  this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, .5);
+}
+
 function ScrapMetal(game, x, y, width, height) {
   this.animation = new Animation(ASSET_MANAGER.getAsset("./img/scrap.png"), 0, 0, 142, 87, 1, 1, true, false);
   this.x = x;
@@ -309,33 +339,6 @@ Lightning.prototype.draw = function (ctx) {
     ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
 }
 
-// function Door(game, x, y, width, height) {
-//   this.animation_door_open = new Animation(ASSET_MANAGER.getAsset("./img/door.png"), 0, 0, 192, 192, .5, 1, true, false);
-//   this.animation_door_closed = new Animation(ASSET_MANAGER.getAsset("./img/door.png"), 0, 0, 192, 192, .5, 1, true, false);
-//   this.x = x;
-//   this.y = y;
-//   this.width = width;
-//   this.height = height;
-//   this.boundingbox = new BoundingBox(this.x, this.y, this.width, this.height);
-// }
-//
-// Door.prototype = new Entity()
-// Door.prototype.constructor = Door;
-//
-// Door.prototype.reset = function() {
-//   this.animation_door_open = new Animation(ASSET_MANAGER.getAsset("./img/door.png"), 0, 0, 192, 192, .5, 1, true, false);
-//   this.animation_door_closed = new Animation(ASSET_MANAGER.getAsset("./img/door.png"), 0, 0, 192, 192, .5, 1, true, false);
-//   this.x = x;
-//   this.y = y;
-// }
-//
-// Door.prototype.update = function() {
-//
-// }
-//
-// Door.prototype.draw = function(ctx) {
-//
-// }
 
 function Lever(game, x, y, width, height) {
   this.animation = new Animation(ASSET_MANAGER.getAsset("./img/lever.png"), 0, 0, 192, 192, .5, 5, false, false);
@@ -354,7 +357,7 @@ function Lever(game, x, y, width, height) {
   this.left = false;
   this.right = true;
   this.boundingbox = new BoundingBox(this.x + 55, this.y + 80, (this.width) - 115, (this.height) - 140);
-  this.doorbounding = new BoundingBox(this.x + 150, this.y - 50, this.width - 100, this.height - 20);
+  this.doorbounding = new BoundingBox(this.x + 250, this.y - 50, this.width - 100, this.height - 20);
   Entity.call(this, game, this.x, this.y);
 }
 
@@ -375,7 +378,7 @@ Lever.prototype.reset = function () {
   this.pull = false;
   this.game.action = false;
   this.boundingbox = new BoundingBox(this.x + 55, this.y + 80, (this.width) - 115, (this.height) - 140);
-  this.doorbounding = new BoundingBox(this.x + 150, this.y - 50, this.width - 100, this.height - 20);
+  this.doorbounding = new BoundingBox(this.x + 250, this.y - 50, this.width - 100, this.height - 20);
 
 }
 
@@ -390,7 +393,7 @@ Lever.prototype.draw = function(ctx) {
 
   if (this.pull) {
     this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1);
-    this.animation_door_closed.drawFrame(this.game.clockTick, ctx, this.x + 100, this.y - 50, 1);
+    this.animation_door_closed.drawFrame(this.game.clockTick, ctx, this.x + 200, this.y - 50, 1);
     if (this.animation.elapsedTime >= this.animation.totalTime) {
       this.game.action = false;
       this.on = true;
@@ -399,10 +402,10 @@ Lever.prototype.draw = function(ctx) {
     }
   } else if (!this.pull && this.left) {
       this.animation_still_rev.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1);
-      this.animation_door_closed.drawFrame(this.game.clockTick, ctx, this.x + 100, this.y - 50, 1);
+      this.animation_door_closed.drawFrame(this.game.clockTick, ctx, this.x + 200, this.y - 50, 1);
   } else {
       this.animation_still.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1);
-      this.animation_door_open.drawFrame(this.game.clockTick, ctx, this.x + 100, this.y - 50, 1);
+      this.animation_door_open.drawFrame(this.game.clockTick, ctx, this.x + 200, this.y - 50, 1);
   }
 
   ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
