@@ -37,7 +37,7 @@ Box1.prototype.update = function () {
     //If I have, make sure I don't move any further.
     for (var i = 0; i < this.game.boxes.length; i++) {
         var box = this.game.boxes[i];
-        if (this.boundingbox.collide(box.boundingbox) && !(box instanceof Box1) && !(box instanceof Lightning) && !(box instanceof Lever) && !(box instanceof Child) && !(box instanceof Plat3)) {
+        if (this.boundingbox.collide(box.boundingbox) && !(box instanceof Box1) && !(box instanceof Lightning) && !(box instanceof Lever) && !(box instanceof Child) && !(box instanceof Plat3) && !(box instanceof Plate)) {
             this.pushedRight = false;
             this.blocked = true;
         }
@@ -441,7 +441,7 @@ function Plate(game, x, y, width, height) {
   this.startY = y;
   this.width = width;
   this.height = height;
-  this.scale = 0.75
+  this.scale = 0.75;
   this.boundingbox = new BoundingBox(this.x, this.y + 80, this.width * this.scale, 10);
   Entity.call(this, game, this.x, this.y);
 }
@@ -464,6 +464,7 @@ Plate.prototype.update = function () {
       if (((box instanceof Box1) || (box instanceof Unicorn)) && this.boundingbox.collide(box.boundingbox)) this.pressed = true;
       if (this.pressed) {
           this.boundingbox = new BoundingBox(this.x, this.y + 87, this.width * this.scale, 3);
+          // if (box instanceof Box1) box.y = this.boundingbox.y + this.boundingbox.height - box.height * 0.5;
       } else {
           this.boundingbox = new BoundingBox(this.x, this.y + 80, this.width * this.scale, 10);
       }
@@ -493,8 +494,84 @@ Plate.prototype.draw = function (ctx) {
       }
   }
 
-  //ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
+  // ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
 }
+
+function Door(game, x, y, width, height, connection) {
+  this.closed = new Animation(ASSET_MANAGER.getAsset("./img/door_open.png"), 0, 0, 192, 192, 1, 1, true, false);
+  this.open = new Animation(ASSET_MANAGER.getAsset("./img/door_closed.png"), 0, 0, 192, 192, 1, 1, true, false);
+  this.x = x;
+  this.y = y;
+  this.startX = x;
+  this.startY = y;
+  this.width = width;
+  this.height = height;
+  this.connection = connection;
+  this.opened = false;
+  this.boundingbox = new BoundingBox(this.x + 60, this.y - 50, this.width - 125, this.height + 40);
+  Entity.call(this, game, this.x, this.y);
+}
+
+Door.prototype = new Entity();
+Door.prototype.constructor = Door;
+
+Door.prototype.reset = function () {
+  this.x = this.startX;
+  this.y = this.startY;
+  this.opened = false;
+  this.boundingbox = new BoundingBox(this.x + 60, this.y - 50, this.width - 125, this.height + 40);
+}
+
+Door.prototype.update = function () {
+  if (this.connection.pressed) {
+    this.opened = true;
+    this.boundingbox = new BoundingBox(0, 0, 0, 0);
+  } else {
+    this.opened = false;
+    this.boundingbox = new BoundingBox(this.x + 60, this.y - 50, this.width - 125, this.height + 40);
+  }
+  Entity.prototype.update.call(this);
+}
+
+Door.prototype.draw = function (ctx) {
+  if (!this.game.running) return;
+  ctx.strokeStyle = "blue";
+  if (this.opened) {
+    this.open.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1);
+  } else {
+    this.closed.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1);
+  }
+
+  // ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
+}
+
+function EndLevel(game, x, y, width, height) {
+  this.x = x;
+  this.y = y;
+  this.startX = x;
+  this.startY = y;
+  this.width = width;
+  this.height = height;
+  this.boundingbox = new BoundingBox(this.x, this.y, this.width, this.height);
+  Entity.call(this, game, this.x, this.y);
+}
+
+EndLevel.prototype = new Entity();
+EndLevel.prototype.constructor = EndLevel;
+
+EndLevel.prototype.reset = function () {
+  this.x = this.startX;
+  this.y = this.startY;
+  this.boundingbox = new BoundingBox(this.x, this.y, this.width, this.height);
+}
+
+// Plate.prototype.update = function () {
+//   Entity.prototype.update.call(this);
+// }
+
+// Plate.prototype.draw = function (ctx) {
+
+// }
 
 function Unicorn(game) {
     this.animation = new Animation(ASSET_MANAGER.getAsset("./img/pc_idle.png"), 0, 0, 192, 192, 0.2, 16, true, false);
@@ -511,7 +588,7 @@ function Unicorn(game) {
     this.leftMove = false;
     this.rjump = false;
     this.ljump = false;
-    this.speed = 100;
+    this.speed = 130;
     this.radius = 100;
     //this.ground = 550;
     this.height = 0;
@@ -566,6 +643,10 @@ Unicorn.prototype.update = function () {
       if (this.y >= 900) {
         this.dead = true;
       }
+      // if (this.x >= 7600) {
+      //   this.game.gameOver();
+      //   return;
+      // }
       if (this.dead) {
         ASSET_MANAGER.getAsset("./asset_lib/audio/ded.wav").play();
         this.game.gameOver();
@@ -745,6 +826,10 @@ Unicorn.prototype.update = function () {
           }
           if (this.boundingbox.collide(box.boundingbox) && this.boundingbox.right >= box.boundingbox.left && box instanceof Child) {
               pushText("please help, there is a machine", "dialogue");
+          }
+          if (this.boundingbox.collide(box.boundingbox) && this.boundingbox.right >= box.boundingbox.left && box instanceof EndLevel) {
+              this.game.success();
+              return;
           }
       }
 
