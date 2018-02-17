@@ -18,12 +18,13 @@
 	<div id="menu" style="display: none;">
 		<h3 id="pausedBanner" >Paused</h3>
     <h3 id="endGame" style="display:none;">Game Over</h3>
+    <h3 id="done" style="display:none;">Level Completed!</h3>
 		<br/>
-		<button id="resume" class="astext" onclick="gameEngine.togglePause()">Resume
-    </button>
+		<button id="resume" class="astext" onclick="gameEngine.togglePause()">Resume</button>
 		<button class="astext" onclick="gameEngine.resetandHide()">Restart</button>
+    <button id="nxtLvl" class="astext" onclick="gameEngine.resetandHide()" style="display:none">Next Level</button>
     <button id="vol" class="astext">Volume</button>
-    <div id="volMenu" class="ctrlMenu" style="display:none;height:20%;">
+    <div id="volMenu" class="ctrlMenu" style="display:none;">
       <input id="muteMusic" class="checkbox" type="checkbox">
       Mute music
       <br/>
@@ -44,6 +45,8 @@
       A - Move left
       <br/>
       D - Move right
+      <br/>
+      E - Activate
       <br/>
       X - Reset
       <br/>
