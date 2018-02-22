@@ -283,7 +283,7 @@ function ScrapMetal(game, x, y, width, height) {
   this.startY = y;
   this.width = width;
   this.height = height;
-  this.boundingbox = new BoundingBox(this.x + 20, this.y + 30, (width * .5) - 40, (height * .5) - 20);
+  this.boundingbox = new BoundingBox(this.x + 20, this.y + 40, (width * .5) - 45, (height * .5) - 20);
   Entity.call(this, game, this.x, this.y);
 }
 
@@ -293,7 +293,7 @@ ScrapMetal.prototype.constructor = ScrapMetal;
 ScrapMetal.prototype.reset = function () {
   this.x = this.startX;
   this.y = this.startY;
-  this.boundingbox = new BoundingBox(this.x + 20, this.y + 30, (this.width * .5) - 40, (this.height * .5) - 20);
+  this.boundingbox = new BoundingBox(this.x + 20, this.y + 40, (this.width * .5) - 45, (this.height * .5) - 20);
 }
 
 ScrapMetal.prototype.update = function () {
@@ -302,7 +302,7 @@ ScrapMetal.prototype.update = function () {
 
 ScrapMetal.prototype.draw = function (ctx) {
   if (!this.game.running) return;
-  //ctx.strokeStyle = "green";
+  // ctx.strokeStyle = "green";
   // ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
    this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, .5);
 }
@@ -358,19 +358,19 @@ function Lever(game, x, y, width, height) {
   this.animation_reverse = new Animation(ASSET_MANAGER.getAsset("./img/lever.png"), 0, 0, 192, 192, .5, 5, false, true);
   this.animation_still_rev = new Animation(ASSET_MANAGER.getAsset("./img/lever_still_rev.png"), 0, 0, 192, 192, .5, 1, true, true);
   this.animation_still = new Animation(ASSET_MANAGER.getAsset("./img/lever_still.png"), 0, 0, 192, 192, .5, 1, true, false);
-  this.animation_door_open = new Animation(ASSET_MANAGER.getAsset("./img/door_open.png"), 0, 0, 192, 192, .5, 1, true, false);
-  this.animation_door_closed = new Animation(ASSET_MANAGER.getAsset("./img/door_closed.png"), 0, 0, 192, 192, .5, 1, true, false);
+  // this.animation_door_open = new Animation(ASSET_MANAGER.getAsset("./img/door_open.png"), 0, 0, 192, 192, .5, 1, true, false);
+  // this.animation_door_closed = new Animation(ASSET_MANAGER.getAsset("./img/door_closed.png"), 0, 0, 192, 192, .5, 1, true, false);
   this.x = x;
   this.y = y;
   this.startX = x;
   this.startY = y;
   this.width = width;
   this.height = height;
-  this.pull = false;
+  this.pressed = false;
   this.left = false;
   this.right = true;
   this.boundingbox = new BoundingBox(this.x + 55, this.y + 80, (this.width) - 115, (this.height) - 140);
-  this.doorbounding = new BoundingBox(this.x + 250, this.y - 50, this.width - 100, this.height - 20);
+  //this.doorbounding = new BoundingBox(this.x + 250, this.y - 50, this.width - 100, this.height - 20);
   Entity.call(this, game, this.x, this.y);
 }
 
@@ -384,11 +384,11 @@ Lever.prototype.reset = function () {
   this.animation_reverse = new Animation(ASSET_MANAGER.getAsset("./img/lever.png"), 0, 0, 192, 192, .5, 5, false, true);
   this.animation_still_rev = new Animation(ASSET_MANAGER.getAsset("./img/lever_still_rev.png"), 0, 0, 192, 192, .5, 1, true, true);
   this.animation_still = new Animation(ASSET_MANAGER.getAsset("./img/lever_still.png"), 0, 0, 192, 192, .5, 1, true, false);
-  this.animation_door_open = new Animation(ASSET_MANAGER.getAsset("./img/door_open.png"), 0, 0, 192, 192, .5, 1, true, false);
-  this.animation_door_closed = new Animation(ASSET_MANAGER.getAsset("./img/door_closed.png"), 0, 0, 192, 192, .5, 1, true, false);
+  // this.animation_door_open = new Animation(ASSET_MANAGER.getAsset("./img/door_open.png"), 0, 0, 192, 192, .5, 1, true, false);
+  // this.animation_door_closed = new Animation(ASSET_MANAGER.getAsset("./img/door_closed.png"), 0, 0, 192, 192, .5, 1, true, false);
   this.left = false;
   this.right = true;
-  this.pull = false;
+  this.pressed = false;
   this.game.action = false;
   this.boundingbox = new BoundingBox(this.x + 55, this.y + 80, (this.width) - 115, (this.height) - 140);
   this.doorbounding = new BoundingBox(this.x + 250, this.y - 50, this.width - 100, this.height - 20);
@@ -396,32 +396,31 @@ Lever.prototype.reset = function () {
 }
 
 Lever.prototype.update = function () {
-  //if (this.game.action) this.pull = true;
-  if (this.game.action && !this.pull){
+  if (this.game.action) this.pressed = true;
+  if (this.game.action && !this.pressed){
     ASSET_MANAGER.getAsset("./asset_lib/audio/solved.wav").play();
   }
-  if (!this.game.action) this.pull = false;
+  //if (!this.game.action) this.pressed = false;
   Entity.prototype.update.call(this);
 }
 
  Lever.prototype.draw = function(ctx) {
   if (!this.game.running) return;
 
-  if (this.pull) {
+  if (this.pressed) {
     this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1);
-    this.animation_door_closed.drawFrame(this.game.clockTick, ctx, this.x + 200, this.y - 50, 1);
+    //this.animation_door_closed.drawFrame(this.game.clockTick, ctx, this.x + 200, this.y - 50, 1);
     if (this.animation.elapsedTime >= this.animation.totalTime) {
       this.game.action = false;
-      this.on = true;
       this.right = false;
       this.left = true;
+    } if (this.left) {
+        this.animation_still_rev.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1);
+        //this.animation_door_closed.drawFrame(this.game.clockTick, ctx, this.x + 200, this.y - 50, 1);
     }
-  } else if (!this.pull && this.left) {
-      this.animation_still_rev.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1);
-      this.animation_door_closed.drawFrame(this.game.clockTick, ctx, this.x + 200, this.y - 50, 1);
   } else {
       this.animation_still.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1);
-      this.animation_door_open.drawFrame(this.game.clockTick, ctx, this.x + 200, this.y - 50, 1);
+      //this.animation_door_open.drawFrame(this.game.clockTick, ctx, this.x + 200, this.y - 50, 1);
   }
 
   // ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
@@ -526,7 +525,7 @@ Door.prototype.update = function () {
   if (this.connection.pressed) {
     this.opened = true;
     this.boundingbox = new BoundingBox(0, 0, 0, 0);
-  } else { 
+  } else {
     this.opened = false;
     this.boundingbox = new BoundingBox(this.x + 60, this.y - 50, this.width - 125, this.height + 40);
   }
@@ -798,6 +797,9 @@ Unicorn.prototype.update = function () {
       //if I collide with a box, I'm going to remember that box and also die if it's something else
       for (var i = 0; i < this.game.boxes.length; i++) {
           var box = this.game.boxes[i];
+          if(this.boundingbox.collide(box.boundingbox) && this.boundingbox.right >= box.boundingbox.left && !(this.platform === box) && (box instanceof Plat3)) {
+            console.log("help me");
+          }
           if (this.boundingbox.collide(box.boundingbox) && this.boundingbox.right >= box.boundingbox.left && !(this.platform === box) && !(box instanceof ScrapMetal) && !(box instanceof Lightning) && !(box instanceof Lever) && !(box instanceof Child)) {
               this.lastplattouch = box;
           }
@@ -811,7 +813,7 @@ Unicorn.prototype.update = function () {
           }
           if (this.boundingbox.collide(box.boundingbox) && this.boundingbox.right >= box.boundingbox.left && box instanceof Lever) {
             if (this.game.action) {
-              box.pull = true;
+              box.pressed = true;
             }
           }
           if (this.boundingbox.collide(box.boundingbox) && this.boundingbox.right >= box.boundingbox.left && box instanceof Child) {
@@ -834,7 +836,6 @@ Unicorn.prototype.update = function () {
               this.speed = 25;
           } else {
               //console.log(this.lastplattouch instanceof Box1);
-              console.log("SHIT");
               this.speed = 0;
           }
       } else {
@@ -896,7 +897,7 @@ Unicorn.prototype.update = function () {
           }
           if (this.boundingbox.collide(box.boundingbox) && this.boundingbox.right <= box.boundingbox.left && box instanceof Lever) {
             if (this.game.action) {
-              box.pull = true;
+              box.pressed = true;
             }
           }
           if (this.boundingbox.collide(box.boundingbox) && this.boundingbox.right <= box.boundingbox.left && box instanceof Child) {
@@ -956,7 +957,7 @@ Unicorn.prototype.update = function () {
           var box = this.game.boxes[i];
           if (this.boundingbox.collide(box.boundingbox) && (box instanceof Lever)) {
             if (this.game.action) {
-              box.pull = true;
+              box.pressed = true;
             }
           }
           if (this.boundingbox.collide(box.boundingbox) && box instanceof ScrapMetal) {
@@ -1009,7 +1010,7 @@ Unicorn.prototype.update = function () {
           } else if (thing instanceof Lightning) {
               thing.boundingbox = new BoundingBox(thing.x + 100, thing.y, (thing.width * .95) - 200, (thing.height * .95));
           } else if (thing instanceof ScrapMetal) {
-              thing.boundingbox = new BoundingBox(thing.x + 20, thing.y + 30, (thing.width * .5) - 40, (thing.height * .5) - 20);
+              thing.boundingbox = new BoundingBox(thing.x + 20, thing.y + 34, (thing.width * .5) - 45, (thing.height * .5) - 20);
           } else if (thing instanceof Plate) {
               thing.boundingbox = new BoundingBox(thing.x, thing.y + 80, thing.width * thing.scale, 10);
           } else {

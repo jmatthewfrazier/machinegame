@@ -288,11 +288,12 @@ ASSET_MANAGER.downloadAll(function () {
 //LEVER
 
   var lever_0 = new Lever(gameEngine, 3111, 575, 192, 192);
+  var door_1 = new Door(gameEngine, 3300, 525, 192, 192, lever_0);
 
 //PLATE
 
   var plate_0 = new Plate(gameEngine, 6800, 605, 192, 192);
-  var door_0 = new Door(gameEngine, 7200, 520, 192, 192, plate_0);  
+  var door_0 = new Door(gameEngine, 7200, 520, 192, 192, plate_0);
 
 //NPC
 
@@ -351,6 +352,7 @@ ASSET_MANAGER.downloadAll(function () {
   gameEngine.addEntity(light_4);
 
   gameEngine.addEntity(lever_0);
+  gameEngine.addEntity(door_1);
 
   gameEngine.addEntity(plate_0);
   gameEngine.addEntity(door_0);
@@ -395,6 +397,7 @@ ASSET_MANAGER.downloadAll(function () {
     boxes.push(light_4);
 
     boxes.push(lever_0);
+    boxes.push(door_1);
 
     boxes.push(plate_0);
     boxes.push(door_0);
