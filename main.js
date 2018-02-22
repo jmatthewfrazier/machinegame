@@ -221,6 +221,7 @@ ASSET_MANAGER.queueDownload("./asset_lib/audio/explosion.wav");
 ASSET_MANAGER.queueDownload("./asset_lib/audio/solved.wav");
 ASSET_MANAGER.queueDownload("./asset_lib/audio/ded.wav");
 ASSET_MANAGER.queueDownload("./asset_lib/audio/step.wav");
+ASSET_MANAGER.queueDownload("./asset_lib/audio/talking.wav");
 ASSET_MANAGER.queueDownload("./asset_lib/audio/jump.wav");
 
 //MUSIC LAST
@@ -410,8 +411,7 @@ ASSET_MANAGER.downloadAll(function () {
     gameEngine.addEntity(unicorn);
     gameEngine.addEntity(pg);
 
-    setText("THE MACHINE", "dialogue");
-    display(1, "dialogue");
+    pushText("THE MACHINE", "dialogue");
 
     gameEngine.init(ctx);
     gameEngine.start();
