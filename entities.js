@@ -425,7 +425,7 @@ Lever.prototype.update = function () {
   }
 
   // ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
-  // ctx.strokeRect(this.doorbounding.x, this.doorbounding.y, this.doorbounding.width, this.doorbounding.height);
+  ctx.strokeRect(this.doorbounding.x, this.doorbounding.y, this.doorbounding.width, this.doorbounding.height);
 }
 
 function Plate(game, x, y, width, height) {
@@ -526,7 +526,7 @@ Door.prototype.update = function () {
   if (this.connection.pressed) {
     this.opened = true;
     this.boundingbox = new BoundingBox(0, 0, 0, 0);
-  } else { 
+  } else {
     this.opened = false;
     this.boundingbox = new BoundingBox(this.x + 60, this.y - 50, this.width - 125, this.height + 40);
   }
@@ -630,6 +630,7 @@ Unicorn.prototype.reset = function () {
   this.platform = this.game.boxes[0];
   this.lastplattouch = this.game.boxes[0];
   this.pushing = false;
+  this.blocked = false;
   this.x = 0;
   this.y = this.platform.boundingbox.top - this.animation.frameHeight;
   this.boundingbox = new BoundingBox(this.x + 60, this.y + 10, this.resize, this.resize - 22);
@@ -810,6 +811,15 @@ Unicorn.prototype.update = function () {
              }
           }
           if (this.boundingbox.collide(box.boundingbox) && this.boundingbox.right >= box.boundingbox.left && box instanceof Lever) {
+            if (this.boundingbox.right >= box.doorbounding.left && this.boundingbox.collide(box.doorbounding) && !box.pull) {
+                if (this.scroll) {
+                    this.scroll = false;
+                    this.blocked = true;
+                } else {
+                    this.speed = 0;
+                    this.blocked = false;
+                }
+            }
             if (this.game.action) {
               box.pull = true;
             }
@@ -826,15 +836,13 @@ Unicorn.prototype.update = function () {
       //if I walk right into a box on the ground and that box is of type Box1 and it's not blocked by another box,
       //push that bish right
       //otherwise don't move because you can't push that kind of box
-      if (this.boundingbox.right >= this.lastplattouch.boundingbox.left && this.x < this.lastplattouch.x && this.boundingbox.collide(this.lastplattouch.boundingbox)  && !(this.lastplattouch instanceof Plat1) && !(this.lastplattouch instanceof Plat2) && !(this.lastplattouch instanceof Plat3)/* && !(this.lastplattouch instanceof Door)*/) {
+      if (this.boundingbox.right >= this.lastplattouch.boundingbox.left && this.x < this.lastplattouch.x && this.boundingbox.collide(this.lastplattouch.boundingbox)  && !(this.lastplattouch instanceof Plat1) && !(this.lastplattouch instanceof Plat2) && !(this.lastplattouch instanceof Plat3)  && !(this.lastplattouch instanceof Plate)) {
           if (this.lastplattouch instanceof Box1 && !this.jumping && !this.lastplattouch.blocked && !(this.platform instanceof Box1)) {
               this.lastplattouch.pushedLeft = false;
               this.lastplattouch.pushedRight = true;
               this.pushing = true;
               this.speed = 25;
           } else {
-              //console.log(this.lastplattouch instanceof Box1);
-              console.log("SHIT");
               this.speed = 0;
           }
       } else {
@@ -854,6 +862,19 @@ Unicorn.prototype.update = function () {
               this.platform = box;
           }
       }
+      for (var i = 0; i < this.game.boxes.length; i++) {
+          var box = this.game.boxes[i];
+          if (this.boundingbox.collide(box.boundingbox) && (box instanceof Plat3)) {
+              this.platform = box;
+          }
+          if (this.onBox && this.boundingbox.collide(box.boundingbox) && this.x < box.x && !(box instanceof Plat1) && !(box instanceof Plat2) && !(box instanceof Lightning) && !(box instanceof Plate) && !(box instanceof Lever) && !(box instanceof Child)) {
+              if (!(box === this.platform)) {
+                  this.speed = 0;
+              } else {
+                  this.speed = 75;
+              }
+          }
+      }
 
       //if I move right off of a box or a platform, I should fall off of the box. Right?
       if (this.boundingbox.left > this.platform.boundingbox.right && this.onBox && !this.jumping) {
@@ -861,7 +882,7 @@ Unicorn.prototype.update = function () {
           this.onBox = false;
       }
 
-      if (this.x >= 500) {
+      if (this.x >= 500 && !this.blocked) {
           this.scroll = true;
       } else {
           this.scroll = false;
@@ -907,7 +928,7 @@ Unicorn.prototype.update = function () {
       //If I'm moving left on the ground and I run into a box, and that box is of type Box1 and it's not blocked by another box
       //push that bish left
       //otherwise, stop moving because you can't push that type of box
-      if (this.boundingbox.left <= this.lastplattouch.boundingbox.right && this.boundingbox.collide(this.lastplattouch.boundingbox) && !(this.lastplattouch instanceof Plat1) && !(this.lastplattouch instanceof Plat2) && !(this.lastplattouch instanceof Plat3)/* && !(this.lastplattouch instanceof Door)*/) {
+      if (this.boundingbox.left <= this.lastplattouch.boundingbox.right && this.x > this.lastplattouch.x && this.boundingbox.collide(this.lastplattouch.boundingbox) && !(this.lastplattouch instanceof Plat1) && !(this.lastplattouch instanceof Plat2) && !(this.lastplattouch instanceof Plat3)  && !(this.lastplattouch instanceof Plate)) {
           if (this.lastplattouch instanceof Box1 && !this.jumping && !this.lastplattouch.blocked && !(this.platform instanceof Box1)) {
               this.speed = 25;
               this.lastplattouch.pushedRight = false;
@@ -932,6 +953,24 @@ Unicorn.prototype.update = function () {
               this.jumpAnimation.elapsedTime = 0;
               this.onBox = true;
               this.platform = box;
+          }
+      }
+
+
+
+      //if you're on a box and you collide with another box you should stop moving.
+      //except if that "box" is a platform, you should be able to move through its bounding box
+      for (var i = 0; i < this.game.boxes.length; i++) {
+          var box = this.game.boxes[i];
+          if (this.boundingbox.collide(box.boundingbox) && (box instanceof Plat3)) {
+              this.platform = box;
+          }
+          if (this.onBox && this.boundingbox.collide(box.boundingbox) && this.x > box.x && !(box instanceof Plat1) && !(box instanceof Plat2) && !(box instanceof Lightning) && !(box instanceof Plate) && !(box instanceof Lever) && !(box instanceof Child)) {
+              if (!(box === this.platform)) {
+                  this.speed = 0;
+              } else {
+                  this.speed = 75;
+              }
           }
       }
 
@@ -984,18 +1023,18 @@ Unicorn.prototype.update = function () {
       }
   }
 
-  //if you're on a box and you collide with another box you should stop moving.
-  //except if that "box" is a platform, you should be able to move through its bounding box
-  for (var i = 0; i < this.game.boxes.length; i++) {
-      var box = this.game.boxes[i];
-      if (this.onBox && this.boundingbox.collide(box.boundingbox) && !(box instanceof Plat1) && !(box instanceof Plat2) && !(box instanceof Lightning) && !(box instanceof Plate) && !(box instanceof Lever) && !(box instanceof Child)) {
-          if (!(box === this.platform)) {
-              this.speed = 0;
-          } else {
-              this.speed = 75;
-          }
-      }
-  }
+  // //if you're on a box and you collide with another box you should stop moving.
+  // //except if that "box" is a platform, you should be able to move through its bounding box
+  // for (var i = 0; i < this.game.boxes.length; i++) {
+  //     var box = this.game.boxes[i];
+  //     if (this.onBox && this.boundingbox.collide(box.boundingbox) && !(box instanceof Plat1) && !(box instanceof Plat2) && !(box instanceof Lightning) && !(box instanceof Plate) && !(box instanceof Lever) && !(box instanceof Child)) {
+  //         if (!(box === this.platform)) {
+  //             this.speed = 0;
+  //         } else {
+  //             this.speed = 75;
+  //         }
+  //     }
+  // }
 
   //this.boundingbox = new BoundingBox(this.x + 30, this.y + 10, this.resize - 60, this.resize - 22);
 
