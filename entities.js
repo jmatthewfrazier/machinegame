@@ -424,7 +424,7 @@ Lever.prototype.update = function () {
   }
 
   // ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
-  ctx.strokeRect(this.doorbounding.x, this.doorbounding.y, this.doorbounding.width, this.doorbounding.height);
+  // ctx.strokeRect(this.doorbounding.x, this.doorbounding.y, this.doorbounding.width, this.doorbounding.height);
 }
 
 function Plate(game, x, y, width, height) {
