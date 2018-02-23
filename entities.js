@@ -243,14 +243,16 @@ Plat3.prototype.draw = function (ctx) {
     // ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
 }
 
-function Child(game,x ,y, width, height) {
+function Child(game,x ,y, width, height, dialogue) {
   this.animation = new Animation(ASSET_MANAGER.getAsset("./img/kid_talk_l.png"), 0, 0, 192, 192, 1, 6, true, false);
   this.x = x;
   this.y = y;
+  this.dialogue = dialogue;
   this.startX = x;
   this.startY = y;
   this.width = width;
   this.height = height;
+  this.interaction = false;
   this.boundingbox = new BoundingBox(this.x + 20, this.y + 20, width - 130, height - 130);
   Entity.call(this, game, this.x, this.y);
 }
@@ -827,7 +829,10 @@ Unicorn.prototype.update = function () {
             }
           }
           if (this.boundingbox.collide(box.boundingbox) && this.boundingbox.right >= box.boundingbox.left && box instanceof Child) {
-              pushText("please help, there is a machine", "dialogue");
+            if(!box.interaction){
+              box.interaction = true;
+              pushText(box.dialogue, "dialogue");
+            }
           }
           if (this.boundingbox.collide(box.boundingbox) && this.boundingbox.right >= box.boundingbox.left && box instanceof EndLevel) {
               this.game.success();
@@ -923,7 +928,10 @@ Unicorn.prototype.update = function () {
             }
           }
           if (this.boundingbox.collide(box.boundingbox) && this.boundingbox.right <= box.boundingbox.left && box instanceof Child) {
-              pushText("please help, there is a machine", "dialogue");
+            if(!box.interaction){
+              box.interaction = true;
+              pushText(box.dialogue, "dialogue");
+            }
           }
       }
 
@@ -1009,7 +1017,10 @@ Unicorn.prototype.update = function () {
              }
           }
           if (this.boundingbox.collide(box.boundingbox) && box instanceof Child) {
-              pushText("please help, there is a machine", "dialogue");
+            if(!box.interaction){
+              box.interaction = true;
+              pushText(box.dialogue, "dialogue");
+            }
           }
       }
   }
