@@ -92,7 +92,7 @@ BoundingBox.prototype.collideLightning = function (oth) {
 }
 
 function PlayGame(game, x, y) {
-    Entity.call(this, game, x, y);
+    Entity.call(this, game, x-window.innerWidth/2, y);
 }
 
 PlayGame.prototype = new Entity();
@@ -179,12 +179,13 @@ Background.prototype.update = function () {
 Background.prototype.draw = function (ctx) {
 	let size = window.innerWidth;
 	let fillNum = (size/700) + 2;
-	let x = this.x - 700;
+  let x = gameEngine.Hero.x - window.innerWidth/2 - 700;
 	let y = this.y;
+  let ay = window.innerHeight - ASSET_MANAGER.getAsset(this.layer1).height;
   let bg = this;
 	for (i = 0; i < fillNum; i++){
-		ctx.drawImage(ASSET_MANAGER.getAsset(bg.layer0), x, y);
-		ctx.drawImage(ASSET_MANAGER.getAsset(bg.layer1), x, y);
+		ctx.drawImage(ASSET_MANAGER.getAsset(bg.layer0), x, y, ASSET_MANAGER.getAsset(bg.layer0).width, window.innerHeight);
+		ctx.drawImage(ASSET_MANAGER.getAsset(bg.layer1), x, ay);
 		x += 700;
 	}
 

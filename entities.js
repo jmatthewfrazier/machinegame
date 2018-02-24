@@ -372,7 +372,7 @@ function Lever(game, x, y, width, height) {
   this.left = false;
   this.right = true;
   this.boundingbox = new BoundingBox(this.x + 55, this.y + 80, (this.width) - 115, (this.height) - 140);
-  //this.doorbounding = new BoundingBox(this.x + 250, this.y - 50, this.width - 100, this.height - 20);
+  this.doorbounding = new BoundingBox(this.x + 250, this.y - 50, this.width - 100, this.height - 20);
   Entity.call(this, game, this.x, this.y);
 }
 
@@ -639,6 +639,9 @@ Unicorn.prototype.reset = function () {
 }
 
 Unicorn.prototype.update = function () {
+
+  xdelta = this.x;
+  ydelta = this.y;
 
     if (this.game.running) {
       if (this.y >= 900) {
@@ -1051,29 +1054,33 @@ Unicorn.prototype.update = function () {
 
   //this.boundingbox = new BoundingBox(this.x + 30, this.y + 10, this.resize - 60, this.resize - 22);
 
-  if (this.scroll && this.rightMove) {
-      for (var i = 0; i < this.game.boxes.length; i++) {
-          var thing = this.game.boxes[i];
-          thing.x -= this.speed * this.game.clockTick;
-          if (thing instanceof Lever) {
-              thing.boundingbox = new BoundingBox(thing.x + 55, thing.y + 80, (thing.width) - 115, (thing.height) - 140);
-              thing.doorbounding = new BoundingBox(thing.x + 250, thing.y - 50, (thing.width) - 100, (thing.height) - 20);
-          } else if (thing instanceof Lightning) {
-              thing.boundingbox = new BoundingBox(thing.x + 100, thing.y, (thing.width * .95) - 200, (thing.height * .95));
-          } else if (thing instanceof ScrapMetal) {
-              thing.boundingbox = new BoundingBox(thing.x + 20, thing.y + 34, (thing.width * .5) - 45, (thing.height * .5) - 20);
-          } else if (thing instanceof Plate) {
-              thing.boundingbox = new BoundingBox(thing.x, thing.y + 80, thing.width * thing.scale, 10);
-          } else {
-              thing.boundingbox = new BoundingBox(thing.x, thing.y, thing.boundingbox.width, thing.boundingbox.height);
-          }
-      }
-      this.speed = 0;
-  }
+  // if (this.scroll && this.rightMove) {
+  //     for (var i = 0; i < this.game.boxes.length; i++) {
+  //         var thing = this.game.boxes[i];
+  //         thing.x -= this.speed * this.game.clockTick;
+  //         if (thing instanceof Lever) {
+  //             thing.boundingbox = new BoundingBox(thing.x + 55, thing.y + 80, (thing.width) - 115, (thing.height) - 140);
+  //             thing.doorbounding = new BoundingBox(thing.x + 250, thing.y - 50, (thing.width) - 100, (thing.height) - 20);
+  //         } else if (thing instanceof Lightning) {
+  //             thing.boundingbox = new BoundingBox(thing.x + 100, thing.y, (thing.width * .95) - 200, (thing.height * .95));
+  //         } else if (thing instanceof ScrapMetal) {
+  //             thing.boundingbox = new BoundingBox(thing.x + 20, thing.y + 34, (thing.width * .5) - 45, (thing.height * .5) - 20);
+  //         } else if (thing instanceof Plate) {
+  //             thing.boundingbox = new BoundingBox(thing.x, thing.y + 80, thing.width * thing.scale, 10);
+  //         } else {
+  //             thing.boundingbox = new BoundingBox(thing.x, thing.y, thing.boundingbox.width, thing.boundingbox.height);
+  //         }
+  //     }
+  //     this.speed = 0;
+  // }
   //console.log(this.platform === this.game.boxes[0]);
 
     Entity.prototype.update.call(this);
   }
+
+  var that = this;
+  var ctx = document.getElementById("gameWorld").getContext('2d');
+  ctx.translate(window.innerWidth/2-that.x, 0);
 }
 
 Unicorn.prototype.draw = function (ctx) {
