@@ -1077,10 +1077,13 @@ Unicorn.prototype.update = function () {
 
     Entity.prototype.update.call(this);
   }
-
-  var that = this;
-  var ctx = document.getElementById("gameWorld").getContext('2d');
-  ctx.translate(window.innerWidth/2-that.x, 0);
+  if(this.x > window.innerWidth/2 
+    // && this.x < 8000 - window.innerWidth/2
+    ){
+    var that = this;
+    var ctx = document.getElementById("gameWorld").getContext('2d');
+    ctx.translate(window.innerWidth/2-that.x, 0);
+  }
 }
 
 Unicorn.prototype.draw = function (ctx) {
