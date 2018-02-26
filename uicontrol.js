@@ -2,6 +2,7 @@ function pushText(text, elementID){
 	ASSET_MANAGER.getAsset("./asset_lib/audio/talking.wav").play();
 	setText(text, elementID);
 	display(1, elementID);
+	hide(4000, 2000, "dialogue");
 }
 
 function talk(text, entity, height, ctx){
@@ -30,6 +31,7 @@ function hide(time, wait, elementID){
     	em.style.opacity = 0;
     	setTimeout(function() {
     		em.style.display = "none";
+				setFSize("dialogue", "170%");
   		}, wait);
   	}, time);
 }

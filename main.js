@@ -100,11 +100,13 @@ PlayGame.prototype.constructor = PlayGame;
 
 PlayGame.prototype.reset = function () {
     this.game.running = false;
+    music.muted = true;
 }
 
 PlayGame.prototype.update = function () {
     if (this.game.click){
         if(!this.game.running){
+            music.muted = false;
             music.volume = 0.5;
             music.loop = true;
             music.play();
@@ -112,7 +114,7 @@ PlayGame.prototype.update = function () {
     	this.game.running = true;
     	// hide(0, 2000, "dialogue");
       setTimeout(function () {
-        setFSize("dialogue", "300%");
+        setFSize("dialogue", "170%");
       }, 2100)
     }
 }
@@ -136,6 +138,8 @@ function Background(game) {
   this.x = 0;
   this.y = 0;
   this.game = game;
+  this.layer0 = "./img/Image_0005.jpg";
+  this.layer1 = "./img/Image_0009.png";
 }
 
 Background.prototype = new Entity();
@@ -165,7 +169,7 @@ Background.prototype.update = function () {
       }
     }
     if (this.x > 700) this.x = 0;
-    if (this.x < 0) this.x = 698;
+    if (this.x < 0) this.x = 700;
   }
 
 
@@ -173,14 +177,15 @@ Background.prototype.update = function () {
 }
 
 Background.prototype.draw = function (ctx) {
-	let size = window.innerWidth;
-	let fillNum = (size/700) + 2;
-	let x = this.x - 699;
+	let fillNum = (8000/700) + 2;
+  let x = 0 - 700;
 	let y = this.y;
+  let ay = window.innerHeight - ASSET_MANAGER.getAsset(this.layer1).height;
+  let bg = this;
 	for (i = 0; i < fillNum; i++){
-		ctx.drawImage(ASSET_MANAGER.getAsset("./img/Image_0005.jpg"), x, y);
-		ctx.drawImage(ASSET_MANAGER.getAsset("./img/Image_0009.png"), x, y);
-		x += 699;
+		ctx.drawImage(ASSET_MANAGER.getAsset(bg.layer0), x, y, ASSET_MANAGER.getAsset(bg.layer0).width, window.innerHeight);
+		ctx.drawImage(ASSET_MANAGER.getAsset(bg.layer1), x, ay);
+		x += 700;
 	}
 
 }
@@ -188,6 +193,119 @@ Background.prototype.draw = function (ctx) {
 // the "main" code begins here
 var gameEngine = new GameEngine();
 var ASSET_MANAGER = new AssetManager();
+
+function level_1(gameEngine){
+    var statics = [
+      //BOX 1 (PUSHING)
+        new Box1(gameEngine, 500, 627, 144, 144),
+        new Box1(gameEngine, 1678, 627, 144, 144),
+        new Box1(gameEngine, 4900, 627, 144, 144),
+        new Box1(gameEngine, 5950, 627, 144, 144),
+        new Box1(gameEngine, 7000, 627, 144, 144),
+      //BOX 2 (NO PUSH)
+        new Box2(gameEngine, 300, 627, 144, 144),
+        new Box2(gameEngine, 700, 555, 144, 144),
+        new Box2(gameEngine, 700, 627, 144, 144),
+        new Box2(gameEngine, 3800, 627, 144, 144),
+        new Box2(gameEngine, 6200, 627, 144, 144),
+        new Box2(gameEngine, 6200, 555, 144, 144),
+        new Box2(gameEngine, 6372, 555, 144, 144),
+        new Box2(gameEngine, 6372, 627, 144, 144),
+        new Box2(gameEngine, 6372, 483, 144, 144),
+      //PLAT1
+        new Plat1(gameEngine, 800, 540, 553, 92),
+        new Plat1(gameEngine, 1700, 540, 553, 92),
+        new Plat1(gameEngine, 3950, 540, 553, 92),
+      //PLAT2
+        new Plat2(gameEngine, 5275, 600, 553, 92),
+        new Plat2(gameEngine, 5500, 500, 553, 92),
+      //SCRAP METAL
+        new ScrapMetal(gameEngine, 1400, 640, 192, 192),
+        new ScrapMetal(gameEngine, 2390, 640, 192, 192),
+        new ScrapMetal(gameEngine, 2740, 640, 192, 192),
+        new ScrapMetal(gameEngine, 3550, 640, 192, 192),
+        new ScrapMetal(gameEngine, 4510, 640, 192, 192),
+      //LIGHTNING
+        new Lightning(gameEngine, 1212, 0, 192, 768),
+        new Lightning(gameEngine, 4200, 0, 192, 768),
+        new Lightning(gameEngine, 4358, 0, 192, 768),
+        new Lightning(gameEngine, 4725, 0, 192, 768),
+        new Lightning(gameEngine, 2500, 0, 192, 768),
+      //NPC
+        new Child(gameEngine, 400, 620, 192, 192, "see that red box? try pushing it"),
+        new EndLevel(gameEngine, 7700, 620, 500, 500),
+        new Plat3(gameEngine, 0, 700, 350, 87)
+    ];
+    //LEVER
+      var lever_0 = new Lever(gameEngine, 3111, 575, 192, 192);
+      var door_0 = new Door(gameEngine, 3300, 525, 192, 192, lever_0);
+    //PLATE
+      var plate_0 = new Plate(gameEngine, 6800, 605, 192, 192);
+      var door_1 = new Door(gameEngine, 7200, 520, 192, 192, plate_0);
+      statics.push(lever_0);
+      statics.push(door_0);
+      statics.push(plate_0);
+      statics.push(door_1);
+    for (var i = 1; i < 50; i++) {
+      if (i !== 3 && i !== 7 && i !== 15 && i !== 20) {
+        statics.unshift(new Plat3(gameEngine, i * (349 * .75), 700, 350, 87));
+      }
+    }
+    set_level(gameEngine, statics);
+}
+
+function level_2(gameEngine){
+  var statics = [
+      new EndLevel(gameEngine, 7700, 620, 500, 500),
+      new Plat3(gameEngine, 0, 700, 350, 87)
+  ];
+  //LEVER
+    var lever_0 = new Lever(gameEngine, 3111, 575, 192, 192);
+    var door_0 = new Door(gameEngine, 3300, 525, 192, 192, lever_0);
+  //PLATE
+    var plate_0 = new Plate(gameEngine, 6800, 605, 192, 192);
+    var door_1 = new Door(gameEngine, 7200, 520, 192, 192, plate_0);
+    statics.push(lever_0);
+    statics.push(door_0);
+    statics.push(plate_0);
+    statics.push(door_1);
+  for (var i = 1; i < 50; i++) {
+    if (i !== 3 && i !== 7 && i !== 15 && i !== 20) {
+      statics.unshift(new Plat3(gameEngine, i * (349 * .75), 700, 350, 87));
+    }
+  }
+  gameEngine.Background.layer0 = "./img/L2_layer0.png";
+  gameEngine.Background.layer1 = "./img/L2_layer1.png";
+  music = ASSET_MANAGER.getAsset("./asset_lib/audio/In_Your_Prime_OC.mp3");
+  set_level(gameEngine, statics);
+}
+
+function set_level(gameEngine, statics){
+  boxes = [];
+  gameEngine.addEntity(gameEngine.Background);
+  statics.forEach(function(entity){
+    gameEngine.addEntity(entity);
+    boxes.push(entity);
+  });
+  gameEngine.boxes = boxes;
+  if(gameEngine.Hero){
+    gameEngine.addEntity(gameEngine.Hero);
+  }
+  gameEngine.playState.reset();
+  gameEngine.addEntity(gameEngine.playState);
+}
+
+function nextLevel(gameEngine){
+  gameEngine.resetandHide();
+  if (gameEngine.lvl == 1){
+    gameEngine.clear();
+    level_2(gameEngine);
+    setText("Concourse", "dialogue");
+  	display(1, "dialogue");
+    hide(2000, 2000, "dialogue");
+    gameEngine.lvl++;
+  }
+}
 
 ASSET_MANAGER.queueDownload("./img/box1.png");
 ASSET_MANAGER.queueDownload("./img/box2.png");
@@ -206,6 +324,8 @@ ASSET_MANAGER.queueDownload("./img/kid_talk_l.png");
 ASSET_MANAGER.queueDownload("./img/Image_0005.jpg");
 ASSET_MANAGER.queueDownload("./img/Image_0009.png");
 ASSET_MANAGER.queueDownload("./img/Image_0010.png");
+ASSET_MANAGER.queueDownload("./img/L2_layer0.png");
+ASSET_MANAGER.queueDownload("./img/L2_layer1.png");
 ASSET_MANAGER.queueDownload("./img/woodplat.png");
 ASSET_MANAGER.queueDownload("./img/lightning.png");
 ASSET_MANAGER.queueDownload("./img/scrap.png");
@@ -225,6 +345,7 @@ ASSET_MANAGER.queueDownload("./asset_lib/audio/talking.wav");
 ASSET_MANAGER.queueDownload("./asset_lib/audio/jump.wav");
 
 //MUSIC LAST
+ASSET_MANAGER.queueDownload("./asset_lib/audio/In_Your_Prime_OC.mp3");
 ASSET_MANAGER.queueDownload("./asset_lib/audio/Aquatic_Ambiance_2.mp3");
 
 ASSET_MANAGER.downloadAll(function () {
@@ -236,188 +357,21 @@ ASSET_MANAGER.downloadAll(function () {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
-    var boxes = [];
-
     var bg = new Background(gameEngine);
-
-//BOX 1 (PUSHING)
-
-  var box1_0 = new Box1(gameEngine, 500, 627, 144, 144);
-  var box1_1 = new Box1(gameEngine, 1678, 627, 144, 144);
-  var box1_2 = new Box1(gameEngine, 4900, 627, 144, 144);
-  var box1_3 = new Box1(gameEngine, 5950, 627, 144, 144);
-  var box1_4 = new Box1(gameEngine, 7000, 627, 144, 144);
-
-//BOX 2 (NO PUSH)
-  var box2_5 = new Box2(gameEngine, 300, 627, 144, 144);
-  var box2_0 = new Box2(gameEngine, 700, 555, 144, 144);
-  var box2_1 = new Box2(gameEngine, 700, 627, 144, 144);
-  var box2_2 = new Box2(gameEngine, 3800, 627, 144, 144);
-  var box2_7 = new Box2(gameEngine, 6200, 627, 144, 144);
-  var box2_8 = new Box2(gameEngine, 6200, 555, 144, 144);
-  var box2_3 = new Box2(gameEngine, 6372, 555, 144, 144);
-  var box2_4 = new Box2(gameEngine, 6372, 627, 144, 144);
-  var box2_6 = new Box2(gameEngine, 6372, 483, 144, 144);
-
-//PLAT1
-
-  var plat1_0 = new Plat1(gameEngine, 800, 540, 553, 92);
-  var plat1_1 = new Plat1(gameEngine, 1700, 540, 553, 92);
-  var plat1_2 = new Plat1(gameEngine, 3950, 540, 553, 92);
-
-//PLAT2
-
-  var plat2_0 = new Plat2(gameEngine, 5275, 600, 553, 92);
-  var plat2_1 = new Plat2(gameEngine, 5500, 500, 553, 92);
-
-//SCRAP METAL
-
-  var scrap_0 = new ScrapMetal(gameEngine, 1400, 640, 192, 192);
-  var scrap_1 = new ScrapMetal(gameEngine, 2390, 640, 192, 192);
-  var scrap_2 = new ScrapMetal(gameEngine, 2740, 640, 192, 192);
-  var scrap_3 = new ScrapMetal(gameEngine, 3550, 640, 192, 192);
-  var scrap_4 = new ScrapMetal(gameEngine, 4510, 640, 192, 192);
-
-//LIGHTNING
-
-  var light_0 = new Lightning(gameEngine, 1212, 0, 192, 768);
-  var light_1 = new Lightning(gameEngine, 4200, 0, 192, 768);
-  var light_2 = new Lightning(gameEngine, 4358, 0, 192, 768);
-  var light_3 = new Lightning(gameEngine, 4725, 0, 192, 768);
-  var light_4 = new Lightning(gameEngine, 2500, 0, 192, 768);
-
-//LEVER
-
-  var lever_0 = new Lever(gameEngine, 3111, 575, 192, 192);
-  var door_1 = new Door(gameEngine, 3300, 525, 192, 192, lever_0);
-
-//PLATE
-
-  var plate_0 = new Plate(gameEngine, 6800, 605, 192, 192);
-  var door_0 = new Door(gameEngine, 7200, 520, 192, 192, plate_0);
-
-//NPC
-
-  var kid = new Child(gameEngine, 7600, 620, 192, 192);
-
-  var end = new EndLevel(gameEngine, 7700, 620, 500, 500);
-
-  var floorplat1 = new Plat3(gameEngine, 0, 700, 350, 87);
-
-  gameEngine.addEntity(bg);
-  gameEngine.addEntity(floorplat1);
-
-
-  boxes.push(floorplat1);
-  for (var i = 1; i < 50; i++) {
-    if (i !== 3 && i !== 7 && i !== 15 && i !== 20) {
-      var plat3 = new Plat3(gameEngine, i * (349 * .75), 700, 350, 87);
-      gameEngine.addEntity(plat3);
-      boxes.push(plat3);
-    }
-  }
-
-  gameEngine.addEntity(box1_0);
-  gameEngine.addEntity(box1_1);
-  gameEngine.addEntity(box1_2);
-  gameEngine.addEntity(box1_3);
-  gameEngine.addEntity(box1_4);
-
-  gameEngine.addEntity(box2_0);
-  gameEngine.addEntity(box2_1);
-  gameEngine.addEntity(box2_2);
-  gameEngine.addEntity(box2_3);
-  gameEngine.addEntity(box2_4);
-  gameEngine.addEntity(box2_5);
-  gameEngine.addEntity(box2_6);
-  gameEngine.addEntity(box2_7);
-  gameEngine.addEntity(box2_8);
-
-  gameEngine.addEntity(plat1_0);
-  gameEngine.addEntity(plat1_1);
-  gameEngine.addEntity(plat1_2);
-
-  gameEngine.addEntity(plat2_0);
-  gameEngine.addEntity(plat2_1);
-
-  gameEngine.addEntity(scrap_0);
-  gameEngine.addEntity(scrap_1);
-  gameEngine.addEntity(scrap_2);
-  gameEngine.addEntity(scrap_3);
-  gameEngine.addEntity(scrap_4);
-
-  gameEngine.addEntity(light_0);
-  gameEngine.addEntity(light_1);
-  gameEngine.addEntity(light_2);
-  gameEngine.addEntity(light_3);
-  gameEngine.addEntity(light_4);
-
-  gameEngine.addEntity(lever_0);
-  gameEngine.addEntity(door_1);
-
-  gameEngine.addEntity(plate_0);
-  gameEngine.addEntity(door_0);
-
-  gameEngine.addEntity(kid);
-
-  gameEngine.addEntity(end);
-
-    boxes.push(box1_0);
-    boxes.push(box1_1);
-    boxes.push(box1_2);
-    boxes.push(box1_3);
-    boxes.push(box1_4);
-
-    boxes.push(box2_0);
-    boxes.push(box2_1);
-    boxes.push(box2_2);
-    boxes.push(box2_3);
-    boxes.push(box2_4);
-    boxes.push(box2_5);
-    boxes.push(box2_6);
-    boxes.push(box2_7);
-    boxes.push(box2_8);
-
-    boxes.push(plat1_0);
-    boxes.push(plat1_1);
-    boxes.push(plat1_2);
-
-    boxes.push(plat2_0);
-    boxes.push(plat2_1);
-
-    boxes.push(scrap_0);
-    boxes.push(scrap_1);
-    boxes.push(scrap_2);
-    boxes.push(scrap_3);
-    boxes.push(scrap_4);
-
-    boxes.push(light_0);
-    boxes.push(light_1);
-    boxes.push(light_2);
-    boxes.push(light_3);
-    boxes.push(light_4);
-
-    boxes.push(lever_0);
-    boxes.push(door_1);
-
-    boxes.push(plate_0);
-    boxes.push(door_0);
-
-    boxes.push(kid);
-
-    boxes.push(end);
-
-    gameEngine.boxes = boxes;
-
-    var unicorn = new Unicorn(gameEngine);
     var pg = new PlayGame(gameEngine, canvas.width/2, canvas.height/2);
-    gameEngine.addEntity(unicorn);
-    gameEngine.addEntity(pg);
+    gameEngine.Background = bg;
+    gameEngine.playState = pg;
+    gameEngine.lvl = 1;
+    level_1(gameEngine);
+    var unicorn = new Unicorn(gameEngine);
+    gameEngine.Hero = unicorn;
+    gameEngine.addEntity(gameEngine.Hero);
 
-    pushText("THE MACHINE", "dialogue");
+    setText("THE MACHINE", "dialogue");
+  	display(1, "dialogue");
 
     gameEngine.init(ctx);
     gameEngine.start();
 });
 
-var music = ASSET_MANAGER.sounds.pop();
+var music = ASSET_MANAGER.getAsset("./asset_lib/audio/Aquatic_Ambiance_2.mp3");

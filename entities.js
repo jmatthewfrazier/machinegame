@@ -243,14 +243,16 @@ Plat3.prototype.draw = function (ctx) {
     // ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
 }
 
-function Child(game,x ,y, width, height) {
+function Child(game,x ,y, width, height, dialogue) {
   this.animation = new Animation(ASSET_MANAGER.getAsset("./img/kid_talk_l.png"), 0, 0, 192, 192, 1, 6, true, false);
   this.x = x;
   this.y = y;
+  this.dialogue = dialogue;
   this.startX = x;
   this.startY = y;
   this.width = width;
   this.height = height;
+  this.interaction = false;
   this.boundingbox = new BoundingBox(this.x + 20, this.y + 20, width - 130, height - 130);
   Entity.call(this, game, this.x, this.y);
 }
@@ -370,7 +372,7 @@ function Lever(game, x, y, width, height) {
   this.left = false;
   this.right = true;
   this.boundingbox = new BoundingBox(this.x + 55, this.y + 80, (this.width) - 115, (this.height) - 140);
-  //this.doorbounding = new BoundingBox(this.x + 250, this.y - 50, this.width - 100, this.height - 20);
+  this.doorbounding = new BoundingBox(this.x + 250, this.y - 50, this.width - 100, this.height - 20);
   Entity.call(this, game, this.x, this.y);
 }
 
@@ -638,6 +640,9 @@ Unicorn.prototype.reset = function () {
 
 Unicorn.prototype.update = function () {
 
+  xdelta = this.x;
+  ydelta = this.y;
+
     if (this.game.running) {
       if (this.y >= 900) {
         this.dead = true;
@@ -827,7 +832,10 @@ Unicorn.prototype.update = function () {
             }
           }
           if (this.boundingbox.collide(box.boundingbox) && this.boundingbox.right >= box.boundingbox.left && box instanceof Child) {
-              pushText("please help, there is a machine", "dialogue");
+            if(!box.interaction){
+              box.interaction = true;
+              pushText(box.dialogue, "dialogue");
+            }
           }
           if (this.boundingbox.collide(box.boundingbox) && this.boundingbox.right >= box.boundingbox.left && box instanceof EndLevel) {
               this.game.success();
@@ -923,7 +931,10 @@ Unicorn.prototype.update = function () {
             }
           }
           if (this.boundingbox.collide(box.boundingbox) && this.boundingbox.right <= box.boundingbox.left && box instanceof Child) {
-              pushText("please help, there is a machine", "dialogue");
+            if(!box.interaction){
+              box.interaction = true;
+              pushText(box.dialogue, "dialogue");
+            }
           }
       }
 
@@ -1009,7 +1020,10 @@ Unicorn.prototype.update = function () {
              }
           }
           if (this.boundingbox.collide(box.boundingbox) && box instanceof Child) {
-              pushText("please help, there is a machine", "dialogue");
+            if(!box.interaction){
+              box.interaction = true;
+              pushText(box.dialogue, "dialogue");
+            }
           }
       }
   }
@@ -1040,29 +1054,38 @@ Unicorn.prototype.update = function () {
 
   //this.boundingbox = new BoundingBox(this.x + 30, this.y + 10, this.resize - 60, this.resize - 22);
 
-  if (this.scroll && this.rightMove) {
-      for (var i = 0; i < this.game.boxes.length; i++) {
-          var thing = this.game.boxes[i];
-          thing.x -= this.speed * this.game.clockTick;
-          if (thing instanceof Lever) {
-              thing.boundingbox = new BoundingBox(thing.x + 55, thing.y + 80, (thing.width) - 115, (thing.height) - 140);
-              thing.doorbounding = new BoundingBox(thing.x + 250, thing.y - 50, (thing.width) - 100, (thing.height) - 20);
-          } else if (thing instanceof Lightning) {
-              thing.boundingbox = new BoundingBox(thing.x + 100, thing.y, (thing.width * .95) - 200, (thing.height * .95));
-          } else if (thing instanceof ScrapMetal) {
-              thing.boundingbox = new BoundingBox(thing.x + 20, thing.y + 34, (thing.width * .5) - 45, (thing.height * .5) - 20);
-          } else if (thing instanceof Plate) {
-              thing.boundingbox = new BoundingBox(thing.x, thing.y + 80, thing.width * thing.scale, 10);
-          } else {
-              thing.boundingbox = new BoundingBox(thing.x, thing.y, thing.boundingbox.width, thing.boundingbox.height);
-          }
-      }
-      this.speed = 0;
-  }
+  // if (this.scroll && this.rightMove) {
+  //     for (var i = 0; i < this.game.boxes.length; i++) {
+  //         var thing = this.game.boxes[i];
+  //         thing.x -= this.speed * this.game.clockTick;
+  //         if (thing instanceof Lever) {
+  //             thing.boundingbox = new BoundingBox(thing.x + 55, thing.y + 80, (thing.width) - 115, (thing.height) - 140);
+  //             thing.doorbounding = new BoundingBox(thing.x + 250, thing.y - 50, (thing.width) - 100, (thing.height) - 20);
+  //         } else if (thing instanceof Lightning) {
+  //             thing.boundingbox = new BoundingBox(thing.x + 100, thing.y, (thing.width * .95) - 200, (thing.height * .95));
+  //         } else if (thing instanceof ScrapMetal) {
+  //             thing.boundingbox = new BoundingBox(thing.x + 20, thing.y + 34, (thing.width * .5) - 45, (thing.height * .5) - 20);
+  //         } else if (thing instanceof Plate) {
+  //             thing.boundingbox = new BoundingBox(thing.x, thing.y + 80, thing.width * thing.scale, 10);
+  //         } else {
+  //             thing.boundingbox = new BoundingBox(thing.x, thing.y, thing.boundingbox.width, thing.boundingbox.height);
+  //         }
+  //     }
+  //     this.speed = 0;
+  // }
   //console.log(this.platform === this.game.boxes[0]);
 
     Entity.prototype.update.call(this);
   }
+
+  var that = this;
+  var ctx = document.getElementById("gameWorld").getContext('2d');
+  if(this.x > window.innerWidth/2 && this.x <= 7700 - window.innerWidth/2){
+    ctx.translate(window.innerWidth/2-that.x, 0);
+  } else if (this.x > 7700 - window.innerWidth/2){
+    ctx.translate(window.innerWidth-7700, 0);
+  }
+  
 }
 
 Unicorn.prototype.draw = function (ctx) {

@@ -194,8 +194,6 @@ GameEngine.prototype.draw = function () {
     this.ctx.restore();
 }
 
-
-
 GameEngine.prototype.update = function () {
     var entitiesCount = this.entities.length;
 
@@ -241,6 +239,12 @@ GameEngine.prototype.togglePause = function () {
     }
 }
 
+GameEngine.prototype.clear = function () {
+  this.paused = true;
+  this.boxes = [];
+  this.entities = [];
+}
+
 function Entity(game, x, y) {
     this.game = game;
     this.x = x;
@@ -280,4 +284,3 @@ Entity.prototype.rotateAndCache = function (image, angle) {
     //offscreenCtx.strokeRect(0,0,size,size);
     return offscreenCanvas;
 }
-
