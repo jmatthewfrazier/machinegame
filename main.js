@@ -153,7 +153,7 @@ Background.prototype.reset = function () {
 Background.prototype.update = function () {
 	let canvas = document.getElementById("gameWorld");
 	canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+  canvas.height = window.innerHeight;
   if (this.game.running) {
     if (this.game.rightScroll) this.rightScrolling = true;
     if (this.game.leftScroll) this.leftScrolling = true;
@@ -180,10 +180,10 @@ Background.prototype.draw = function (ctx) {
 	let fillNum = (8000/700) + 2;
   let x = 0 - 700;
 	let y = this.y;
-  let ay = window.innerHeight - ASSET_MANAGER.getAsset(this.layer1).height;
+  let ay = window.innerHeight/gameEngine.yscale - ASSET_MANAGER.getAsset(this.layer1).height;
   let bg = this;
 	for (i = 0; i < fillNum; i++){
-		ctx.drawImage(ASSET_MANAGER.getAsset(bg.layer0), x, y, ASSET_MANAGER.getAsset(bg.layer0).width, window.innerHeight);
+		ctx.drawImage(ASSET_MANAGER.getAsset(bg.layer0), x, y, ASSET_MANAGER.getAsset(bg.layer0).width, window.innerHeight/gameEngine.yscale);
 		ctx.drawImage(ASSET_MANAGER.getAsset(bg.layer1), x, ay);
 		x += 700;
 	}
@@ -358,7 +358,7 @@ ASSET_MANAGER.downloadAll(function () {
     canvas.height = window.innerHeight;
 
     var bg = new Background(gameEngine);
-    var pg = new PlayGame(gameEngine, canvas.width/2, canvas.height/2);
+    var pg = new PlayGame(gameEngine, (canvas.width/2), (canvas.height/2));
     gameEngine.Background = bg;
     gameEngine.playState = pg;
     gameEngine.lvl = 1;

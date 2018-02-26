@@ -1080,12 +1080,12 @@ Unicorn.prototype.update = function () {
 
   var that = this;
   var ctx = document.getElementById("gameWorld").getContext('2d');
-  if(this.x > window.innerWidth/2 && this.x <= 7700 - window.innerWidth/2){
-    ctx.translate(window.innerWidth/2-that.x, 0);
-  } else if (this.x > 7700 - window.innerWidth/2){
-    ctx.translate(window.innerWidth-7700, 0);
+  if(this.x*gameEngine.yscale > window.innerWidth/2 && this.x*gameEngine.yscale <= 7700*gameEngine.yscale - window.innerWidth/2){
+    ctx.translate(window.innerWidth/2-that.x*gameEngine.yscale, 0);
+  } else if (this.x*gameEngine.yscale > 7700*gameEngine.yscale - window.innerWidth/2){
+    ctx.translate(window.innerWidth-7700*gameEngine.yscale, 0);
   }
-  
+
 }
 
 Unicorn.prototype.draw = function (ctx) {
