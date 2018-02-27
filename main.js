@@ -191,8 +191,8 @@ Background.prototype.draw = function (ctx) {
   		x += 700;
   	}
   } else {
-    for (i = -8000; i <= window.innerHeight; i += window.innerHeight -5){
-      ctx.drawImage(ASSET_MANAGER.getAsset(bg.layer0), 0, i, window.innerWidth/gameEngine.yscale, window.innerHeight);
+    for (i = -8000; i <= 2*window.innerHeight/gameEngine.yscale; i += window.innerHeight/gameEngine.yscale - 5){
+      ctx.drawImage(ASSET_MANAGER.getAsset(bg.layer0), 0, i, window.innerWidth/gameEngine.yscale, window.innerHeight/gameEngine.yscale);
   		ctx.drawImage(ASSET_MANAGER.getAsset(bg.layer1), 0, i);
     }
   }
