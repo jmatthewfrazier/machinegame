@@ -52,6 +52,14 @@ Box1.prototype.update = function () {
         this.x -= this.speed * this.game.clockTick;
         this.boundingbox = new BoundingBox(this.x, this.y, this.width * .5, this.height *.5);
     }
+
+    // for (var i = 0; i < this.game.boxes.length; i++) {
+    //     var box = this.game.boxes[i];
+    //     if (this.boundingbox.collide(box.boundingbox) && this.boundingbox.top >= box.boundingbox.bottom && (box instanceof Box1 || box instanceof Box2)) {
+    //       console.log("im on top");
+    //         box.boundingbox = new BoundingBox(0, 0,0 ,0);
+    //     }
+    // }
 }
 
 Box1.prototype.draw = function (ctx) {
@@ -89,7 +97,21 @@ Box2.prototype.reset = function() {
 }
 
 Box2.prototype.update = function () {
-
+  // for (var i = 0; i < this.game.boxes.length; i++) {
+  //     var box = this.game.boxes[i];
+  //     if (this.boundingbox.collide(box.boundingbox) && this.boundingbox.top < box.boundingbox.bottom && (box instanceof Box1 || box instanceof Box2)) {
+  //       console.log("hello horses");
+  //       this.boundingbox.top = this.boundingbox.bottom - 144;
+        // var r = this.boundingbox.width;
+        // var l = this.boundingbox.left;
+        // var t = this.boundingbox.top;
+        // var b = this.boundingbox.height;
+        // this.boundingbox = new BoundingBox(l, t - 144, r, b);
+      // } else {
+      //   console.log("goodbye horses");
+        // this.boundingbox.top = this.boundingbox.top + 144;
+  //     }
+  // }
 }
 
 Box2.prototype.draw = function (ctx) {
@@ -1085,7 +1107,7 @@ Unicorn.prototype.update = function () {
   } else if (this.x > 7700 - window.innerWidth/2){
     ctx.translate(window.innerWidth-7700, 0);
   }
-  
+
 }
 
 Unicorn.prototype.draw = function (ctx) {
