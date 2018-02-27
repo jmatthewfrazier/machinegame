@@ -126,7 +126,7 @@ PlayGame.prototype.draw = function (ctx) {
         ctx.fillStyle = "white";
         if (this.game.mouse) { ctx.fillStyle = "#ddd"; }
         if (!this.game.dead) {
-        	ctx.fillText("click to begin", this.x, this.y);
+        	ctx.fillText("click to begin", this.x + 100, this.y);
         }
         else {
             ctx.fillText("try again", this.x, this.y);
@@ -240,8 +240,8 @@ function level_1(gameEngine){
         new Lightning(gameEngine, 4725, 0, 192, 768),
         new Lightning(gameEngine, 2500, 0, 192, 768),
       //NPC
-        new Child(gameEngine, 400, 620, 192, 192, "see that red box? try pushing it"),
-        new EndLevel(gameEngine, 300, 620, 500, 500),
+        new Child(gameEngine, 400, 620, 192, 192, "see that grey box? try pushing it"),
+        new EndLevel(gameEngine, 7200, 620, 500, 500),
         new Plat3(gameEngine, 0, 700, 350, 87)
     ];
     //LEVER
@@ -294,7 +294,7 @@ function level_3(gameEngine){
       new Plat3(gameEngine, 0, 700, 350, 87)
   ];
   for (var i = 1; i < 300; i++) {
-    statics.unshift(new Plat3(gameEngine, 300, -3000 + i * (100 * .75), 350, 87));
+    statics.unshift(new Plat3(gameEngine, 300, -3000 + i * (200 * .75), 350, 87));
   }
   gameEngine.Background.layer0 = "./img/Hallway.bmp";
   gameEngine.Background.layer1 = "./img/layer1_dummy.png";
@@ -359,6 +359,7 @@ ASSET_MANAGER.queueDownload("./img/L2_layer1.png");
 ASSET_MANAGER.queueDownload("./img/Hallway.bmp");
 ASSET_MANAGER.queueDownload("./img/layer1_dummy.png");
 ASSET_MANAGER.queueDownload("./img/woodplat.png");
+ASSET_MANAGER.queueDownload("./img/woodplat copy.png");
 ASSET_MANAGER.queueDownload("./img/lightning.png");
 ASSET_MANAGER.queueDownload("./img/scrap.png");
 ASSET_MANAGER.queueDownload("./img/plate.png");
