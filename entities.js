@@ -9,7 +9,7 @@ function Box1(game, x, y, width, height) {
     this.animation = new Animation(ASSET_MANAGER.getAsset("./img/box1.png"), 0, 0, 144, 144, 1, 1, true, false);
     this.ground = 600;
     this.boxes = true;
-    this.speed = 25;
+    this.speed = 50;
     this.pushedRight = false;
     this.pushedLeft = false;
     this.blocked = false;
@@ -620,7 +620,8 @@ Unicorn.prototype.reset = function () {
   this.leftMove = false;
   this.rjump = false;
   this.ljump = false;
-  this.speed = 100;
+  this.speed_d= 100;
+  this.speed = 130;
   this.radius = 100;
   //this.ground = 550;
   this.height = 0;
@@ -851,12 +852,12 @@ Unicorn.prototype.update = function () {
               this.lastplattouch.pushedLeft = false;
               this.lastplattouch.pushedRight = true;
               this.pushing = true;
-              this.speed = 25;
+              this.speed = 50;
           } else {
               this.speed = 0;
           }
       } else {
-          this.speed = 75;
+          this.speed = 130;
           this.lastplattouch.pushedRight = false;
           this.lastplattouch.pushedLeft = false;
       }
@@ -881,7 +882,7 @@ Unicorn.prototype.update = function () {
               if (!(box === this.platform)) {
                   this.speed = 0;
               } else {
-                  this.speed = 75;
+                  this.speed = 130;
               }
           }
       }
@@ -943,7 +944,7 @@ Unicorn.prototype.update = function () {
       //otherwise, stop moving because you can't push that type of box
       if (this.boundingbox.left <= this.lastplattouch.boundingbox.right && this.x > this.lastplattouch.x && this.boundingbox.collide(this.lastplattouch.boundingbox) && !(this.lastplattouch instanceof Plat1) && !(this.lastplattouch instanceof Plat2) && !(this.lastplattouch instanceof Plat3)  && !(this.lastplattouch instanceof Plate)) {
           if (this.lastplattouch instanceof Box1 && !this.jumping && !this.lastplattouch.blocked && !(this.platform instanceof Box1)) {
-              this.speed = 25;
+              this.speed = 50;
               this.lastplattouch.pushedRight = false;
               this.lastplattouch.pushedLeft = true;
               this.pushing = true;
@@ -951,7 +952,7 @@ Unicorn.prototype.update = function () {
               this.speed = 0;
           }
       } else {
-          this.speed = 75;
+          this.speed = 130;
           this.lastplattouch.pushedLeft = false;
           this.lastplattouch.pushedRight = false;
       }
@@ -982,7 +983,7 @@ Unicorn.prototype.update = function () {
               if (!(box === this.platform)) {
                   this.speed = 0;
               } else {
-                  this.speed = 75;
+                  this.speed = 130;
               }
           }
       }

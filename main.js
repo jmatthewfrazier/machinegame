@@ -375,3 +375,6 @@ ASSET_MANAGER.downloadAll(function () {
 });
 
 var music = ASSET_MANAGER.getAsset("./asset_lib/audio/Aquatic_Ambiance_2.mp3");
+//REMOVE MUSIC FROM SOUNDS LIST!!!
+ASSET_MANAGER.sounds.pop();
+ASSET_MANAGER.sounds.pop();
