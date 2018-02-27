@@ -620,7 +620,6 @@ Unicorn.prototype.reset = function () {
   this.leftMove = false;
   this.rjump = false;
   this.ljump = false;
-  this.speed_d= 100;
   this.speed = 130;
   this.radius = 100;
   //this.ground = 550;
@@ -1081,12 +1080,19 @@ Unicorn.prototype.update = function () {
 
   var that = this;
   var ctx = document.getElementById("gameWorld").getContext('2d');
-  if(this.x*gameEngine.yscale > window.innerWidth/2 && this.x*gameEngine.yscale <= 7700*gameEngine.yscale - window.innerWidth/2){
-    ctx.translate(window.innerWidth/2-that.x*gameEngine.yscale, 0);
-  } else if (this.x*gameEngine.yscale > 7700*gameEngine.yscale - window.innerWidth/2){
-    ctx.translate(window.innerWidth-7700*gameEngine.yscale, 0);
+  if(!gameEngine.Background.vertical){
+    if(this.x*gameEngine.yscale > window.innerWidth/2 && this.x*gameEngine.yscale <= 7700*gameEngine.yscale - window.innerWidth/2){
+      ctx.translate(window.innerWidth/2-that.x*gameEngine.yscale, 0);
+    } else if (this.x*gameEngine.yscale > 7700*gameEngine.yscale - window.innerWidth/2){
+      ctx.translate(window.innerWidth-7700*gameEngine.yscale, 0);
+    }
+  } else {
+    if(this.y*gameEngine.yscale < window.innerHeight/2 && this.y*gameEngine.yscale >= -7700*gameEngine.yscale - window.innerHeight/2){
+      ctx.translate(0, window.innerHeight/2-that.y*gameEngine.yscale);
+    } else if (this.y*gameEngine.yscale < -7700*gameEngine.yscale - window.innerHeight/2){
+      ctx.translate(0, window.innerHeight-7700*gameEngine.yscale);
+    }
   }
-
 }
 
 Unicorn.prototype.draw = function (ctx) {
