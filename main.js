@@ -138,6 +138,7 @@ function Background(game) {
   this.x = 0;
   this.y = 0;
   this.game = game;
+  this.vertical = false;
   this.layer0 = "./img/Image_0005.jpg";
   this.layer1 = "./img/Image_0009.png";
 }
@@ -153,7 +154,7 @@ Background.prototype.reset = function () {
 Background.prototype.update = function () {
 	let canvas = document.getElementById("gameWorld");
 	canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+  canvas.height = window.innerHeight;
   if (this.game.running) {
     if (this.game.rightScroll) this.rightScrolling = true;
     if (this.game.leftScroll) this.leftScrolling = true;
@@ -180,14 +181,21 @@ Background.prototype.draw = function (ctx) {
 	let fillNum = (8000/700) + 2;
   let x = 0 - 700;
 	let y = this.y;
-  let ay = window.innerHeight - ASSET_MANAGER.getAsset(this.layer1).height;
   let bg = this;
-	for (i = 0; i < fillNum; i++){
-		ctx.drawImage(ASSET_MANAGER.getAsset(bg.layer0), x, y, ASSET_MANAGER.getAsset(bg.layer0).width, window.innerHeight);
-		ctx.drawImage(ASSET_MANAGER.getAsset(bg.layer1), x, ay);
-		x += 700;
-	}
-
+  ctx.imageSmoothingEnabled = false;
+  if (!this.vertical){
+    let ay = window.innerHeight/gameEngine.yscale - ASSET_MANAGER.getAsset(this.layer1).height;
+  	for (i = 0; i < fillNum; i++){
+  		ctx.drawImage(ASSET_MANAGER.getAsset(bg.layer0), x, y, ASSET_MANAGER.getAsset(bg.layer0).width, window.innerHeight/gameEngine.yscale);
+  		ctx.drawImage(ASSET_MANAGER.getAsset(bg.layer1), x, ay);
+  		x += 700;
+  	}
+  } else {
+    for (i = -8000; i <= window.innerHeight; i += window.innerHeight -5){
+      ctx.drawImage(ASSET_MANAGER.getAsset(bg.layer0), 0, i, window.innerWidth/gameEngine.yscale, window.innerHeight);
+  		ctx.drawImage(ASSET_MANAGER.getAsset(bg.layer1), 0, i);
+    }
+  }
 }
 
 // the "main" code begins here
@@ -233,7 +241,7 @@ function level_1(gameEngine){
         new Lightning(gameEngine, 2500, 0, 192, 768),
       //NPC
         new Child(gameEngine, 400, 620, 192, 192, "see that red box? try pushing it"),
-        new EndLevel(gameEngine, 7700, 620, 500, 500),
+        new EndLevel(gameEngine, 300, 620, 500, 500),
         new Plat3(gameEngine, 0, 700, 350, 87)
     ];
     //LEVER
@@ -256,7 +264,7 @@ function level_1(gameEngine){
 
 function level_2(gameEngine){
   var statics = [
-      new EndLevel(gameEngine, 7700, 620, 500, 500),
+      new EndLevel(gameEngine, 300, 620, 500, 500),
       new Plat3(gameEngine, 0, 700, 350, 87)
   ];
   //LEVER
@@ -277,6 +285,21 @@ function level_2(gameEngine){
   gameEngine.Background.layer0 = "./img/L2_layer0.png";
   gameEngine.Background.layer1 = "./img/L2_layer1.png";
   music = ASSET_MANAGER.getAsset("./asset_lib/audio/In_Your_Prime_OC.mp3");
+  set_level(gameEngine, statics);
+}
+
+function level_3(gameEngine){
+  var statics = [
+      new EndLevel(gameEngine, 7700, 620, 500, 500),
+      new Plat3(gameEngine, 0, 700, 350, 87)
+  ];
+  for (var i = 1; i < 300; i++) {
+    statics.unshift(new Plat3(gameEngine, 300, -3000 + i * (100 * .75), 350, 87));
+  }
+  gameEngine.Background.layer0 = "./img/Hallway.bmp";
+  gameEngine.Background.layer1 = "./img/layer1_dummy.png";
+  gameEngine.Background.vertical = true;
+  music = ASSET_MANAGER.getAsset("./asset_lib/audio/Atomyk Ebonpyre.mp3");
   set_level(gameEngine, statics);
 }
 
@@ -304,6 +327,13 @@ function nextLevel(gameEngine){
   	display(1, "dialogue");
     hide(2000, 2000, "dialogue");
     gameEngine.lvl++;
+  } else if (gameEngine.lvl == 2){
+    gameEngine.clear();
+    level_3(gameEngine);
+    setText("Interior", "dialogue");
+  	display(1, "dialogue");
+    hide(2000, 2000, "dialogue");
+    gameEngine.lvl++;
   }
 }
 
@@ -326,6 +356,8 @@ ASSET_MANAGER.queueDownload("./img/Image_0009.png");
 ASSET_MANAGER.queueDownload("./img/Image_0010.png");
 ASSET_MANAGER.queueDownload("./img/L2_layer0.png");
 ASSET_MANAGER.queueDownload("./img/L2_layer1.png");
+ASSET_MANAGER.queueDownload("./img/Hallway.bmp");
+ASSET_MANAGER.queueDownload("./img/layer1_dummy.png");
 ASSET_MANAGER.queueDownload("./img/woodplat.png");
 ASSET_MANAGER.queueDownload("./img/lightning.png");
 ASSET_MANAGER.queueDownload("./img/scrap.png");
@@ -346,6 +378,7 @@ ASSET_MANAGER.queueDownload("./asset_lib/audio/talking.wav");
 ASSET_MANAGER.queueDownload("./asset_lib/audio/jump.wav");
 
 //MUSIC LAST
+ASSET_MANAGER.queueDownload("./asset_lib/audio/Atomyk Ebonpyre.mp3");
 ASSET_MANAGER.queueDownload("./asset_lib/audio/In_Your_Prime_OC.mp3");
 ASSET_MANAGER.queueDownload("./asset_lib/audio/Aquatic_Ambiance_2.mp3");
 
@@ -359,7 +392,7 @@ ASSET_MANAGER.downloadAll(function () {
     canvas.height = window.innerHeight;
 
     var bg = new Background(gameEngine);
-    var pg = new PlayGame(gameEngine, canvas.width/2, canvas.height/2);
+    var pg = new PlayGame(gameEngine, (canvas.width/2), (canvas.height/2));
     gameEngine.Background = bg;
     gameEngine.playState = pg;
     gameEngine.lvl = 1;
@@ -376,3 +409,6 @@ ASSET_MANAGER.downloadAll(function () {
 });
 
 var music = ASSET_MANAGER.getAsset("./asset_lib/audio/Aquatic_Ambiance_2.mp3");
+//REMOVE MUSIC FROM SOUNDS LIST!!!
+ASSET_MANAGER.sounds.pop();
+ASSET_MANAGER.sounds.pop();
