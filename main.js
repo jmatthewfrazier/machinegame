@@ -126,7 +126,7 @@ PlayGame.prototype.draw = function (ctx) {
         ctx.fillStyle = "white";
         if (this.game.mouse) { ctx.fillStyle = "#ddd"; }
         if (!this.game.dead) {
-        	ctx.fillText("click to begin", this.x, this.y);
+        	ctx.fillText("click to begin", this.x + 100, this.y);
         }
         else {
             ctx.fillText("try again", this.x, this.y);
@@ -240,9 +240,9 @@ function level_1(gameEngine){
         new Lightning(gameEngine, 4725, 0, 192, 768),
         new Lightning(gameEngine, 2500, 0, 192, 768),
       //NPC
-        new Child(gameEngine, 400, 620, 192, 192, "see that red box? try pushing it"),
-        new EndLevel(gameEngine, 1000, 620, 500, 500),
-        new Plat3(gameEngine, 0, 700, 350, 87)
+        new Child(gameEngine, 400, 620, 192, 192, "see that grey box? try pushing it"),
+        new EndLevel(gameEngine, 100, 620, 500, 500),
+        new Plat3(gameEngine, 0, 700, 350, 87, 1)
     ];
     //LEVER
       var lever_0 = new Lever(gameEngine, 3111, 575, 192, 192);
@@ -256,7 +256,7 @@ function level_1(gameEngine){
       statics.push(door_1);
     for (var i = 1; i < 50; i++) {
       if (i !== 3 && i !== 7 && i !== 15 && i !== 20) {
-        statics.unshift(new Plat3(gameEngine, i * (349 * .75), 700, 350, 87));
+        statics.unshift(new Plat3(gameEngine, i * (349 * .75), 700, 350, 87, 1));
       }
     }
     set_level(gameEngine, statics);
@@ -264,8 +264,34 @@ function level_1(gameEngine){
 
 function level_2(gameEngine){
   var statics = [
-      new EndLevel(gameEngine, 300, 620, 500, 500),
-      new Plat3(gameEngine, 0, 700, 350, 87)
+//   new Box1(gameEngine, 600, 627, 144, 144),
+// //BOX 2 (NO PUSH)
+//   new Box2(gameEngine, 700, 555, 144, 144),
+//   new Box2(gameEngine, 700, 627, 144, 144),
+//
+// //PLAT2
+//   new Plat1(gameEngine, 800, 540, 553, 92),
+//   new Plat1(gameEngine, 950, 470, 553, 92),
+//   new Plat1(gameEngine, 1100, 390, 553, 92),
+//
+//   new ScrapMetal(gameEngine, 1050, 640, 192, 192),
+//   new ScrapMetal(gameEngine, 1100, 640, 192, 192),
+//   new ScrapMetal(gameEngine, 1150, 640, 192, 192),
+//   new ScrapMetal(gameEngine, 1200, 640, 192, 192),
+//   new ScrapMetal(gameEngine, 1250, 640, 192, 192),
+//   new ScrapMetal(gameEngine, 1300, 640, 192, 192),
+//   new ScrapMetal(gameEngine, 1350, 640, 192, 192),
+// new Lightning(gameEngine, 200, 0, 192, 768),
+// new Lightning(gameEngine, 300, 0, 192, 768),
+// new Lightning(gameEngine, 400, 0, 192, 768),
+// new Lightning(gameEngine, 500, 0, 192, 768),
+// new Lightning(gameEngine, 600, 0, 192, 768),
+//SCRAP METAL
+//LIGHTNING
+//NPC
+  // new OldMan(gameEngine, 400, 620, 192, 192, "hey sonny!"),
+  new EndLevel(gameEngine, 100, 620, 500, 500),
+  new Plat3(gameEngine, 0, 700, 350, 50, 2)
   ];
   //LEVER
     var lever_0 = new Lever(gameEngine, 3111, 575, 192, 192);
@@ -279,7 +305,7 @@ function level_2(gameEngine){
     statics.push(door_1);
   for (var i = 1; i < 50; i++) {
     if (i !== 3 && i !== 7 && i !== 15 && i !== 20) {
-      statics.unshift(new Plat3(gameEngine, i * (349 * .75), 700, 350, 87));
+      statics.unshift(new Plat3(gameEngine, i * (349 * .75), 700, 350, 50, 2));
     }
   }
   gameEngine.Background.layer0 = "./img/L2_layer0.png";
@@ -290,12 +316,34 @@ function level_2(gameEngine){
 
 function level_3(gameEngine){
   var statics = [
+
+      // new Box1(gameEngine, 875, 387, 144, 144),
+      // new Box2(gameEngine, 1000, 387, 144, 144),
+      // new Box2(gameEngine, 1000, 315, 144, 144),
+
+      // new ScrapMetal(gameEngine, 800, 400, 192, 192),
+      // new ScrapMetal(gameEngine, 1050, 400, 192, 192),
+      // new ScrapMetal(gameEngine, 1100, 400, 192, 192),
+
+
+      new Character(gameEngine, 900, 375, 192, 192, "please help!", "tall"),
       new EndLevel(gameEngine, 7700, 620, 500, 500),
       new Plat3(gameEngine, 0, 700, 350, 87)
   ];
-  for (var i = 1; i < 300; i++) {
-    statics.unshift(new Plat3(gameEngine, 300, -3000 + i * (100 * .75), 350, 87));
+  var lever_0 = new Lever(gameEngine, 1000, 340, 192, 192);
+  var door_0 = new Door(gameEngine, 1200, 300, 192, 192, lever_0);
+//PLATE
+  statics.push(lever_0);
+  statics.push(door_0);
+  for (var i = 1; i < 4; i++) {
+    statics.unshift(new Plat3(gameEngine, (i * 200), 700 - (i * 80), 350, 87));
   }
+  for (var j = 0; j < 3; j++) {
+    statics.unshift(new Plat3(gameEngine, (860 + j * 175), 459, 350, 87));
+  }
+  // for (var i = 1; i < 4; i++) {
+  //   statics.unshift(new Plat3(gameEngine, 900 - (i * 200), 315 - (i * 80), 350, 87));
+  // }
   gameEngine.Background.layer0 = "./img/Hallway.bmp";
   gameEngine.Background.layer1 = "./img/layer1_dummy.png";
   gameEngine.Background.vertical = true;
@@ -351,6 +399,8 @@ ASSET_MANAGER.queueDownload("./img/pc_jump_l.png");
 ASSET_MANAGER.queueDownload("./img/pc_push.png");
 ASSET_MANAGER.queueDownload("./img/pc_push_l.png");
 ASSET_MANAGER.queueDownload("./img/kid_talk_l.png");
+ASSET_MANAGER.queueDownload("./img/old_talk_l.png");
+ASSET_MANAGER.queueDownload("./img/tall_talk_l.png");
 ASSET_MANAGER.queueDownload("./img/Image_0005.jpg");
 ASSET_MANAGER.queueDownload("./img/Image_0009.png");
 ASSET_MANAGER.queueDownload("./img/Image_0010.png");
@@ -359,6 +409,7 @@ ASSET_MANAGER.queueDownload("./img/L2_layer1.png");
 ASSET_MANAGER.queueDownload("./img/Hallway.bmp");
 ASSET_MANAGER.queueDownload("./img/layer1_dummy.png");
 ASSET_MANAGER.queueDownload("./img/woodplat.png");
+ASSET_MANAGER.queueDownload("./img/woodplat copy.png");
 ASSET_MANAGER.queueDownload("./img/lightning.png");
 ASSET_MANAGER.queueDownload("./img/scrap.png");
 ASSET_MANAGER.queueDownload("./img/plate.png");
@@ -368,6 +419,7 @@ ASSET_MANAGER.queueDownload("./img/lever_still.png");
 ASSET_MANAGER.queueDownload("./img/lever_still_rev.png");
 ASSET_MANAGER.queueDownload("./img/door_open.png");
 ASSET_MANAGER.queueDownload("./img/door_closed.png");
+ASSET_MANAGER.queueDownload("./img/level_2_ground.png");
 ASSET_MANAGER.queueDownload("./asset_lib/audio/lightning.wav");
 ASSET_MANAGER.queueDownload("./asset_lib/audio/explosion.wav");
 ASSET_MANAGER.queueDownload("./asset_lib/audio/solved.wav");
