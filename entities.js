@@ -292,6 +292,7 @@ Character.prototype.constructor = Character;
 Character.prototype.reset = function() {
   this.x = this.startX;
   this.y = this.startY;
+  this.interaction = false;
   this.boundingbox = new BoundingBox(this.x + 20, this.y + 20, this.width - 130, this.height - 130);
 }
 
@@ -326,6 +327,7 @@ Child.prototype.constructor = Child;
 Child.prototype.reset = function() {
   this.x = this.startX;
   this.y = this.startY;
+  this.interaction = false;
   this.boundingbox = new BoundingBox(this.x + 20, this.y + 20, this.width - 130, this.height - 130);
 }
 
