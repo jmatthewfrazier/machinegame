@@ -85,17 +85,25 @@ Box2.prototype.reset = function() {
   this.height = this.height;
   this.ground = 650;
   this.pushed = false;
+  this.stacked = false;
   this.boundingbox = new BoundingBox(this.x, this.y, this.width * .5, this.height * .5);
 }
 
 Box2.prototype.update = function () {
+    for (var i = 0; i < this.game.boxes.length; i++) {
+        var box = this.game.boxes[i];
+        if (box instanceof Box2 && this.x === box.x && this.y > box.y) {
+            this.stacked = true;
+        }
+    }
+    if (this.stacked) {
+        this.boundingbox = new BoundingBox(this.x, this.y - this.height / 2, this.width *.5, this.height);
+    }
 
 }
 
 Box2.prototype.draw = function (ctx) {
     if (!this.game.running) return;
-    // ctx.strokeStyle = "green";
-    // ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
     this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, .5);
 }
 
