@@ -1,4 +1,3 @@
-Character
 function Box1(game, x, y, width, height) {
     this.x = x;
     this.y = y;
@@ -93,31 +92,25 @@ Box2.prototype.reset = function() {
   this.height = this.height;
   this.ground = 650;
   this.pushed = false;
+  this.stacked = false;
   this.boundingbox = new BoundingBox(this.x, this.y, this.width * .5, this.height * .5);
 }
 
 Box2.prototype.update = function () {
-  // for (var i = 0; i < this.game.boxes.length; i++) {
-  //     var box = this.game.boxes[i];
-  //     if (this.boundingbox.collide(box.boundingbox) && this.boundingbox.top < box.boundingbox.bottom && (box instanceof Box1 || box instanceof Box2)) {
-  //       console.log("hello horses");
-  //       this.boundingbox.top = this.boundingbox.bottom - 144;
-        // var r = this.boundingbox.width;
-        // var l = this.boundingbox.left;
-        // var t = this.boundingbox.top;
-        // var b = this.boundingbox.height;
-        // this.boundingbox = new BoundingBox(l, t - 144, r, b);
-      // } else {
-      //   console.log("goodbye horses");
-        // this.boundingbox.top = this.boundingbox.top + 144;
-  //     }
-  // }
+    for (var i = 0; i < this.game.boxes.length; i++) {
+        var box = this.game.boxes[i];
+        if (box instanceof Box2 && this.x === box.x && this.y > box.y) {
+            this.stacked = true;
+        }
+    }
+    if (this.stacked) {
+        this.boundingbox = new BoundingBox(this.x, this.y - this.height / 2, this.width *.5, this.height);
+    }
+
 }
 
 Box2.prototype.draw = function (ctx) {
     if (!this.game.running) return;
-    // ctx.strokeStyle = "green";
-    // ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
     this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, .5);
 }
 
@@ -292,7 +285,8 @@ Character.prototype.constructor = Character;
 Character.prototype.reset = function() {
   this.x = this.startX;
   this.y = this.startY;
-  this.boundingbox = new BoundingBox(this.x + 30, this.y + 20, this.width - 160, this.height - 130);
+  this.interaction = false;
+  this.boundingbox = new BoundingBox(this.x + 20, this.y + 20, this.width - 130, this.height - 130);
 }
 
 Character.prototype.update = function() {
@@ -342,7 +336,7 @@ ScrapMetal.prototype.draw = function (ctx) {
 //192, 768
 
 function Lightning(game, x, y, width, height) {
-  this.animation = new Animation(ASSET_MANAGER.getAsset("./img/lightning.png"), 0, 0, 192, 768, .7, 8, true, false);
+  this.animation = new Animation(ASSET_MANAGER.getAsset("./img/lightning.png"), 0, 0, 192, 767, .7, 8, true, false);
   this.x = x;
   this.y = y;
   this.isDie = false;
