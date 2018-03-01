@@ -107,6 +107,9 @@ PlayGame.prototype.update = function () {
     if (this.game.click){
         if(!this.game.running){
             music.muted = false;
+            if ($("#muteMusic").is(':checked')){
+              music.muted = true;
+            }
             music.volume = 0.5;
             music.loop = true;
             music.play();

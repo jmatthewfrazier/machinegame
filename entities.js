@@ -1,4 +1,3 @@
-Character
 function Box1(game, x, y, width, height) {
     this.x = x;
     this.y = y;
@@ -377,7 +376,7 @@ ScrapMetal.prototype.draw = function (ctx) {
 //192, 768
 
 function Lightning(game, x, y, width, height) {
-  this.animation = new Animation(ASSET_MANAGER.getAsset("./img/lightning.png"), 0, 0, 192, 768, .7, 8, true, false);
+  this.animation = new Animation(ASSET_MANAGER.getAsset("./img/lightning.png"), 0, 0, 192, 767, .7, 8, true, false);
   this.x = x;
   this.y = y;
   this.isDie = false;
