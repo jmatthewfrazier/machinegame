@@ -37,7 +37,7 @@ Box1.prototype.update = function () {
     //If I have, make sure I don't move any further.
     for (var i = 0; i < this.game.boxes.length; i++) {
         var box = this.game.boxes[i];
-        if (this.boundingbox.collide(box.boundingbox) && !(box instanceof Box1) && !(box instanceof Lightning) && !(box instanceof Lever) && !(box instanceof Child) && !(box instanceof Character) && !(box instanceof Plat3) && !(box instanceof Plate)) {
+        if (this.boundingbox.collide(box.boundingbox) && !(box instanceof Box1) && !(box instanceof Lightning) && !(box instanceof Lever) && !(box instanceof Character) && !(box instanceof Plat3) && !(box instanceof Plate)) {
             this.pushedRight = false;
             this.blocked = true;
         }
@@ -142,7 +142,7 @@ Plat1.prototype.reset = function () {
   this.x = this.startX;
   this.y = this.startY;
   this.ogX = this.startX;
-  this.speed = Math.random() * 100 + 10;
+  this.speed = Math.random() * 40 + 75;
   this.boundingbox = new BoundingBox(this.x, this.y, this.width * .5, this.height * .5);
 }
 
@@ -272,14 +272,8 @@ Plat3.prototype.draw = function (ctx) {
     // ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
 }
 
-function Character(game,x ,y, width, height, dialogue, char) {
-  if (char === "old") {
-    this.animation = new Animation(ASSET_MANAGER.getAsset("./img/old_talk_l.png"), 0, 0, 192, 192, 1, 6, true, false);
-
-  } else if (char === "tall") {
-    this.animation = new Animation(ASSET_MANAGER.getAsset("./img/tall_talk_l.png"), 0, 0, 192, 192, 1, 6, true, false);
-
-  }
+function Character(game,char, x ,y, width, height, dialogue) {
+  this.animation = new Animation(ASSET_MANAGER.getAsset(char), 0, 0, 192, 192, 1, 6, true, false);
   this.x = x;
   this.y = y;
   this.dialogue = dialogue;
@@ -298,7 +292,7 @@ Character.prototype.constructor = Character;
 Character.prototype.reset = function() {
   this.x = this.startX;
   this.y = this.startY;
-  this.boundingbox = new BoundingBox(this.x + 20, this.y + 20, this.width - 130, this.height - 130);
+  this.boundingbox = new BoundingBox(this.x + 30, this.y + 20, this.width - 160, this.height - 130);
 }
 
 Character.prototype.update = function() {
@@ -312,39 +306,6 @@ Character.prototype.draw = function (ctx) {
   // ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
 }
 
-function Child(game,x ,y, width, height, dialogue) {
-  this.animation = new Animation(ASSET_MANAGER.getAsset("./img/kid_talk_l.png"), 0, 0, 192, 192, 1, 6, true, false);
-  this.x = x;
-  this.y = y;
-  this.dialogue = dialogue;
-  this.startX = x;
-  this.startY = y;
-  this.width = width;
-  this.height = height;
-  this.interaction = false;
-  this.boundingbox = new BoundingBox(this.x + 30, this.y + 20, width - 160, height - 130);
-  Entity.call(this, game, this.x, this.y);
-}
-
-Child.prototype = new Entity();
-Child.prototype.constructor = Child;
-
-Child.prototype.reset = function() {
-  this.x = this.startX;
-  this.y = this.startY;
-  this.boundingbox = new BoundingBox(this.x + 20, this.y + 20, this.width - 130, this.height - 130);
-}
-
-Child.prototype.update = function() {
-  Entity.prototype.update.call(this);
-}
-
-Child.prototype.draw = function (ctx) {
-  if (!this.game.running) return;
-  this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, .5);
-  // ctx.strokeStyle = "green";
-  // ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
-}
 
 function ScrapMetal(game, x, y, width, height) {
   this.animation = new Animation(ASSET_MANAGER.getAsset("./img/scrap.png"), 0, 0, 192, 192, 1, 1, true, false);
@@ -807,7 +768,7 @@ Unicorn.prototype.update = function () {
 
           for (var i = 0; i < this.game.boxes.length; i++) {
               var box = this.game.boxes[i];
-              if (this.boundingbox.collide(box.boundingbox) && this.lastbottom <= box.boundingbox.top && this.boundingbox.left < this.boundingbox.right && !(box instanceof Child) && !(box instanceof Character)) {
+              if (this.boundingbox.collide(box.boundingbox) && this.lastbottom <= box.boundingbox.top && this.boundingbox.left < this.boundingbox.right && !(box instanceof Character) && !(box instanceof Character)) {
                   this.jumping = false;
                   this.y = box.boundingbox.top - this.animation.frameHeight;
                   this.jumpAnimation.elapsedTime = 0;
@@ -829,7 +790,7 @@ Unicorn.prototype.update = function () {
       //yo, check to see if I fall onto another box or a platform, would ya?
       for (var i = 0; i < this.game.boxes.length; i++) {
           var box = this.game.boxes[i];
-          if (this.boundingbox.collide(box.boundingbox) && this.lastbottom <= box.boundingbox.top && !(box instanceof Lever) && !(box instanceof Child)&& !(box instanceof Character)) {
+          if (this.boundingbox.collide(box.boundingbox) && this.lastbottom <= box.boundingbox.top && !(box instanceof Lever) && !(box instanceof Character)) {
               this.falling = false;
               this.y = box.boundingbox.top - this.animation.frameHeight;
               this.onBox = true;
@@ -875,7 +836,7 @@ Unicorn.prototype.update = function () {
           if(this.boundingbox.collide(box.boundingbox) && this.boundingbox.right >= box.boundingbox.left && !(this.platform === box) && (box instanceof Plat3)) {
             console.log("help me");
           }
-          if (this.boundingbox.collide(box.boundingbox) && this.boundingbox.right >= box.boundingbox.left && !(this.platform === box) && !(box instanceof ScrapMetal) && !(box instanceof Lightning) && !(box instanceof Lever) && !(box instanceof Child)&& !(box instanceof Character)) {
+          if (this.boundingbox.collide(box.boundingbox) && this.boundingbox.right >= box.boundingbox.left && !(this.platform === box) && !(box instanceof ScrapMetal) && !(box instanceof Lightning) && !(box instanceof Lever) &&  !(box instanceof Character)) {
               this.lastplattouch = box;
           }
           if (this.boundingbox.collide(box.boundingbox) && this.boundingbox.right >= box.boundingbox.left && box instanceof ScrapMetal) {
@@ -898,12 +859,6 @@ Unicorn.prototype.update = function () {
             }
             if (this.game.action) {
               box.pressed = true;
-            }
-          }
-          if (this.boundingbox.collide(box.boundingbox) && this.boundingbox.right >= box.boundingbox.left && box instanceof Child) {
-            if(!box.interaction){
-              box.interaction = true;
-              pushText(box.dialogue, "dialogue");
             }
           }
           if (this.boundingbox.collide(box.boundingbox) && this.boundingbox.right >= box.boundingbox.left && box instanceof Character) {
@@ -945,6 +900,8 @@ Unicorn.prototype.update = function () {
               this.jumpAnimation.elapsedTime = 0;
               this.onBox = true;
               this.platform = box;
+
+                            console.log("goodbye horses");
           }
       }
       for (var i = 0; i < this.game.boxes.length; i++) {
@@ -952,7 +909,7 @@ Unicorn.prototype.update = function () {
           if (this.boundingbox.collide(box.boundingbox) && (box instanceof Plat3)) {
               this.platform = box;
           }
-          if (this.onBox && this.boundingbox.collide(box.boundingbox) && this.x < box.x && !(box instanceof Plat1) && !(box instanceof Plat2) && !(box instanceof Lightning) && !(box instanceof Plate) && !(box instanceof Lever) && !(box instanceof Child) && !(box instanceof Character)) {
+          if (this.onBox && this.boundingbox.collide(box.boundingbox) && this.x < box.x && !(box instanceof Plat1) && !(box instanceof Plat2) && !(box instanceof Lightning) && !(box instanceof Plate) && !(box instanceof Lever)  && !(box instanceof Character)) {
               if (!(box === this.platform)) {
                   this.speed = 0;
               } else {
@@ -989,7 +946,7 @@ Unicorn.prototype.update = function () {
       //if I collide with a box, I'm going to remember that box and also die if it's anything else
       for (var i = 0; i < this.game.boxes.length; i++) {
           var box = this.game.boxes[i];
-          if (this.boundingbox.collide(box.boundingbox) && this.boundingbox.left <= box.boundingbox.right && !(this.platform === box) && !(box instanceof ScrapMetal) && !(box instanceof Lightning) && !(box instanceof Lever) && !(box instanceof Child) && !(box instanceof Character)) {
+          if (this.boundingbox.collide(box.boundingbox) && this.boundingbox.left <= box.boundingbox.right && !(this.platform === box) && !(box instanceof ScrapMetal) && !(box instanceof Lightning) && !(box instanceof Lever)  && !(box instanceof Character)) {
               this.lastplattouch = box;
           }
           if (this.boundingbox.collide(box.boundingbox) && this.boundingbox.left <= box.boundingbox.right && box instanceof ScrapMetal) {
@@ -1005,7 +962,7 @@ Unicorn.prototype.update = function () {
               box.pressed = true;
             }
           }
-          if (this.boundingbox.collide(box.boundingbox) && this.boundingbox.right <= box.boundingbox.left && box instanceof Child) {
+          if (this.boundingbox.collide(box.boundingbox) && this.boundingbox.right <= box.boundingbox.left && box instanceof Character) {
             if(!box.interaction){
               box.interaction = true;
               pushText(box.dialogue, "dialogue");
@@ -1053,7 +1010,7 @@ Unicorn.prototype.update = function () {
           if (this.boundingbox.collide(box.boundingbox) && (box instanceof Plat3)) {
               this.platform = box;
           }
-          if (this.onBox && this.boundingbox.collide(box.boundingbox) && this.x > box.x && !(box instanceof Plat1) && !(box instanceof Plat2) && !(box instanceof Lightning) && !(box instanceof Plate) && !(box instanceof Lever) && !(box instanceof Child) && !(box instanceof Character)) {
+          if (this.onBox && this.boundingbox.collide(box.boundingbox) && this.x > box.x && !(box instanceof Plat1) && !(box instanceof Plat2) && !(box instanceof Lightning) && !(box instanceof Plate) && !(box instanceof Lever)  && !(box instanceof Character)) {
               if (!(box === this.platform)) {
                   this.speed = 0;
               } else {
@@ -1093,12 +1050,6 @@ Unicorn.prototype.update = function () {
             if (box.isDie) {
               this.dead = true;
              }
-          }
-          if (this.boundingbox.collide(box.boundingbox) && box instanceof Child) {
-            if(!box.interaction){
-              box.interaction = true;
-              pushText(box.dialogue, "dialogue");
-            }
           }
           if (this.boundingbox.collide(box.boundingbox) && box instanceof Character) {
             if(!box.interaction){

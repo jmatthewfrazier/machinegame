@@ -1,7 +1,6 @@
 // Press D to go right, Press A to go left, Press Space to jump
 // You can jump and move at the same time
 
-
 function Animation(spriteSheet, startX, startY, frameWidth, frameHeight, frameDuration, frames, loop, reverse) {
     this.spriteSheet = spriteSheet;
     this.startX = startX;
@@ -240,8 +239,9 @@ function level_1(gameEngine){
         new Lightning(gameEngine, 4725, 0, 192, 768),
         new Lightning(gameEngine, 2500, 0, 192, 768),
       //NPC
-        new Child(gameEngine, 400, 620, 192, 192, "see that grey box? try pushing it"),
-        new EndLevel(gameEngine, 100, 620, 500, 500),
+        new Character(gameEngine, "./img/kid_talk_l.png", 400, 620, 192, 192, "see that grey box? try pushing it"),
+        new Character(gameEngine, "./img/kid_talk_l.png", 6300, 620, 192, 192, "if you get stuck, push x to restart the level"),
+        new EndLevel(gameEngine, 70, 620, 500, 500),
         new Plat3(gameEngine, 0, 700, 350, 87, 1)
     ];
     //LEVER
@@ -264,15 +264,15 @@ function level_1(gameEngine){
 
 function level_2(gameEngine){
   var statics = [
-//   new Box1(gameEngine, 600, 627, 144, 144),
-// //BOX 2 (NO PUSH)
-//   new Box2(gameEngine, 700, 555, 144, 144),
-//   new Box2(gameEngine, 700, 627, 144, 144),
+  new Box1(gameEngine, 600, 627, 144, 144),
+//BOX 2 (NO PUSH)
+  new Box2(gameEngine, 700, 555, 144, 144),
+  new Box2(gameEngine, 700, 627, 144, 144),
 //
 // //PLAT2
-//   new Plat1(gameEngine, 800, 540, 553, 92),
-//   new Plat1(gameEngine, 950, 470, 553, 92),
-//   new Plat1(gameEngine, 1100, 390, 553, 92),
+  new Plat2(gameEngine, 800, 540, 553, 92),
+  new Plat2(gameEngine, 950, 470, 553, 92),
+  new Plat2(gameEngine, 1100, 390, 553, 92),
 //
 //   new ScrapMetal(gameEngine, 1050, 640, 192, 192),
 //   new ScrapMetal(gameEngine, 1100, 640, 192, 192),
@@ -289,8 +289,8 @@ function level_2(gameEngine){
 //SCRAP METAL
 //LIGHTNING
 //NPC
-  // new OldMan(gameEngine, 400, 620, 192, 192, "hey sonny!"),
-  new EndLevel(gameEngine, 100, 620, 500, 500),
+  // new Character(gameEngine, "./img/old_talk_l.png", 400, 620, 192, 192, "hey sonny!"),
+  new EndLevel(gameEngine, 1000, 620, 500, 500),
   new Plat3(gameEngine, 0, 700, 350, 50, 2)
   ];
   //LEVER
@@ -326,7 +326,7 @@ function level_3(gameEngine){
       // new ScrapMetal(gameEngine, 1100, 400, 192, 192),
 
 
-      new Character(gameEngine, 900, 375, 192, 192, "please help!", "tall"),
+      new Character(gameEngine, "./img/tall_talk_l.png", 900, 375, 192, 192, "please help!", "tall"),
       new EndLevel(gameEngine, 7700, 620, 500, 500),
       new Plat3(gameEngine, 0, 700, 350, 87)
   ];
