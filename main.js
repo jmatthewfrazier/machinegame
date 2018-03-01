@@ -244,7 +244,7 @@ function level_1(gameEngine){
       //NPC
         new Character(gameEngine, "./img/kid_talk_l.png", 400, 620, 192, 192, "see that grey box? try pushing it"),
         new Character(gameEngine, "./img/kid_talk_l.png", 6300, 620, 192, 192, "if you get stuck, push x to restart the level"),
-        new EndLevel(gameEngine, 70, 620, 500, 500),
+        new EndLevel(gameEngine, 73, 620, 500, 500),
         new Plat3(gameEngine, 0, 700, 350, 87, 1)
     ];
     //LEVER
@@ -273,17 +273,17 @@ function level_2(gameEngine){
   new Box2(gameEngine, 700, 627, 144, 144),
 //
 // //PLAT2
-  new Plat2(gameEngine, 800, 540, 553, 92),
-  new Plat2(gameEngine, 950, 470, 553, 92),
-  new Plat2(gameEngine, 1100, 390, 553, 92),
+  new Plat1(gameEngine, 800, 540, 553, 92),
+  new Plat1(gameEngine, 1100, 470, 553, 92),
+  new Plat1(gameEngine, 1400, 390, 553, 92),
 //
-//   new ScrapMetal(gameEngine, 1050, 640, 192, 192),
-//   new ScrapMetal(gameEngine, 1100, 640, 192, 192),
-//   new ScrapMetal(gameEngine, 1150, 640, 192, 192),
-//   new ScrapMetal(gameEngine, 1200, 640, 192, 192),
-//   new ScrapMetal(gameEngine, 1250, 640, 192, 192),
-//   new ScrapMetal(gameEngine, 1300, 640, 192, 192),
-//   new ScrapMetal(gameEngine, 1350, 640, 192, 192),
+  new ScrapMetal(gameEngine, 1050, 640, 192, 192),
+  new ScrapMetal(gameEngine, 1150, 640, 192, 192),
+  new ScrapMetal(gameEngine, 1250, 640, 192, 192),
+  new ScrapMetal(gameEngine, 1350, 640, 192, 192),
+  new ScrapMetal(gameEngine, 1450, 640, 192, 192),
+  new ScrapMetal(gameEngine, 1550, 640, 192, 192),
+  new ScrapMetal(gameEngine, 1650, 640, 192, 192),
 // new Lightning(gameEngine, 200, 0, 192, 768),
 // new Lightning(gameEngine, 300, 0, 192, 768),
 // new Lightning(gameEngine, 400, 0, 192, 768),
@@ -293,7 +293,7 @@ function level_2(gameEngine){
 //LIGHTNING
 //NPC
   // new Character(gameEngine, "./img/old_talk_l.png", 400, 620, 192, 192, "hey sonny!"),
-  new EndLevel(gameEngine, 1000, 620, 500, 500),
+  new EndLevel(gameEngine, 7000, 620, 500, 500),
   new Plat3(gameEngine, 0, 700, 350, 50, 2)
   ];
   //LEVER
@@ -320,13 +320,13 @@ function level_2(gameEngine){
 function level_3(gameEngine){
   var statics = [
 
-      // new Box1(gameEngine, 875, 387, 144, 144),
-      // new Box2(gameEngine, 1000, 387, 144, 144),
-      // new Box2(gameEngine, 1000, 315, 144, 144),
+      new Box1(gameEngine, 875, 387, 144, 144),
+      new Box2(gameEngine, 1000, 387, 144, 144),
+      new Box2(gameEngine, 1000, 315, 144, 144),
 
-      // new ScrapMetal(gameEngine, 800, 400, 192, 192),
-      // new ScrapMetal(gameEngine, 1050, 400, 192, 192),
-      // new ScrapMetal(gameEngine, 1100, 400, 192, 192),
+      new ScrapMetal(gameEngine, 800, 400, 192, 192),
+      new ScrapMetal(gameEngine, 1050, 400, 192, 192),
+      new ScrapMetal(gameEngine, 1100, 400, 192, 192),
 
 
       new Character(gameEngine, "./img/tall_talk_l.png", 900, 375, 192, 192, "please help!", "tall"),
@@ -344,9 +344,9 @@ function level_3(gameEngine){
   for (var j = 0; j < 3; j++) {
     statics.unshift(new Plat3(gameEngine, (860 + j * 175), 459, 350, 87));
   }
-  // for (var i = 1; i < 4; i++) {
-  //   statics.unshift(new Plat3(gameEngine, 900 - (i * 200), 315 - (i * 80), 350, 87));
-  // }
+  for (var i = 1; i < 4; i++) {
+    statics.unshift(new Plat3(gameEngine, 900 - (i * 200), 315 - (i * 80), 350, 87));
+  }
   gameEngine.Background.layer0 = "./img/Hallway.bmp";
   gameEngine.Background.layer1 = "./img/layer1_dummy.png";
   gameEngine.Background.vertical = true;
