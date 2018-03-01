@@ -268,25 +268,37 @@ function level_1(gameEngine){
 function level_2(gameEngine){
   var statics = [
   new Box1(gameEngine, 600, 627, 144, 144),
+  new Box1(gameEngine, 3800, 627, 144, 144),
 //BOX 2 (NO PUSH)
   new Box2(gameEngine, 700, 555, 144, 144),
   new Box2(gameEngine, 700, 627, 144, 144),
+  new Box2(gameEngine, 1095, 627, 144, 144),
 //
+
+
+new Plat1(gameEngine, 215, 485, 553, 92),
+
+new Box1(gameEngine, 295, 415, 144, 144),
 // //PLAT2
   new Plat1(gameEngine, 800, 540, 553, 92),
   new Plat1(gameEngine, 1100, 470, 553, 92),
   new Plat1(gameEngine, 1400, 390, 553, 92),
 //
-  new ScrapMetal(gameEngine, 1050, 640, 192, 192),
+  new ScrapMetal(gameEngine, 1025, 640, 192, 192),
   new ScrapMetal(gameEngine, 1150, 640, 192, 192),
   new ScrapMetal(gameEngine, 1250, 640, 192, 192),
   new ScrapMetal(gameEngine, 1350, 640, 192, 192),
   new ScrapMetal(gameEngine, 1450, 640, 192, 192),
   new ScrapMetal(gameEngine, 1550, 640, 192, 192),
   new ScrapMetal(gameEngine, 1650, 640, 192, 192),
-// new Lightning(gameEngine, 200, 0, 192, 768),
-// new Lightning(gameEngine, 300, 0, 192, 768),
-// new Lightning(gameEngine, 400, 0, 192, 768),
+
+
+  new Lightning(gameEngine, 2100, 0, 192, 192),
+
+  new Character(gameEngine, "./img/dog_excited_l.png", 2500, 635, 192, 192, "woof"),
+  new Lightning(gameEngine, 3450, 0, 192, 768),
+  new Lightning(gameEngine, 3575, 0, 192, 768),
+  new Lightning(gameEngine, 3650, 0, 192, 768),
 // new Lightning(gameEngine, 500, 0, 192, 768),
 // new Lightning(gameEngine, 600, 0, 192, 768),
 //SCRAP METAL
@@ -300,8 +312,8 @@ function level_2(gameEngine){
     var lever_0 = new Lever(gameEngine, 3111, 575, 192, 192);
     var door_0 = new Door(gameEngine, 3300, 525, 192, 192, lever_0);
   //PLATE
-    var plate_0 = new Plate(gameEngine, 6800, 605, 192, 192);
-    var door_1 = new Door(gameEngine, 7200, 520, 192, 192, plate_0);
+    var plate_0 = new Plate(gameEngine, 4000, 605, 192, 192);
+    var door_1 = new Door(gameEngine, 4500, 520, 192, 192, plate_0);
     statics.push(lever_0);
     statics.push(door_0);
     statics.push(plate_0);
@@ -403,6 +415,9 @@ ASSET_MANAGER.queueDownload("./img/pc_push.png");
 ASSET_MANAGER.queueDownload("./img/pc_push_l.png");
 ASSET_MANAGER.queueDownload("./img/kid_talk_l.png");
 ASSET_MANAGER.queueDownload("./img/old_talk_l.png");
+ASSET_MANAGER.queueDownload("./img/dog_excited_l.png");
+ASSET_MANAGER.queueDownload("./img/dog_walk.png");
+ASSET_MANAGER.queueDownload("./img/dog_wait.png");
 ASSET_MANAGER.queueDownload("./img/tall_talk_l.png");
 ASSET_MANAGER.queueDownload("./img/Image_0005.jpg");
 ASSET_MANAGER.queueDownload("./img/Image_0009.png");
@@ -412,7 +427,7 @@ ASSET_MANAGER.queueDownload("./img/L2_layer1.png");
 ASSET_MANAGER.queueDownload("./img/Hallway.bmp");
 ASSET_MANAGER.queueDownload("./img/layer1_dummy.png");
 ASSET_MANAGER.queueDownload("./img/woodplat.png");
-ASSET_MANAGER.queueDownload("./img/woodplat copy.png");
+// ASSET_MANAGER.queueDownload("./img/woodplat copy.png");
 ASSET_MANAGER.queueDownload("./img/lightning.png");
 ASSET_MANAGER.queueDownload("./img/scrap.png");
 ASSET_MANAGER.queueDownload("./img/plate.png");
