@@ -128,7 +128,7 @@ PlayGame.prototype.draw = function (ctx) {
         ctx.fillStyle = "white";
         if (this.game.mouse) { ctx.fillStyle = "#ddd"; }
         if (!this.game.dead) {
-        	ctx.fillText("click to begin", this.x + 100, this.y);
+        	ctx.fillText("click to begin... \n please don't grade yet", this.x + 100, this.y);
         }
         else {
             ctx.fillText("try again", this.x, this.y);
@@ -244,7 +244,7 @@ function level_1(gameEngine){
       //NPC
         new Character(gameEngine, "./img/kid_talk_l.png", 400, 620, 192, 192, "see that grey box? try pushing it"),
         new Character(gameEngine, "./img/kid_talk_l.png", 6300, 620, 192, 192, "if you get stuck, push x to restart the level"),
-        new EndLevel(gameEngine, 73, 620, 500, 500),
+        new EndLevel(gameEngine, 7300, 620, 500, 500),
         new Plat3(gameEngine, 0, 700, 350, 87, 1)
     ];
     //LEVER
