@@ -776,15 +776,14 @@ Unicorn.prototype.update = function () {
 
           for (var i = 0; i < this.game.boxes.length; i++) {
               var box = this.game.boxes[i];
-              if (this.boundingbox.collide(box.boundingbox) && this.lastbottom <= box.boundingbox.top && this.boundingbox.right > box.boundingbox.left && !(box instanceof Plat2)) {
-
+              if (this.boundingbox.collide(box.boundingbox) && this.lastbottom <= box.boundingbox.top && this.boundingbox.right > box.boundingbox.left && !(box instanceof Plat2) && !(box instanceof Character)) {
                   this.jumping = false;
                   this.jumpAnimation.elapsedTime = 0;
                   this.onBox = true;
                   this.platform = box;
                   this.y = box.boundingbox.top - this.animation.frameHeight;
-              } else if (this.boundingbox.collide(box.boundingbox)&& this.boundingbox.right > box.boundingbox.left && (box instanceof Plat2)) {
-
+                  // console.log("jump R collide");
+              } else if (this.boundingbox.collide(box.boundingbox) && this.boundingbox.right > box.boundingbox.left && (box instanceof Plat2)) {
                 this.jumping = false;
                 this.jumpAnimation.elapsedTime = 0;
                 this.onBox = true;
@@ -793,7 +792,7 @@ Unicorn.prototype.update = function () {
               }
           }
 
-          if (this.boundingbox.left >= this.platform.boundingbox.right) {
+          if (this.boundingbox.left >= this.platform.boundingbox.right || this.boundingbox.right <= this.platform.boundingbox.left) {
                 this.falling = true;
           }
       }
@@ -821,7 +820,7 @@ Unicorn.prototype.update = function () {
 
           for (var i = 0; i < this.game.boxes.length; i++) {
               var box = this.game.boxes[i];
-              if (this.boundingbox.collide(box.boundingbox) && this.lastbottom <= box.boundingbox.top && this.boundingbox.left < this.boundingbox.right && !(box instanceof Character) && !(box instanceof Character)) {
+              if (this.boundingbox.collide(box.boundingbox) && this.lastbottom <= box.boundingbox.top && this.boundingbox.left < this.boundingbox.right && !(box instanceof Plat2) && !(box instanceof Character)) {
 
                   this.jumping = false;
                   this.y = box.boundingbox.top - this.animation.frameHeight;
@@ -850,18 +849,19 @@ Unicorn.prototype.update = function () {
       //yo, check to see if I fall onto another box or a platform, would ya?
       for (var i = 0; i < this.game.boxes.length; i++) {
           var box = this.game.boxes[i];
-          if (this.boundingbox.collide(box.boundingbox) && this.lastbottom <= box.boundingbox.top && !(box instanceof Lever) && !(box instanceof Character)) {
+          if (this.boundingbox.collide(box.boundingbox) && box != this.platform && this.lastbottom <= box.boundingbox.top && !(box instanceof Lever) && !(box instanceof Character)) {
               this.falling = false;
               this.y = box.boundingbox.top - this.animation.frameHeight;
               this.onBox = true;
               this.platform = box;
-          } //else if (this.boundingbox.collide(box.boundingbox) &&  box instanceof Plat2) {
-            // this.falling = false;
-            // this.onBox = true;
-            // this.platform = box;
+              // if (box instanceof Plat3) console.log("FALL Plat3");
+          } else if (this.boundingbox.collide(box.boundingbox) && box === this.platform) {
+            this.falling = false;
+            this.onBox = true;
+            this.platform = box;
             // this.y = box.boundingbox.top - this.animation.frameHeight;
             // console.log(this.onBox);
-          //}
+          }
           if (this.boundingbox.collide(box.boundingbox) && box instanceof Lightning) {
             if (box.isDie) {
               this.dead = true;
@@ -973,12 +973,13 @@ Unicorn.prototype.update = function () {
               this.platform = box;
               //console.log("im floating");
 
-        } else if (this.boundingbox.collide(box.boundingbox) && this.lastbottom <= box.boundingbox.top && !(box instanceof Plat2)){
+        } else if (this.boundingbox.collide(box.boundingbox) && this.lastbottom <= box.boundingbox.top && !(box instanceof Plat2) && !(box instanceof Character)){
           this.jumping = false;
           this.y = box.boundingbox.top - this.animation.frameHeight;
           this.jumpAnimation.elapsedTime = 0;
           this.onBox = true;
           this.platform = box;
+          // console.log("move R collide");
           // console.log(this.platform.y + "," + this.platform.boundingbox.y);
         } else {
           //console.log(this.platform.constructor.name + "," + this.onBox);
@@ -1078,13 +1079,13 @@ Unicorn.prototype.update = function () {
               this.jumpAnimation.elapsedTime = 0;
               this.onBox = true;
               this.platform = box;
-          } else if (this.boundingbox.collide(box.boundingbox) && this.lastbottom <= box.boundingbox.top && !(box instanceof Plat2)){
+          } else if (this.boundingbox.collide(box.boundingbox) && this.lastbottom <= box.boundingbox.top && !(box instanceof Plat2) && !(box instanceof Character)){
             this.jumping = false;
             this.y = box.boundingbox.top - this.animation.frameHeight;
             this.jumpAnimation.elapsedTime = 0;
             this.onBox = true;
             this.platform = box;
-            //console.log(this.platform.y + "," + this.platform.boundingbox.y);
+            // console.log(this.platform.y + "," + this.platform.boundingbox.y + ", " + this.lastbottom);
           } else {
             //console.log(this.platform.constructor.name);
           }
