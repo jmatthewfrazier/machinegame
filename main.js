@@ -106,6 +106,7 @@ PlayGame.prototype.update = function () {
     if (this.game.click){
         if(!this.game.running){
           fadeAudio(ASSET_MANAGER.getAsset("./asset_lib/audio/Reach for the Dead.mp3"), 0);
+          display(0.7, "pause");
             music.muted = false;
             if ($("#muteMusic").is(':checked')){
               music.muted = true;
