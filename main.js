@@ -241,7 +241,7 @@ function level_1(gameEngine){
         new Lightning(gameEngine, 2500, 0, 192, 768),
       //NPC
         new Child(gameEngine, 400, 620, 192, 192, "see that grey box? try pushing it"),
-        new EndLevel(gameEngine, 100, 620, 500, 500),
+        new EndLevel(gameEngine, 8000, 620, 500, 500),
         new Plat3(gameEngine, 0, 700, 350, 87, 1)
     ];
     //LEVER
