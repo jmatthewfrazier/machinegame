@@ -37,6 +37,9 @@ function hide(time, wait, elementID){
 }
 
 window.onload = function(){
+	intro.volume = 0.5;
+	intro.loop = true;
+	intro.play();
 	const canvas = document.getElementById("gameWorld");
 	canvas.onblur = function() {
 		canvas.focus();

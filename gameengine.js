@@ -154,6 +154,7 @@ GameEngine.prototype.gameOver = function(){
 
 GameEngine.prototype.success = function(){
     this.over = true;
+    fadeAudio(music, 0);
     document.getElementById("pause").style.display = "none";
     document.getElementById("pausedBanner").style.display = "none";
     document.getElementById("resume").style.display = "none";

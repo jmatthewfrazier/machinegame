@@ -105,6 +105,7 @@ PlayGame.prototype.reset = function () {
 PlayGame.prototype.update = function () {
     if (this.game.click){
         if(!this.game.running){
+          fadeAudio(ASSET_MANAGER.getAsset("./asset_lib/audio/Reach for the Dead.mp3"), 0);
             music.muted = false;
             if ($("#muteMusic").is(':checked')){
               music.muted = true;
@@ -437,6 +438,7 @@ ASSET_MANAGER.queueDownload("./asset_lib/audio/talking.wav");
 ASSET_MANAGER.queueDownload("./asset_lib/audio/jump.wav");
 
 //MUSIC LAST
+ASSET_MANAGER.queueDownload("./asset_lib/audio/Reach for the Dead.mp3");
 ASSET_MANAGER.queueDownload("./asset_lib/audio/Atomyk Ebonpyre.mp3");
 ASSET_MANAGER.queueDownload("./asset_lib/audio/In_Your_Prime_OC.mp3");
 ASSET_MANAGER.queueDownload("./asset_lib/audio/Aquatic_Ambiance_2.mp3");
@@ -467,7 +469,5 @@ ASSET_MANAGER.downloadAll(function () {
     gameEngine.start();
 });
 
+var intro = ASSET_MANAGER.getAsset("./asset_lib/audio/Reach for the Dead.mp3");
 var music = ASSET_MANAGER.getAsset("./asset_lib/audio/Aquatic_Ambiance_2.mp3");
-//REMOVE MUSIC FROM SOUNDS LIST!!!
-ASSET_MANAGER.sounds.pop();
-ASSET_MANAGER.sounds.pop();
