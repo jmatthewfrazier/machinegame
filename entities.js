@@ -602,6 +602,9 @@ Door.prototype.reset = function () {
 
 Door.prototype.update = function () {
   if (this.connection.pressed) {
+    if (!this.opened){
+      ASSET_MANAGER.getAsset("./asset_lib/audio/solved.wav").play();
+    }
     this.opened = true;
     this.boundingbox = new BoundingBox(0, 0, 0, 0);
   } else {
@@ -731,7 +734,6 @@ Unicorn.prototype.update = function () {
       if (this.dead) {
         ASSET_MANAGER.getAsset("./asset_lib/audio/ded.wav").play();
         this.game.gameOver();
-        return;
       }
       if (this.game.right) {
           this.rightMove = true;
@@ -821,7 +823,6 @@ Unicorn.prototype.update = function () {
           for (var i = 0; i < this.game.boxes.length; i++) {
               var box = this.game.boxes[i];
               if (this.boundingbox.collide(box.boundingbox) && this.lastbottom <= box.boundingbox.top && this.boundingbox.left < this.boundingbox.right && !(box instanceof Plat2) && !(box instanceof Character)) {
-
                   this.jumping = false;
                   this.y = box.boundingbox.top - this.animation.frameHeight;
                   this.jumpAnimation.elapsedTime = 0;
@@ -849,6 +850,10 @@ Unicorn.prototype.update = function () {
       //yo, check to see if I fall onto another box or a platform, would ya?
       for (var i = 0; i < this.game.boxes.length; i++) {
           var box = this.game.boxes[i];
+          if (this.boundingbox.collide(box.boundingbox) && box instanceof Plat2){
+            console.log(this);
+            console.log(box);
+          }
           if (this.boundingbox.collide(box.boundingbox) && box != this.platform && this.lastbottom <= box.boundingbox.top && !(box instanceof Lever) && !(box instanceof Character)) {
               this.falling = false;
               this.y = box.boundingbox.top - this.animation.frameHeight;
@@ -866,26 +871,25 @@ Unicorn.prototype.update = function () {
             if (box.isDie) {
               this.dead = true;
             }
-
           }
       }
 
       //if my y coordinate falls equal to or lower than the ground, then I'm probably supposed to land on the ground
-      if (this.y >= this.ground) {
-          this.falling = false;
-          this.y = this.ground;
-          this.onBox = false;
-          this.lastbottom = this.y;
-          this.platform = this.game.boxes[0];
-      }
+  //     if (this.y >= this.ground) {
+  //         this.falling = false;
+  //         this.y = this.ground;
+  //         this.onBox = false;
+  //         this.lastbottom = this.y;
+  //         this.platform = this.game.boxes[0];
+  //     }
   }
-
-  //look, if my y coordinate is greater than or equal to the ground's y coordinate,
-  //then I'm definitely not on a box so my y coordinate should be on the ground
-  if (this.y >= this.ground) {
-      this.onBox = false;
-      this.y = this.ground;
-  }
+  //
+  // //look, if my y coordinate is greater than or equal to the ground's y coordinate,
+  // //then I'm definitely not on a box so my y coordinate should be on the ground
+  // if (this.y >= this.ground) {
+  //     this.onBox = false;
+  //     this.y = this.ground;
+  // }
 
   if (this.rightMove) {
       this.x += this.speed * this.game.clockTick;
@@ -939,7 +943,6 @@ Unicorn.prototype.update = function () {
           }
           if (this.boundingbox.collide(box.boundingbox) && this.boundingbox.right >= box.boundingbox.left && box instanceof EndLevel) {
               this.game.success();
-              return;
           }
       }
 
