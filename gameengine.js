@@ -72,11 +72,6 @@ GameEngine.prototype.startInput = function () {
         var x = e.clientX - that.ctx.canvas.getBoundingClientRect().left;
         var y = e.clientY - that.ctx.canvas.getBoundingClientRect().top;
 
-        if (x < 1024) {
-            x = Math.floor(x / 32);
-            y = Math.floor(y / 32);
-        }
-
         return { x: x, y: y };
     }
 
@@ -147,26 +142,22 @@ GameEngine.prototype.reset = function () {
 }
 
 GameEngine.prototype.gameOver = function(){
+    this.togglePause();
     this.over = true;
     document.getElementById("pause").style.display = "none";
     document.getElementById("pausedBanner").style.display = "none";
     document.getElementById("resume").style.display = "none";
-    // document.getElementById("vol").style.display = "none";
-    // document.getElementById("ctrl").style.display = "none";
     document.getElementById("endGame").style.display = "inline-block";
-    this.togglePause();
 }
 
 GameEngine.prototype.success = function(){
+    this.togglePause();
     this.over = true;
     document.getElementById("pause").style.display = "none";
     document.getElementById("pausedBanner").style.display = "none";
     document.getElementById("resume").style.display = "none";
-    // document.getElementById("vol").style.display = "none";
-    // document.getElementById("ctrl").style.display = "none";
     document.getElementById("done").style.display = "inline-block";
     document.getElementById("nxtLvl").style.display = "inline-block";
-    this.togglePause();
 }
 
 GameEngine.prototype.resetandHide = function(){
@@ -175,8 +166,6 @@ GameEngine.prototype.resetandHide = function(){
     document.getElementById("pause").style.display = "inline-block";
     document.getElementById("pausedBanner").style.display = "inline-block";
     document.getElementById("resume").style.display = "inline-block";
-    // document.getElementById("vol").style.display = "inline-block";
-    // document.getElementById("ctrl").style.display = "inline-block";
     document.getElementById("endGame").style.display = "none";
     document.getElementById("done").style.display = "none";
     document.getElementById("nxtLvl").style.display = "none";
@@ -186,16 +175,18 @@ GameEngine.prototype.resetandHide = function(){
 }
 
 GameEngine.prototype.draw = function () {
-    this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
-    this.ctx.save();
-    this.yscale = window.innerHeight/900;
-    this.xscale = window.innerWidth/1440;
-    var that = this;
-    this.ctx.scale(that.yscale, that.yscale);
-    for (var i = 0; i < this.entities.length; i++) {
-        this.entities[i].draw(this.ctx);
-    }
+  this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+  this.ctx.save();
+  this.yscale = window.innerHeight/900;
+  this.xscale = window.innerWidth/1440;
+  var that = this;
+  this.ctx.scale(that.yscale, that.yscale);
+  for (var i = 0; i < this.entities.length; i++) {
+      this.entities[i].draw(this.ctx);
+  }
+  if(!this.timer.paused){
     this.ctx.restore();
+  }
 }
 
 GameEngine.prototype.update = function () {

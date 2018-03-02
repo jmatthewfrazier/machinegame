@@ -128,7 +128,7 @@ PlayGame.prototype.draw = function (ctx) {
         ctx.fillStyle = "white";
         if (this.game.mouse) { ctx.fillStyle = "#ddd"; }
         if (!this.game.dead) {
-        	ctx.fillText("click to begin... \n please don't grade yet", this.x + 100, this.y);
+        	ctx.fillText("click to begin", window.innerWidth/gameEngine.yscale/2, window.innerHeight/gameEngine.yscale/2);
         }
         else {
             ctx.fillText("try again", this.x, this.y);
@@ -244,7 +244,7 @@ function level_1(gameEngine){
       //NPC
         new Character(gameEngine, "./img/kid_talk_l.png", 400, 620, 192, 192, "see that grey box? try pushing it"),
         new Character(gameEngine, "./img/kid_talk_l.png", 6300, 620, 192, 192, "if you get stuck, push x to restart the level"),
-        new EndLevel(gameEngine, 7300, 620, 500, 500),
+        new EndLevel(gameEngine, 7700, 620, 500, 500),
         new Plat3(gameEngine, 0, 700, 350, 87, 1)
     ];
     //LEVER
@@ -268,52 +268,40 @@ function level_1(gameEngine){
 function level_2(gameEngine){
   var statics = [
   new Box1(gameEngine, 600, 627, 144, 144),
-  new Box1(gameEngine, 3800, 627, 144, 144),
 //BOX 2 (NO PUSH)
   new Box2(gameEngine, 700, 555, 144, 144),
   new Box2(gameEngine, 700, 627, 144, 144),
-  new Box2(gameEngine, 1095, 627, 144, 144),
 //
-
-
-new Plat1(gameEngine, 215, 485, 553, 92),
-
-new Box1(gameEngine, 295, 415, 144, 144),
 // //PLAT2
-  new Plat1(gameEngine, 800, 540, 553, 92),
-  new Plat1(gameEngine, 1100, 470, 553, 92),
-  new Plat1(gameEngine, 1400, 390, 553, 92),
+  new Plat2(gameEngine, 800, 540, 553, 92),
+  new Plat2(gameEngine, 950, 470, 553, 92),
+  new Plat2(gameEngine, 1100, 390, 553, 92),
 //
-  new ScrapMetal(gameEngine, 1025, 640, 192, 192),
-  new ScrapMetal(gameEngine, 1150, 640, 192, 192),
-  new ScrapMetal(gameEngine, 1250, 640, 192, 192),
-  new ScrapMetal(gameEngine, 1350, 640, 192, 192),
-  new ScrapMetal(gameEngine, 1450, 640, 192, 192),
-  new ScrapMetal(gameEngine, 1550, 640, 192, 192),
-  new ScrapMetal(gameEngine, 1650, 640, 192, 192),
-
-
-  new Lightning(gameEngine, 2100, 0, 192, 192),
-
-  new Character(gameEngine, "./img/dog_excited_l.png", 2500, 635, 192, 192, "woof"),
-  new Lightning(gameEngine, 3450, 0, 192, 768),
-  new Lightning(gameEngine, 3575, 0, 192, 768),
-  new Lightning(gameEngine, 3650, 0, 192, 768),
+//   new ScrapMetal(gameEngine, 1050, 640, 192, 192),
+//   new ScrapMetal(gameEngine, 1100, 640, 192, 192),
+//   new ScrapMetal(gameEngine, 1150, 640, 192, 192),
+//   new ScrapMetal(gameEngine, 1200, 640, 192, 192),
+//   new ScrapMetal(gameEngine, 1250, 640, 192, 192),
+//   new ScrapMetal(gameEngine, 1300, 640, 192, 192),
+//   new ScrapMetal(gameEngine, 1350, 640, 192, 192),
+// new Lightning(gameEngine, 200, 0, 192, 768),
+// new Lightning(gameEngine, 300, 0, 192, 768),
+// new Lightning(gameEngine, 400, 0, 192, 768),
 // new Lightning(gameEngine, 500, 0, 192, 768),
 // new Lightning(gameEngine, 600, 0, 192, 768),
 //SCRAP METAL
 //LIGHTNING
 //NPC
   // new Character(gameEngine, "./img/old_talk_l.png", 400, 620, 192, 192, "hey sonny!"),
-  new EndLevel(gameEngine, 7000, 620, 500, 500),
+  new EndLevel(gameEngine, 200, 620, 500, 500),
   new Plat3(gameEngine, 0, 700, 350, 50, 2)
   ];
   //LEVER
     var lever_0 = new Lever(gameEngine, 3111, 575, 192, 192);
     var door_0 = new Door(gameEngine, 3300, 525, 192, 192, lever_0);
   //PLATE
-    var plate_0 = new Plate(gameEngine, 4000, 605, 192, 192);
-    var door_1 = new Door(gameEngine, 4500, 520, 192, 192, plate_0);
+    var plate_0 = new Plate(gameEngine, 6800, 605, 192, 192);
+    var door_1 = new Door(gameEngine, 7200, 520, 192, 192, plate_0);
     statics.push(lever_0);
     statics.push(door_0);
     statics.push(plate_0);
@@ -332,14 +320,15 @@ new Box1(gameEngine, 295, 415, 144, 144),
 function level_3(gameEngine){
   var statics = [
 
-      new Box1(gameEngine, 875, 387, 144, 144),
-      new Box2(gameEngine, 1000, 387, 144, 144),
-      new Box2(gameEngine, 1000, 315, 144, 144),
+      // new Box1(gameEngine, 875, 387, 144, 144),
+      // new Box2(gameEngine, 1000, 387, 144, 144),
+      // new Box2(gameEngine, 1000, 315, 144, 144),
 
-      new ScrapMetal(gameEngine, 800, 400, 192, 192),
-      new ScrapMetal(gameEngine, 1050, 400, 192, 192),
-      new ScrapMetal(gameEngine, 1100, 400, 192, 192),
+      // new ScrapMetal(gameEngine, 800, 400, 192, 192),
+      // new ScrapMetal(gameEngine, 1050, 400, 192, 192),
+      // new ScrapMetal(gameEngine, 1100, 400, 192, 192),
 
+      new Box2(gameEngine, 1400, 387, 144, 144),
 
       new Character(gameEngine, "./img/tall_talk_l.png", 900, 375, 192, 192, "please help!", "tall"),
       new EndLevel(gameEngine, 7700, 620, 500, 500),
@@ -356,9 +345,9 @@ function level_3(gameEngine){
   for (var j = 0; j < 3; j++) {
     statics.unshift(new Plat3(gameEngine, (860 + j * 175), 459, 350, 87));
   }
-  for (var i = 1; i < 4; i++) {
-    statics.unshift(new Plat3(gameEngine, 900 - (i * 200), 315 - (i * 80), 350, 87));
-  }
+  // for (var i = 1; i < 4; i++) {
+  //   statics.unshift(new Plat3(gameEngine, 900 - (i * 200), 315 - (i * 80), 350, 87));
+  // }
   gameEngine.Background.layer0 = "./img/Hallway.bmp";
   gameEngine.Background.layer1 = "./img/layer1_dummy.png";
   gameEngine.Background.vertical = true;
@@ -415,9 +404,6 @@ ASSET_MANAGER.queueDownload("./img/pc_push.png");
 ASSET_MANAGER.queueDownload("./img/pc_push_l.png");
 ASSET_MANAGER.queueDownload("./img/kid_talk_l.png");
 ASSET_MANAGER.queueDownload("./img/old_talk_l.png");
-ASSET_MANAGER.queueDownload("./img/dog_excited_l.png");
-ASSET_MANAGER.queueDownload("./img/dog_walk.png");
-ASSET_MANAGER.queueDownload("./img/dog_wait.png");
 ASSET_MANAGER.queueDownload("./img/tall_talk_l.png");
 ASSET_MANAGER.queueDownload("./img/Image_0005.jpg");
 ASSET_MANAGER.queueDownload("./img/Image_0009.png");

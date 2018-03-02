@@ -731,7 +731,6 @@ Unicorn.prototype.update = function () {
       if (this.dead) {
         ASSET_MANAGER.getAsset("./asset_lib/audio/ded.wav").play();
         this.game.gameOver();
-        return;
       }
       if (this.game.right) {
           this.rightMove = true;
@@ -941,7 +940,6 @@ Unicorn.prototype.update = function () {
           }
           if (this.boundingbox.collide(box.boundingbox) && this.boundingbox.right >= box.boundingbox.left && box instanceof EndLevel) {
               this.game.success();
-              return;
           }
       }
 
