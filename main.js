@@ -244,7 +244,7 @@ function level_1(gameEngine){
       //NPC
         new Character(gameEngine, "./img/kid_talk_l.png", 400, 620, 192, 192, "see that grey box? try pushing it"),
         new Character(gameEngine, "./img/kid_talk_l.png", 6300, 620, 192, 192, "if you get stuck, push x to restart the level"),
-        new EndLevel(gameEngine, 7700, 620, 500, 500),
+        new EndLevel(gameEngine, 70, 620, 500, 500),
         new Plat3(gameEngine, 0, 700, 350, 87, 1)
     ];
     //LEVER
@@ -293,7 +293,7 @@ function level_2(gameEngine){
 //LIGHTNING
 //NPC
   // new Character(gameEngine, "./img/old_talk_l.png", 400, 620, 192, 192, "hey sonny!"),
-  new EndLevel(gameEngine, 200, 620, 500, 500),
+  new EndLevel(gameEngine, 3000, 620, 500, 500),
   new Plat3(gameEngine, 0, 700, 350, 50, 2)
   ];
   //LEVER

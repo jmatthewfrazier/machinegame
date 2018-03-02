@@ -850,11 +850,11 @@ Unicorn.prototype.update = function () {
       //yo, check to see if I fall onto another box or a platform, would ya?
       for (var i = 0; i < this.game.boxes.length; i++) {
           var box = this.game.boxes[i];
-          if (this.boundingbox.collide(box.boundingbox) && box instanceof Plat2){
-            console.log(this);
-            console.log(box);
-          }
-          if (this.boundingbox.collide(box.boundingbox) && box != this.platform && this.lastbottom <= box.boundingbox.top && !(box instanceof Lever) && !(box instanceof Character)) {
+          // if (this.boundingbox.collide(box.boundingbox) && box instanceof Plat2){
+          //   console.log(this);
+          //   console.log(box);
+          // }
+          if (this.boundingbox.collide(box.boundingbox) && this.lastbottom <= box.boundingbox.top && !(box instanceof Lever) && !(box instanceof Character)) {
               this.falling = false;
               this.y = box.boundingbox.top - this.animation.frameHeight;
               this.onBox = true;
@@ -1232,6 +1232,9 @@ Unicorn.prototype.draw = function (ctx) {
             this.jumpRevAnimation.elapsedTime = 0;
             this.jumpAnimation.elapsedTime = 0;
             this.jumping = false;
+            if (!this.onBox){
+              this.falling = true;
+            }
         }
     } else if (this.justRight && this.jumping) {
       this.jumpAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y, .5);
@@ -1239,6 +1242,9 @@ Unicorn.prototype.draw = function (ctx) {
           this.jumpAnimation.elapsedTime = 0;
           this.jumpRevAnimation.elapsedTime = 0;
           this.jumping = false;
+          if (!this.onBox){
+            this.falling = true;
+          }
       }
     }
 

@@ -93,6 +93,8 @@ GameEngine.prototype.startInput = function () {
           if (!that.over){
             that.togglePause();
           }
+        }else if (String.fromCharCode(e.which) === 'I') {
+          console.log(that.Hero);
         }
 
 //        console.log(e);
@@ -142,22 +144,22 @@ GameEngine.prototype.reset = function () {
 }
 
 GameEngine.prototype.gameOver = function(){
-    this.togglePause();
     this.over = true;
     document.getElementById("pause").style.display = "none";
     document.getElementById("pausedBanner").style.display = "none";
     document.getElementById("resume").style.display = "none";
     document.getElementById("endGame").style.display = "inline-block";
+    this.togglePause();
 }
 
 GameEngine.prototype.success = function(){
-    this.togglePause();
     this.over = true;
     document.getElementById("pause").style.display = "none";
     document.getElementById("pausedBanner").style.display = "none";
     document.getElementById("resume").style.display = "none";
     document.getElementById("done").style.display = "inline-block";
     document.getElementById("nxtLvl").style.display = "inline-block";
+    this.togglePause();
 }
 
 GameEngine.prototype.resetandHide = function(){
