@@ -313,7 +313,9 @@ function level_2(gameEngine){
   }
   gameEngine.Background.layer0 = "./img/L2_layer0.png";
   gameEngine.Background.layer1 = "./img/L2_layer1.png";
+  var vol = music.volume;
   music = ASSET_MANAGER.getAsset("./asset_lib/audio/In_Your_Prime_OC.mp3");
+  music.volume = vol;
   set_level(gameEngine, statics);
 }
 
@@ -351,7 +353,9 @@ function level_3(gameEngine){
   gameEngine.Background.layer0 = "./img/Hallway.bmp";
   gameEngine.Background.layer1 = "./img/layer1_dummy.png";
   gameEngine.Background.vertical = true;
+  var vol = music.volume;
   music = ASSET_MANAGER.getAsset("./asset_lib/audio/Atomyk Ebonpyre.mp3");
+  music.volume = vol;
   set_level(gameEngine, statics);
 }
 

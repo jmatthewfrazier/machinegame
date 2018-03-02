@@ -602,6 +602,9 @@ Door.prototype.reset = function () {
 
 Door.prototype.update = function () {
   if (this.connection.pressed) {
+    if (!this.opened){
+      ASSET_MANAGER.getAsset("./asset_lib/audio/solved.wav").play();
+    }
     this.opened = true;
     this.boundingbox = new BoundingBox(0, 0, 0, 0);
   } else {
