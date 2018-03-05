@@ -1,7 +1,6 @@
 // Press D to go right, Press A to go left, Press Space to jump
 // You can jump and move at the same time
 
-
 function Animation(spriteSheet, startX, startY, frameWidth, frameHeight, frameDuration, frames, loop, reverse) {
     this.spriteSheet = spriteSheet;
     this.startX = startX;
@@ -106,7 +105,11 @@ PlayGame.prototype.reset = function () {
 PlayGame.prototype.update = function () {
     if (this.game.click){
         if(!this.game.running){
+          fadeAudio(ASSET_MANAGER.getAsset("./asset_lib/audio/Reach for the Dead.mp3"), 0);
             music.muted = false;
+            if ($("#muteMusic").is(':checked')){
+              music.muted = true;
+            }
             music.volume = 0.5;
             music.loop = true;
             music.play();
@@ -126,7 +129,7 @@ PlayGame.prototype.draw = function (ctx) {
         ctx.fillStyle = "white";
         if (this.game.mouse) { ctx.fillStyle = "#ddd"; }
         if (!this.game.dead) {
-        	ctx.fillText("click to begin", this.x, this.y);
+        	ctx.fillText("click to begin", window.innerWidth/gameEngine.yscale/2, window.innerHeight/gameEngine.yscale/2);
         }
         else {
             ctx.fillText("try again", this.x, this.y);
@@ -138,6 +141,7 @@ function Background(game) {
   this.x = 0;
   this.y = 0;
   this.game = game;
+  this.vertical = false;
   this.layer0 = "./img/Image_0005.jpg";
   this.layer1 = "./img/Image_0009.png";
 }
@@ -153,7 +157,7 @@ Background.prototype.reset = function () {
 Background.prototype.update = function () {
 	let canvas = document.getElementById("gameWorld");
 	canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+  canvas.height = window.innerHeight;
   if (this.game.running) {
     if (this.game.rightScroll) this.rightScrolling = true;
     if (this.game.leftScroll) this.leftScrolling = true;
@@ -180,14 +184,21 @@ Background.prototype.draw = function (ctx) {
 	let fillNum = (8000/700) + 2;
   let x = 0 - 700;
 	let y = this.y;
-  let ay = window.innerHeight - ASSET_MANAGER.getAsset(this.layer1).height;
   let bg = this;
-	for (i = 0; i < fillNum; i++){
-		ctx.drawImage(ASSET_MANAGER.getAsset(bg.layer0), x, y, ASSET_MANAGER.getAsset(bg.layer0).width, window.innerHeight);
-		ctx.drawImage(ASSET_MANAGER.getAsset(bg.layer1), x, ay);
-		x += 700;
-	}
-
+  ctx.imageSmoothingEnabled = false;
+  if (!this.vertical){
+    let ay = window.innerHeight/gameEngine.yscale - ASSET_MANAGER.getAsset(this.layer1).height;
+  	for (i = 0; i < fillNum; i++){
+  		ctx.drawImage(ASSET_MANAGER.getAsset(bg.layer0), x, y, ASSET_MANAGER.getAsset(bg.layer0).width, window.innerHeight/gameEngine.yscale);
+  		ctx.drawImage(ASSET_MANAGER.getAsset(bg.layer1), x, ay);
+  		x += 700;
+  	}
+  } else {
+    for (i = -8000; i <= 2*window.innerHeight/gameEngine.xscale; i += window.innerHeight/gameEngine.xscale -5){
+      ctx.drawImage(ASSET_MANAGER.getAsset(bg.layer0), 0, i, window.innerWidth/gameEngine.xscale, window.innerHeight/gameEngine.xscale);
+  		ctx.drawImage(ASSET_MANAGER.getAsset(bg.layer1), 0, i);
+    }
+  }
 }
 
 // the "main" code begins here
@@ -232,9 +243,10 @@ function level_1(gameEngine){
         new Lightning(gameEngine, 4725, 0, 192, 768),
         new Lightning(gameEngine, 2500, 0, 192, 768),
       //NPC
-        new Child(gameEngine, 400, 620, 192, 192, "see that red box? try pushing it"),
+        new Character(gameEngine, "./img/kid_talk_l.png", 400, 620, 192, 192, "see that grey box? try pushing it"),
+        new Character(gameEngine, "./img/kid_talk_l.png", 6300, 620, 192, 192, "if you get stuck, push x to restart the level"),
         new EndLevel(gameEngine, 7700, 620, 500, 500),
-        new Plat3(gameEngine, 0, 700, 350, 87)
+        new Plat3(gameEngine, 0, 700, 350, 87, 1)
     ];
     //LEVER
       var lever_0 = new Lever(gameEngine, 3111, 575, 192, 192);
@@ -248,7 +260,7 @@ function level_1(gameEngine){
       statics.push(door_1);
     for (var i = 1; i < 50; i++) {
       if (i !== 3 && i !== 7 && i !== 15 && i !== 20) {
-        statics.unshift(new Plat3(gameEngine, i * (349 * .75), 700, 350, 87));
+        statics.unshift(new Plat3(gameEngine, i * (349 * .75), 700, 350, 87, 1));
       }
     }
     set_level(gameEngine, statics);
@@ -256,8 +268,34 @@ function level_1(gameEngine){
 
 function level_2(gameEngine){
   var statics = [
-      new EndLevel(gameEngine, 7700, 620, 500, 500),
-      new Plat3(gameEngine, 0, 700, 350, 87)
+  new Box1(gameEngine, 600, 627, 144, 144),
+//BOX 2 (NO PUSH)
+  new Box2(gameEngine, 700, 555, 144, 144),
+  new Box2(gameEngine, 700, 627, 144, 144),
+//
+// //PLAT2
+  new Plat2(gameEngine, 800, 540, 553, 92),
+  new Plat2(gameEngine, 950, 470, 553, 92),
+  new Plat2(gameEngine, 1100, 390, 553, 92),
+//
+//   new ScrapMetal(gameEngine, 1050, 640, 192, 192),
+//   new ScrapMetal(gameEngine, 1100, 640, 192, 192),
+//   new ScrapMetal(gameEngine, 1150, 640, 192, 192),
+//   new ScrapMetal(gameEngine, 1200, 640, 192, 192),
+//   new ScrapMetal(gameEngine, 1250, 640, 192, 192),
+//   new ScrapMetal(gameEngine, 1300, 640, 192, 192),
+//   new ScrapMetal(gameEngine, 1350, 640, 192, 192),
+// new Lightning(gameEngine, 200, 0, 192, 768),
+// new Lightning(gameEngine, 300, 0, 192, 768),
+// new Lightning(gameEngine, 400, 0, 192, 768),
+// new Lightning(gameEngine, 500, 0, 192, 768),
+// new Lightning(gameEngine, 600, 0, 192, 768),
+//SCRAP METAL
+//LIGHTNING
+//NPC
+  // new Character(gameEngine, "./img/old_talk_l.png", 400, 620, 192, 192, "hey sonny!"),
+  new EndLevel(gameEngine, 7700, 620, 500, 500),
+  new Plat3(gameEngine, 0, 700, 350, 50, 2)
   ];
   //LEVER
     var lever_0 = new Lever(gameEngine, 3111, 575, 192, 192);
@@ -271,12 +309,54 @@ function level_2(gameEngine){
     statics.push(door_1);
   for (var i = 1; i < 50; i++) {
     if (i !== 3 && i !== 7 && i !== 15 && i !== 20) {
-      statics.unshift(new Plat3(gameEngine, i * (349 * .75), 700, 350, 87));
+      statics.unshift(new Plat3(gameEngine, i * (349 * .75), 700, 350, 50, 2));
     }
   }
   gameEngine.Background.layer0 = "./img/L2_layer0.png";
   gameEngine.Background.layer1 = "./img/L2_layer1.png";
+  var vol = music.volume;
   music = ASSET_MANAGER.getAsset("./asset_lib/audio/In_Your_Prime_OC.mp3");
+  music.volume = vol;
+  set_level(gameEngine, statics);
+}
+
+function level_3(gameEngine){
+  var statics = [
+
+      // new Box1(gameEngine, 875, 387, 144, 144),
+      // new Box2(gameEngine, 1000, 387, 144, 144),
+      // new Box2(gameEngine, 1000, 315, 144, 144),
+
+      // new ScrapMetal(gameEngine, 800, 400, 192, 192),
+      // new ScrapMetal(gameEngine, 1050, 400, 192, 192),
+      // new ScrapMetal(gameEngine, 1100, 400, 192, 192),
+
+      new Box2(gameEngine, 1400, 387, 144, 144),
+
+      new Character(gameEngine, "./img/tall_talk_l.png", 900, 375, 192, 192, "please help!", "tall"),
+      new EndLevel(gameEngine, 7700, 620, 500, 500),
+      new Plat3(gameEngine, 0, 700, 350, 87)
+  ];
+  var lever_0 = new Lever(gameEngine, 1000, 340, 192, 192);
+  var door_0 = new Door(gameEngine, 1200, 300, 192, 192, lever_0);
+//PLATE
+  statics.push(lever_0);
+  statics.push(door_0);
+  for (var i = 1; i < 4; i++) {
+    statics.unshift(new Plat3(gameEngine, (i * 200), 700 - (i * 80), 350, 87));
+  }
+  for (var j = 0; j < 3; j++) {
+    statics.unshift(new Plat3(gameEngine, (860 + j * 175), 459, 350, 87));
+  }
+  // for (var i = 1; i < 4; i++) {
+  //   statics.unshift(new Plat3(gameEngine, 900 - (i * 200), 315 - (i * 80), 350, 87));
+  // }
+  gameEngine.Background.layer0 = "./img/Hallway.bmp";
+  gameEngine.Background.layer1 = "./img/layer1_dummy.png";
+  gameEngine.Background.vertical = true;
+  var vol = music.volume;
+  music = ASSET_MANAGER.getAsset("./asset_lib/audio/Atomyk Ebonpyre.mp3");
+  music.volume = vol;
   set_level(gameEngine, statics);
 }
 
@@ -304,6 +384,13 @@ function nextLevel(gameEngine){
   	display(1, "dialogue");
     hide(2000, 2000, "dialogue");
     gameEngine.lvl++;
+  } else if (gameEngine.lvl == 2){
+    gameEngine.clear();
+    level_3(gameEngine);
+    setText("Interior", "dialogue");
+  	display(1, "dialogue");
+    hide(2000, 2000, "dialogue");
+    gameEngine.lvl++;
   }
 }
 
@@ -321,12 +408,17 @@ ASSET_MANAGER.queueDownload("./img/pc_jump_l.png");
 ASSET_MANAGER.queueDownload("./img/pc_push.png");
 ASSET_MANAGER.queueDownload("./img/pc_push_l.png");
 ASSET_MANAGER.queueDownload("./img/kid_talk_l.png");
+ASSET_MANAGER.queueDownload("./img/old_talk_l.png");
+ASSET_MANAGER.queueDownload("./img/tall_talk_l.png");
 ASSET_MANAGER.queueDownload("./img/Image_0005.jpg");
 ASSET_MANAGER.queueDownload("./img/Image_0009.png");
 ASSET_MANAGER.queueDownload("./img/Image_0010.png");
 ASSET_MANAGER.queueDownload("./img/L2_layer0.png");
 ASSET_MANAGER.queueDownload("./img/L2_layer1.png");
+ASSET_MANAGER.queueDownload("./img/Hallway.bmp");
+ASSET_MANAGER.queueDownload("./img/layer1_dummy.png");
 ASSET_MANAGER.queueDownload("./img/woodplat.png");
+// ASSET_MANAGER.queueDownload("./img/woodplat copy.png");
 ASSET_MANAGER.queueDownload("./img/lightning.png");
 ASSET_MANAGER.queueDownload("./img/scrap.png");
 ASSET_MANAGER.queueDownload("./img/plate.png");
@@ -336,6 +428,7 @@ ASSET_MANAGER.queueDownload("./img/lever_still.png");
 ASSET_MANAGER.queueDownload("./img/lever_still_rev.png");
 ASSET_MANAGER.queueDownload("./img/door_open.png");
 ASSET_MANAGER.queueDownload("./img/door_closed.png");
+ASSET_MANAGER.queueDownload("./img/level_2_ground.png");
 ASSET_MANAGER.queueDownload("./asset_lib/audio/lightning.wav");
 ASSET_MANAGER.queueDownload("./asset_lib/audio/explosion.wav");
 ASSET_MANAGER.queueDownload("./asset_lib/audio/solved.wav");
@@ -345,6 +438,8 @@ ASSET_MANAGER.queueDownload("./asset_lib/audio/talking.wav");
 ASSET_MANAGER.queueDownload("./asset_lib/audio/jump.wav");
 
 //MUSIC LAST
+ASSET_MANAGER.queueDownload("./asset_lib/audio/Reach for the Dead.mp3");
+ASSET_MANAGER.queueDownload("./asset_lib/audio/Atomyk Ebonpyre.mp3");
 ASSET_MANAGER.queueDownload("./asset_lib/audio/In_Your_Prime_OC.mp3");
 ASSET_MANAGER.queueDownload("./asset_lib/audio/Aquatic_Ambiance_2.mp3");
 
@@ -358,7 +453,7 @@ ASSET_MANAGER.downloadAll(function () {
     canvas.height = window.innerHeight;
 
     var bg = new Background(gameEngine);
-    var pg = new PlayGame(gameEngine, canvas.width/2, canvas.height/2);
+    var pg = new PlayGame(gameEngine, (canvas.width/2), (canvas.height/2));
     gameEngine.Background = bg;
     gameEngine.playState = pg;
     gameEngine.lvl = 1;
@@ -374,4 +469,5 @@ ASSET_MANAGER.downloadAll(function () {
     gameEngine.start();
 });
 
+var intro = ASSET_MANAGER.getAsset("./asset_lib/audio/Reach for the Dead.mp3");
 var music = ASSET_MANAGER.getAsset("./asset_lib/audio/Aquatic_Ambiance_2.mp3");
