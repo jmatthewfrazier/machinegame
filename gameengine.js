@@ -85,6 +85,9 @@ GameEngine.prototype.startInput = function () {
           that.left = true;
           that.leftScroll = true;
         }else if (String.fromCharCode(e.which) === 'X') {
+            if (!that.timer.paused){
+                that.timer.paused=true;
+            }
           that.resetandHide();
         } else if (e.keyCode === 27) {
           if (!that.over){
