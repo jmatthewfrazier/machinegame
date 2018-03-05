@@ -85,10 +85,7 @@ GameEngine.prototype.startInput = function () {
           that.left = true;
           that.leftScroll = true;
         }else if (String.fromCharCode(e.which) === 'X') {
-          that.reset();
-          if (that.timer.paused){
-            that.togglePause();
-          }
+          that.resetandHide();
         } else if (e.keyCode === 27) {
           if (!that.over){
             that.togglePause();
