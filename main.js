@@ -269,6 +269,7 @@ function level_1(gameEngine){
 function level_2(gameEngine){
   var statics = [
   new Box1(gameEngine, 600, 627, 144, 144),
+  new Box1(gameEngine, 7000, 627, 144, 144),
 //BOX 2 (NO PUSH)
   new Box2(gameEngine, 700, 555, 144, 144),
   new Box2(gameEngine, 700, 627, 144, 144),
