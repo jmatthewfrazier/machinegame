@@ -183,7 +183,11 @@ GameEngine.prototype.draw = function () {
   this.yscale = window.innerHeight/900;
   this.xscale = window.innerWidth/1440;
   var that = this;
-  this.ctx.scale(that.yscale, that.yscale);
+  if (this.Background.vertical){
+    this.ctx.scale(that.xscale, that.xscale);
+  } else {
+    this.ctx.scale(that.yscale, that.yscale);
+    }
   for (var i = 0; i < this.entities.length; i++) {
       this.entities[i].draw(this.ctx);
   }
