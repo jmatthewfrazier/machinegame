@@ -213,9 +213,9 @@ function level_1(gameEngine){
         new Box1(gameEngine, 5950, 627, 144, 144),
         new Box1(gameEngine, 7000, 627, 144, 144),
       //BOX 2 (NO PUSH)
-        new Box2(gameEngine, 300, 627, 144, 144),
-        new Box2(gameEngine, 700, 555, 144, 144),
-        new Box2(gameEngine, 700, 627, 144, 144),
+        // new Box2(gameEngine, 300, 627, 144, 144),
+        // new Box2(gameEngine, 700, 555, 144, 144),
+        // new Box2(gameEngine, 700, 627, 144, 144),
         new Box2(gameEngine, 3800, 627, 144, 144),
         new Box2(gameEngine, 6200, 627, 144, 144),
         new Box2(gameEngine, 6200, 555, 144, 144),
@@ -237,14 +237,14 @@ function level_1(gameEngine){
         new ScrapMetal(gameEngine, 4510, 640, 192, 192),
       //LIGHTNING
         new Lightning(gameEngine, 1212, 0, 192, 768),
-        new Lightning(gameEngine, 4200, 0, 192, 768),
+        new Lightning(gameEngine, 10, 0, 192, 768),
         new Lightning(gameEngine, 4358, 0, 192, 768),
         new Lightning(gameEngine, 4725, 0, 192, 768),
         new Lightning(gameEngine, 2500, 0, 192, 768),
       //NPC
-        new Character(gameEngine, "./img/kid_talk_l.png", 400, 620, 192, 192, "see that grey box? try pushing it"),
+        new Character(gameEngine, "./img/kid_talk_l.png", 400, 620, 192, 192, "Do you know who woke the machine?"),
         new Character(gameEngine, "./img/kid_talk_l.png", 6300, 620, 192, 192, "if you get stuck, push x to restart the level"),
-        new EndLevel(gameEngine, 7300, 620, 500, 500),
+        new EndLevel(gameEngine, 73, 620, 500, 500),
         new Plat3(gameEngine, 0, 700, 350, 87, 1)
     ];
     //LEVER
@@ -276,9 +276,9 @@ function level_2(gameEngine){
 //
 
 
-new Plat1(gameEngine, 215, 485, 553, 92),
-
-new Box1(gameEngine, 295, 415, 144, 144),
+// new Plat1(gameEngine, 215, 485, 553, 92),
+//
+// new Box1(gameEngine, 295, 415, 144, 144),
 // //PLAT2
   new Plat1(gameEngine, 800, 540, 553, 92),
   new Plat1(gameEngine, 1100, 470, 553, 92),
