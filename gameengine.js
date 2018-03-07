@@ -77,7 +77,7 @@ GameEngine.prototype.startInput = function () {
 
     this.ctx.canvas.addEventListener("keydown", function (e) {
         if (String.fromCharCode(e.which) === ' ') that.space = true;
-        if (String.fromCharCode(e.which) === 'E') that.action = true;
+        if (String.fromCharCode(e.which) === 'E') {}//that.action = true;
         if (String.fromCharCode(e.which) === 'D') {
           that.right = true;
           that.rightScroll = true;
@@ -105,7 +105,7 @@ GameEngine.prototype.startInput = function () {
         if (String.fromCharCode(e.which) === ' ') that.space = false;
         if (String.fromCharCode(e.which) === 'D') that.right = false;
         if (String.fromCharCode(e.which) === 'A') that.left = false;
-      //  if (String.fromCharCode(e.which) === 'E') that.action = false;
+        //if (String.fromCharCode(e.which) === 'E') that.action = false;
 
 
 //        console.log(e);
