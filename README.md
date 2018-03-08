@@ -2,4 +2,4 @@
 
 A game made entirely in javascript
 
-play here -> https://mhhplumber.github.io/machinegame/
+[play here](https://mhhplumber.github.io/machinegame/)
