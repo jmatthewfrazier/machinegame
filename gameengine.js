@@ -77,7 +77,7 @@ GameEngine.prototype.startInput = function () {
 
     this.ctx.canvas.addEventListener("keydown", function (e) {
         if (String.fromCharCode(e.which) === ' ') that.space = true;
-        if (String.fromCharCode(e.which) === 'E') that.action = true;
+        if (String.fromCharCode(e.which) === 'E') {}//that.action = true;
         if (String.fromCharCode(e.which) === 'D') {
           that.right = true;
           that.rightScroll = true;
@@ -85,10 +85,10 @@ GameEngine.prototype.startInput = function () {
           that.left = true;
           that.leftScroll = true;
         }else if (String.fromCharCode(e.which) === 'X') {
-          that.reset();
-          if (that.timer.paused){
-            that.togglePause();
-          }
+            if (!that.timer.paused){
+                that.timer.paused=true;
+            }
+          that.resetandHide();
         } else if (e.keyCode === 27) {
           if (!that.over){
             that.togglePause();
@@ -105,7 +105,7 @@ GameEngine.prototype.startInput = function () {
         if (String.fromCharCode(e.which) === ' ') that.space = false;
         if (String.fromCharCode(e.which) === 'D') that.right = false;
         if (String.fromCharCode(e.which) === 'A') that.left = false;
-      //  if (String.fromCharCode(e.which) === 'E') that.action = false;
+        //if (String.fromCharCode(e.which) === 'E') that.action = false;
 
 
 //        console.log(e);
@@ -183,7 +183,11 @@ GameEngine.prototype.draw = function () {
   this.yscale = window.innerHeight/900;
   this.xscale = window.innerWidth/1440;
   var that = this;
-  this.ctx.scale(that.yscale, that.yscale);
+  if (this.Background.vertical){
+    this.ctx.scale(that.xscale, that.xscale);
+  } else {
+    this.ctx.scale(that.yscale, that.yscale);
+    }
   for (var i = 0; i < this.entities.length; i++) {
       this.entities[i].draw(this.ctx);
   }

@@ -75,19 +75,11 @@ function BoundingBox(x, y, width, height) {
 }
 
 BoundingBox.prototype.collide = function (oth) {
-    if (this.right > oth.left && this.left < oth.right && this.top < oth.bottom && this.bottom > oth.top) {
-        return true;
-    } else {
-        return false;
-    }
+    return (this.right >= oth.left && this.left <= oth.right && this.top <= oth.bottom && this.bottom >= oth.top);
 }
 
 BoundingBox.prototype.collideLightning = function (oth) {
-  if ((this.right > oth.left && this.left < oth.right) || (this.right > oth.right && this.left < oth.left)) {
-    return true;
-  } else {
-    return false;
-  }
+  return ((this.right > oth.left && this.left < oth.right) || (this.right > oth.right && this.left < oth.left));
 }
 
 function PlayGame(game, x, y) {
@@ -111,6 +103,7 @@ PlayGame.prototype.update = function () {
             if ($("#muteMusic").is(':checked')){
               music.muted = true;
             }
+            display(0.9, "pause");
             music.volume = 0.5;
             music.loop = true;
             music.play();
@@ -195,8 +188,8 @@ Background.prototype.draw = function (ctx) {
   		x += 700;
   	}
   } else {
-    for (i = -8000; i <= 2*window.innerHeight/gameEngine.yscale; i += window.innerHeight/gameEngine.yscale - 5){
-      ctx.drawImage(ASSET_MANAGER.getAsset(bg.layer0), 0, i, window.innerWidth/gameEngine.yscale, window.innerHeight/gameEngine.yscale);
+    for (i = -8000; i <= 2*window.innerHeight/gameEngine.xscale; i += window.innerHeight/gameEngine.xscale -5){
+      ctx.drawImage(ASSET_MANAGER.getAsset(bg.layer0), 0, i, window.innerWidth/gameEngine.xscale, window.innerHeight/gameEngine.xscale);
   		ctx.drawImage(ASSET_MANAGER.getAsset(bg.layer1), 0, i);
     }
   }
@@ -208,16 +201,17 @@ var ASSET_MANAGER = new AssetManager();
 
 function level_1(gameEngine){
     var statics = [
+        new Plat3(gameEngine, 0, 700, 350, 87, 1),
       //BOX 1 (PUSHING)
-        new Box1(gameEngine, 500, 627, 144, 144),
-        new Box1(gameEngine, 1678, 627, 144, 144),
-        new Box1(gameEngine, 4900, 627, 144, 144),
-        new Box1(gameEngine, 5950, 627, 144, 144),
-        new Box1(gameEngine, 7000, 627, 144, 144),
+        new Box1(gameEngine, 500, 630, 144, 144),
+        new Box1(gameEngine, 1678, 630, 144, 144),
+        new Box1(gameEngine, 4900, 630, 144, 144),
+        new Box1(gameEngine, 5950, 630, 144, 144),
+        new Box1(gameEngine, 7000, 630, 144, 144),
       //BOX 2 (NO PUSH)
-        new Box2(gameEngine, 300, 627, 144, 144),
-        new Box2(gameEngine, 700, 555, 144, 144),
-        new Box2(gameEngine, 700, 627, 144, 144),
+        // new Box2(gameEngine, 300, 627, 144, 144),
+        // new Box2(gameEngine, 700, 555, 144, 144),
+        // new Box2(gameEngine, 700, 627, 144, 144),
         new Box2(gameEngine, 3800, 627, 144, 144),
         new Box2(gameEngine, 6200, 627, 144, 144),
         new Box2(gameEngine, 6200, 555, 144, 144),
@@ -225,29 +219,28 @@ function level_1(gameEngine){
         new Box2(gameEngine, 6372, 627, 144, 144),
         new Box2(gameEngine, 6372, 483, 144, 144),
       //PLAT1
-        new Plat1(gameEngine, 800, 540, 553, 92),
-        new Plat1(gameEngine, 1700, 540, 553, 92),
-        new Plat1(gameEngine, 3950, 540, 553, 92),
+        new Plat1(gameEngine, 800, 560, 553, 92),
+        new Plat1(gameEngine, 1700, 560, 553, 92),
+        new Plat1(gameEngine, 3950, 560, 553, 92),
       //PLAT2
         new Plat2(gameEngine, 5275, 600, 553, 92),
         new Plat2(gameEngine, 5500, 500, 553, 92),
       //SCRAP METAL
-        new ScrapMetal(gameEngine, 1400, 640, 192, 192),
-        new ScrapMetal(gameEngine, 2390, 640, 192, 192),
-        new ScrapMetal(gameEngine, 2740, 640, 192, 192),
-        new ScrapMetal(gameEngine, 3550, 640, 192, 192),
-        new ScrapMetal(gameEngine, 4510, 640, 192, 192),
+        new Ouchies(gameEngine, 1400, 640, 192, 192,"./img/scrap.png"),
+        new Ouchies(gameEngine, 2390, 640, 192, 192,"./img/scrap.png"),
+        new Ouchies(gameEngine, 2740, 640, 192, 192,"./img/scrap.png"),
+        new Ouchies(gameEngine, 3550, 640, 192, 192,"./img/scrap.png"),
+        new Ouchies(gameEngine, 4510, 640, 192, 192,"./img/scrap.png"),
       //LIGHTNING
         new Lightning(gameEngine, 1212, 0, 192, 768),
-        new Lightning(gameEngine, 4200, 0, 192, 768),
+        new Lightning(gameEngine, 10, 0, 192, 768),
         new Lightning(gameEngine, 4358, 0, 192, 768),
         new Lightning(gameEngine, 4725, 0, 192, 768),
         new Lightning(gameEngine, 2500, 0, 192, 768),
       //NPC
-        new Character(gameEngine, "./img/kid_talk_l.png", 400, 620, 192, 192, "see that grey box? try pushing it"),
+        new Character(gameEngine, "./img/kid_talk_l.png", 400, 620, 192, 192, "Do you know who woke the machine?"),
         new Character(gameEngine, "./img/kid_talk_l.png", 6300, 620, 192, 192, "if you get stuck, push x to restart the level"),
-        new EndLevel(gameEngine, 70, 620, 500, 500),
-        new Plat3(gameEngine, 0, 700, 350, 87, 1)
+        new EndLevel(gameEngine, 7700, 620, 500, 500)
     ];
     //LEVER
       var lever_0 = new Lever(gameEngine, 3111, 575, 192, 192);
@@ -270,44 +263,97 @@ function level_1(gameEngine){
 function level_2(gameEngine){
   var statics = [
   new Box1(gameEngine, 600, 627, 144, 144),
+  new Box1(gameEngine, 5900, 627, 144, 144),
+  new Box1(gameEngine, 1600, 627, 144, 144),
+
+  new Box1(gameEngine, 3500, 627, 144, 144),
+  // new Box1(gameEngine, 5900, 627, 144, 144),
+
 //BOX 2 (NO PUSH)
+  new Box2(gameEngine, 3650, 555, 144, 144),
+  new Box2(gameEngine, 3650, 627, 144, 144),
+
+  new Box2(gameEngine, 3850, 555, 144, 144),
+  new Box2(gameEngine, 3850, 627, 144, 144),
+
+  new Box2(gameEngine, 4300, 627, 144, 144),
+  new Box2(gameEngine, 5100, 627, 144, 144),
+
   new Box2(gameEngine, 700, 555, 144, 144),
   new Box2(gameEngine, 700, 627, 144, 144),
+
+  // new Box2(gameEngine, 5800, 627, 144, 144),
+  // new Box2(gameEngine, 6100, 627, 144, 144),
 //
+
+  new Plat1(gameEngine, 4350, 550, 553, 92),
+  new Plat1(gameEngine, 6100, 620, 553, 92),
+  new Plat1(gameEngine, 6150, 540, 553, 92),
+//
+// new Box1(gameEngine, 295, 415, 144, 144),
 // //PLAT2
   new Plat2(gameEngine, 800, 540, 553, 92),
   new Plat2(gameEngine, 950, 470, 553, 92),
   new Plat2(gameEngine, 1100, 390, 553, 92),
-//
-//   new ScrapMetal(gameEngine, 1050, 640, 192, 192),
-//   new ScrapMetal(gameEngine, 1100, 640, 192, 192),
-//   new ScrapMetal(gameEngine, 1150, 640, 192, 192),
-//   new ScrapMetal(gameEngine, 1200, 640, 192, 192),
-//   new ScrapMetal(gameEngine, 1250, 640, 192, 192),
-//   new ScrapMetal(gameEngine, 1300, 640, 192, 192),
-//   new ScrapMetal(gameEngine, 1350, 640, 192, 192),
-// new Lightning(gameEngine, 200, 0, 192, 768),
-// new Lightning(gameEngine, 300, 0, 192, 768),
-// new Lightning(gameEngine, 400, 0, 192, 768),
-// new Lightning(gameEngine, 500, 0, 192, 768),
-// new Lightning(gameEngine, 600, 0, 192, 768),
+
+  new Plat2(gameEngine, 5200, 550, 553, 92),
 //SCRAP METAL
+  new Ouchies(gameEngine, 1050, 640, 192, 192,"./img/scrap.png"),
+  new Ouchies(gameEngine, 1100, 640, 192, 192,"./img/electric.png"),
+  new Ouchies(gameEngine, 1150, 640, 192, 192,"./img/scrap.png"),
+  new Ouchies(gameEngine, 1200, 640, 192, 192,"./img/electric.png"),
+  new Ouchies(gameEngine, 1250, 640, 192, 192,"./img/scrap.png"),
+  new Ouchies(gameEngine, 1300, 640, 192, 192,"./img/electric.png"),
+  new Ouchies(gameEngine, 1350, 640, 192, 192,"./img/scrap.png"),
+  new Ouchies(gameEngine, 2200, 640, 192, 192,"./img/scrap.png"),
+  new Ouchies(gameEngine, 3250, 640, 192, 192,"./img/electric.png"),
+
+  new Ouchies(gameEngine, 3760, 640, 192, 192,"./img/electric.png"),
+  new Ouchies(gameEngine, 3560, 640, 192, 192,"./img/electric.png"),
+
+  new Ouchies(gameEngine, 4450, 640, 192, 192,"./img/electric.png"),
+  new Ouchies(gameEngine, 4500, 640, 192, 192,"./img/electric.png"),
+  new Ouchies(gameEngine, 4550, 640, 192, 192,"./img/electric.png"),
+
+
+//WALL
+  new Ouchies(gameEngine, 4335, 620, 192, 192,"./img/electric_wall_l.png"),
+  new Ouchies(gameEngine, 5040, 620, 192, 192,"./img/electric_wall_r.png"),
+
 //LIGHTNING
+  // new Lightning(gameEngine, 1500, 0, 192, 768),
+  // new Lightning(gameEngine, 1600, 0, 192, 768),
+  new Lightning(gameEngine, 4750, 0, 192, 768),
+  new Lightning(gameEngine, 4650, 0, 192, 768),
+  new Lightning(gameEngine, 4850, 0, 192, 768),
+  new Lightning(gameEngine, 5700, 0, 192, 768),
+
+//LIGHTNING
+
 //NPC
-  // new Character(gameEngine, "./img/old_talk_l.png", 400, 620, 192, 192, "hey sonny!"),
-  new EndLevel(gameEngine, 3000, 620, 500, 500),
+  new Character(gameEngine, "./img/old_talk_l.png", 400, 620, 192, 192, "please help my dog!"),
+  new Character(gameEngine, "./img/dog_excited_l.png", 2350, 635, 192, 192, "woof woof!"),
+  new Character(gameEngine, "./img/dwight_talk_l.png", 7100, 620, 192, 192, "The entrance to the machine is near"),
+
+  new EndLevel(gameEngine, 7400, 620, 500, 500),
   new Plat3(gameEngine, 0, 700, 350, 50, 2)
   ];
   //LEVER
     var lever_0 = new Lever(gameEngine, 3111, 575, 192, 192);
     var door_0 = new Door(gameEngine, 3300, 525, 192, 192, lever_0);
+
+    var lever_1 = new Lever(gameEngine, 6200, 415, 192, 192);
+    var door_1 = new Door(gameEngine, 6600, 525, 192, 192, lever_1);
   //PLATE
-    var plate_0 = new Plate(gameEngine, 6800, 605, 192, 192);
-    var door_1 = new Door(gameEngine, 7200, 520, 192, 192, plate_0);
+    var plate_0 = new Plate(gameEngine, 5500, 605, 192, 192);
+    var door_2 = new Door(gameEngine, 7300, 520, 192, 192, plate_0);
+
     statics.push(lever_0);
-    statics.push(door_0);
+    statics.push(lever_1);
     statics.push(plate_0);
+    statics.push(door_0);
     statics.push(door_1);
+    statics.push(door_2);
   for (var i = 1; i < 50; i++) {
     if (i !== 3 && i !== 7 && i !== 15 && i !== 20) {
       statics.unshift(new Plat3(gameEngine, i * (349 * .75), 700, 350, 50, 2));
@@ -328,9 +374,9 @@ function level_3(gameEngine){
       // new Box2(gameEngine, 1000, 387, 144, 144),
       // new Box2(gameEngine, 1000, 315, 144, 144),
 
-      // new ScrapMetal(gameEngine, 800, 400, 192, 192),
-      // new ScrapMetal(gameEngine, 1050, 400, 192, 192),
-      // new ScrapMetal(gameEngine, 1100, 400, 192, 192),
+      // new Ouchies(gameEngine, 800, 400, 192, 192),
+      // new Ouchies(gameEngine, 1050, 400, 192, 192),
+      // new Ouchies(gameEngine, 1100, 400, 192, 192),
 
       new Box2(gameEngine, 1400, 387, 144, 144),
 
@@ -395,11 +441,32 @@ function nextLevel(gameEngine){
   }
 }
 
+function continue_dl(){
+  ASSET_MANAGER.downloadQueue = [];
+  ASSET_MANAGER.successCount = 0;
+  ASSET_MANAGER.errorCount = 0;
+  ASSET_MANAGER.queueDownload("./asset_lib/audio/Atomyk Ebonpyre.mp3");
+  ASSET_MANAGER.queueDownload("./asset_lib/audio/In_Your_Prime_OC.mp3");
+
+  ASSET_MANAGER.queueDownload("./img/L2_layer0.png");
+  ASSET_MANAGER.queueDownload("./img/L2_layer1.png");
+  ASSET_MANAGER.queueDownload("./img/Hallway.bmp");
+  ASSET_MANAGER.queueDownload("./img/layer1_dummy.png");
+  ASSET_MANAGER.queueDownload("./img/level_2_ground.png");
+  ASSET_MANAGER.queueDownload("./img/electric.png");
+  ASSET_MANAGER.queueDownload("./img/electric_wall_l.png");
+  ASSET_MANAGER.queueDownload("./img/electric_wall_r.png");
+  ASSET_MANAGER.queueDownload("./img/dog_excited_l.png");
+  ASSET_MANAGER.queueDownload("./img/dog_walk.png");
+  ASSET_MANAGER.queueDownload("./img/dog_wait.png");
+
+  ASSET_MANAGER.downloadAll(function(){
+    console.log("downloads complete\n");
+  });
+}
+
 ASSET_MANAGER.queueDownload("./img/box1.png");
 ASSET_MANAGER.queueDownload("./img/box2.png");
-ASSET_MANAGER.queueDownload("./img/lizard.png");
-ASSET_MANAGER.queueDownload("./img/lizard_right.png");
-ASSET_MANAGER.queueDownload("./img/gwen_idle.png");
 ASSET_MANAGER.queueDownload("./img/pc_idle.png");
 ASSET_MANAGER.queueDownload("./img/pc_walk.png");
 ASSET_MANAGER.queueDownload("./img/pc_idle_l.png");
@@ -411,15 +478,11 @@ ASSET_MANAGER.queueDownload("./img/pc_push_l.png");
 ASSET_MANAGER.queueDownload("./img/kid_talk_l.png");
 ASSET_MANAGER.queueDownload("./img/old_talk_l.png");
 ASSET_MANAGER.queueDownload("./img/tall_talk_l.png");
+ASSET_MANAGER.queueDownload("./img/dwight_talk_l.png");
 ASSET_MANAGER.queueDownload("./img/Image_0005.jpg");
 ASSET_MANAGER.queueDownload("./img/Image_0009.png");
 ASSET_MANAGER.queueDownload("./img/Image_0010.png");
-ASSET_MANAGER.queueDownload("./img/L2_layer0.png");
-ASSET_MANAGER.queueDownload("./img/L2_layer1.png");
-ASSET_MANAGER.queueDownload("./img/Hallway.bmp");
-ASSET_MANAGER.queueDownload("./img/layer1_dummy.png");
 ASSET_MANAGER.queueDownload("./img/woodplat.png");
-// ASSET_MANAGER.queueDownload("./img/woodplat copy.png");
 ASSET_MANAGER.queueDownload("./img/lightning.png");
 ASSET_MANAGER.queueDownload("./img/scrap.png");
 ASSET_MANAGER.queueDownload("./img/plate.png");
@@ -429,7 +492,6 @@ ASSET_MANAGER.queueDownload("./img/lever_still.png");
 ASSET_MANAGER.queueDownload("./img/lever_still_rev.png");
 ASSET_MANAGER.queueDownload("./img/door_open.png");
 ASSET_MANAGER.queueDownload("./img/door_closed.png");
-ASSET_MANAGER.queueDownload("./img/level_2_ground.png");
 ASSET_MANAGER.queueDownload("./asset_lib/audio/lightning.wav");
 ASSET_MANAGER.queueDownload("./asset_lib/audio/explosion.wav");
 ASSET_MANAGER.queueDownload("./asset_lib/audio/solved.wav");
@@ -440,8 +502,6 @@ ASSET_MANAGER.queueDownload("./asset_lib/audio/jump.wav");
 
 //MUSIC LAST
 ASSET_MANAGER.queueDownload("./asset_lib/audio/Reach for the Dead.mp3");
-ASSET_MANAGER.queueDownload("./asset_lib/audio/Atomyk Ebonpyre.mp3");
-ASSET_MANAGER.queueDownload("./asset_lib/audio/In_Your_Prime_OC.mp3");
 ASSET_MANAGER.queueDownload("./asset_lib/audio/Aquatic_Ambiance_2.mp3");
 
 ASSET_MANAGER.downloadAll(function () {
@@ -468,6 +528,7 @@ ASSET_MANAGER.downloadAll(function () {
 
     gameEngine.init(ctx);
     gameEngine.start();
+    continue_dl();
 });
 
 var intro = ASSET_MANAGER.getAsset("./asset_lib/audio/Reach for the Dead.mp3");
