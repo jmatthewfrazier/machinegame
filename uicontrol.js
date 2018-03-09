@@ -1,8 +1,18 @@
 function pushText(text, elementID){
 	ASSET_MANAGER.getAsset("./asset_lib/audio/talking.wav").play();
-	setText(text, elementID);
-	display(1, elementID);
-	hide(4000, 2000, "dialogue");
+	pushText_safe(text, elementID);
+}
+
+function pushText_safe(text, elementID){
+	if(document.getElementById(elementID).style.display === "none"){
+		setText(text, elementID);
+		display(1, elementID);
+		hide(4000, 2000, "dialogue");
+	} else {
+		setTimeout(200, function(){
+			pushText_safe(text, elementID);
+		});
+	}
 }
 
 function talk(text, entity, height, ctx){
