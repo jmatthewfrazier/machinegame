@@ -75,19 +75,11 @@ function BoundingBox(x, y, width, height) {
 }
 
 BoundingBox.prototype.collide = function (oth) {
-    if (this.right > oth.left && this.left < oth.right && this.top < oth.bottom && this.bottom > oth.top) {
-        return true;
-    } else {
-        return false;
-    }
+    return (this.right >= oth.left && this.left <= oth.right && this.top <= oth.bottom && this.bottom >= oth.top);
 }
 
 BoundingBox.prototype.collideLightning = function (oth) {
-  if ((this.right > oth.left && this.left < oth.right) || (this.right > oth.right && this.left < oth.left)) {
-    return true;
-  } else {
-    return false;
-  }
+  return ((this.right > oth.left && this.left < oth.right) || (this.right > oth.right && this.left < oth.left));
 }
 
 function PlayGame(game, x, y) {
@@ -105,11 +97,12 @@ PlayGame.prototype.reset = function () {
 PlayGame.prototype.update = function () {
     if (this.game.click){
         if(!this.game.running){
-          fadeAudio(ASSET_MANAGER.getAsset("./asset_lib/audio/Reach for the Dead.mp3"), 0);
+          fadeAudio(intro, 0);
             music.muted = false;
             if ($("#muteMusic").is(':checked')){
               music.muted = true;
             }
+            display(0.9, "pause");
             music.volume = 0.5;
             music.loop = true;
             music.play();
@@ -207,12 +200,13 @@ var ASSET_MANAGER = new AssetManager();
 
 function level_1(gameEngine){
     var statics = [
+        new Plat3(gameEngine, 0, 700, 350, 87, 1),
       //BOX 1 (PUSHING)
-        new Box1(gameEngine, 500, 627, 144, 144),
-        new Box1(gameEngine, 1678, 627, 144, 144),
-        new Box1(gameEngine, 4900, 627, 144, 144),
-        new Box1(gameEngine, 5950, 627, 144, 144),
-        new Box1(gameEngine, 7000, 627, 144, 144),
+        new Box1(gameEngine, 500, 630, 144, 144),
+        new Box1(gameEngine, 1678, 630, 144, 144),
+        new Box1(gameEngine, 4900, 630, 144, 144),
+        new Box1(gameEngine, 5950, 630, 144, 144),
+        new Box1(gameEngine, 7000, 630, 144, 144),
       //BOX 2 (NO PUSH)
         // new Box2(gameEngine, 300, 627, 144, 144),
         // new Box2(gameEngine, 700, 555, 144, 144),
@@ -224,9 +218,9 @@ function level_1(gameEngine){
         new Box2(gameEngine, 6372, 627, 144, 144),
         new Box2(gameEngine, 6372, 483, 144, 144),
       //PLAT1
-        new Plat1(gameEngine, 800, 540, 553, 92),
-        new Plat1(gameEngine, 1700, 540, 553, 92),
-        new Plat1(gameEngine, 3950, 540, 553, 92),
+        new Plat1(gameEngine, 800, 560, 553, 92),
+        new Plat1(gameEngine, 1700, 560, 553, 92),
+        new Plat1(gameEngine, 3950, 560, 553, 92),
       //PLAT2
         new Plat2(gameEngine, 5275, 600, 553, 92),
         new Plat2(gameEngine, 5500, 500, 553, 92),
@@ -245,8 +239,7 @@ function level_1(gameEngine){
       //NPC
         new Character(gameEngine, "./img/kid_talk_l.png", 400, 620, 192, 192, "Do you know who woke the machine?"),
         new Character(gameEngine, "./img/kid_talk_l.png", 6300, 620, 192, 192, "if you get stuck, push x to restart the level"),
-        new EndLevel(gameEngine, 7700, 620, 500, 500),
-        new Plat3(gameEngine, 0, 700, 350, 87, 1)
+        new EndLevel(gameEngine, 7700, 620, 500, 500)
     ];
     //LEVER
       var lever_0 = new Lever(gameEngine, 3111, 575, 192, 192);
@@ -447,19 +440,37 @@ function nextLevel(gameEngine){
   }
 }
 
+function continue_dl(){
+  ASSET_MANAGER.downloadQueue = [];
+  ASSET_MANAGER.successCount = 0;
+  ASSET_MANAGER.errorCount = 0;
+  ASSET_MANAGER.queueDownload("./asset_lib/audio/Atomyk Ebonpyre.mp3");
+  ASSET_MANAGER.queueDownload("./asset_lib/audio/In_Your_Prime_OC.mp3");
+
+  ASSET_MANAGER.queueDownload("./img/L2_layer0.png");
+  ASSET_MANAGER.queueDownload("./img/L2_layer1.png");
+  ASSET_MANAGER.queueDownload("./img/Hallway.bmp");
+  ASSET_MANAGER.queueDownload("./img/layer1_dummy.png");
+  ASSET_MANAGER.queueDownload("./img/level_2_ground.png");
+  ASSET_MANAGER.queueDownload("./img/electric.png");
+  ASSET_MANAGER.queueDownload("./img/electric_wall_l.png");
+  ASSET_MANAGER.queueDownload("./img/electric_wall_r.png");
+  ASSET_MANAGER.queueDownload("./img/dog_excited_l.png");
+  ASSET_MANAGER.queueDownload("./img/dog_walk.png");
+  ASSET_MANAGER.queueDownload("./img/dog_wait.png");
+
+  ASSET_MANAGER.downloadAll(function(){
+    console.log("downloads complete\n");
+  });
+}
+
 ASSET_MANAGER.queueDownload("./img/box1.png");
 ASSET_MANAGER.queueDownload("./img/box2.png");
-ASSET_MANAGER.queueDownload("./img/lizard.png");
-ASSET_MANAGER.queueDownload("./img/lizard_right.png");
-ASSET_MANAGER.queueDownload("./img/gwen_idle.png");
 ASSET_MANAGER.queueDownload("./img/pc_idle.png");
 ASSET_MANAGER.queueDownload("./img/pc_walk.png");
 ASSET_MANAGER.queueDownload("./img/pc_idle_l.png");
 ASSET_MANAGER.queueDownload("./img/pc_walk_l.png");
 ASSET_MANAGER.queueDownload("./img/pc_jump.png");
-ASSET_MANAGER.queueDownload("./img/dog_excited_l.png");
-ASSET_MANAGER.queueDownload("./img/dog_walk.png");
-ASSET_MANAGER.queueDownload("./img/dog_wait.png");
 ASSET_MANAGER.queueDownload("./img/pc_jump_l.png");
 ASSET_MANAGER.queueDownload("./img/pc_push.png");
 ASSET_MANAGER.queueDownload("./img/pc_push_l.png");
@@ -470,16 +481,9 @@ ASSET_MANAGER.queueDownload("./img/dwight_talk_l.png");
 ASSET_MANAGER.queueDownload("./img/Image_0005.jpg");
 ASSET_MANAGER.queueDownload("./img/Image_0009.png");
 ASSET_MANAGER.queueDownload("./img/Image_0010.png");
-ASSET_MANAGER.queueDownload("./img/L2_layer0.png");
-ASSET_MANAGER.queueDownload("./img/L2_layer1.png");
-ASSET_MANAGER.queueDownload("./img/Hallway.bmp");
-ASSET_MANAGER.queueDownload("./img/layer1_dummy.png");
 ASSET_MANAGER.queueDownload("./img/woodplat.png");
 ASSET_MANAGER.queueDownload("./img/lightning.png");
 ASSET_MANAGER.queueDownload("./img/scrap.png");
-ASSET_MANAGER.queueDownload("./img/electric.png");
-ASSET_MANAGER.queueDownload("./img/electric_wall_l.png");
-ASSET_MANAGER.queueDownload("./img/electric_wall_r.png");
 ASSET_MANAGER.queueDownload("./img/plate.png");
 ASSET_MANAGER.queueDownload("./img/plate_rev.png");
 ASSET_MANAGER.queueDownload("./img/lever.png");
@@ -487,7 +491,6 @@ ASSET_MANAGER.queueDownload("./img/lever_still.png");
 ASSET_MANAGER.queueDownload("./img/lever_still_rev.png");
 ASSET_MANAGER.queueDownload("./img/door_open.png");
 ASSET_MANAGER.queueDownload("./img/door_closed.png");
-ASSET_MANAGER.queueDownload("./img/level_2_ground.png");
 ASSET_MANAGER.queueDownload("./asset_lib/audio/lightning.wav");
 ASSET_MANAGER.queueDownload("./asset_lib/audio/explosion.wav");
 ASSET_MANAGER.queueDownload("./asset_lib/audio/solved.wav");
@@ -498,8 +501,6 @@ ASSET_MANAGER.queueDownload("./asset_lib/audio/jump.wav");
 
 //MUSIC LAST
 ASSET_MANAGER.queueDownload("./asset_lib/audio/Reach for the Dead.mp3");
-ASSET_MANAGER.queueDownload("./asset_lib/audio/Atomyk Ebonpyre.mp3");
-ASSET_MANAGER.queueDownload("./asset_lib/audio/In_Your_Prime_OC.mp3");
 ASSET_MANAGER.queueDownload("./asset_lib/audio/Aquatic_Ambiance_2.mp3");
 
 ASSET_MANAGER.downloadAll(function () {
@@ -526,6 +527,7 @@ ASSET_MANAGER.downloadAll(function () {
 
     gameEngine.init(ctx);
     gameEngine.start();
+    continue_dl();
 });
 
 var intro = ASSET_MANAGER.getAsset("./asset_lib/audio/Reach for the Dead.mp3");
