@@ -993,9 +993,9 @@ Unicorn.prototype.update = function () {
       for (var i = 0; i < this.game.boxes.length; i++) {
           var box = this.game.boxes[i];
 
-          // if(this.boundingbox.collide(box.boundingbox) && (box instanceof Plat2)) {
-          //   console.log(this.onBox);
-          // }
+          if(this.boundingbox.collide(box.boundingbox) && (box instanceof Plat3)) {
+            console.log("stuck");
+          }
           if (this.boundingbox.collide(box.boundingbox) && this.boundingbox.right >= box.boundingbox.left && !(this.platform === box) && !(box instanceof Ouchies) && !(box instanceof Lightning) && !(box instanceof Lever) &&  !(box instanceof Character) ) {
               this.lastplattouch = box;
 
