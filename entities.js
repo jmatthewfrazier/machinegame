@@ -35,7 +35,6 @@ Box1.prototype.reset = function() {
 
 Box1.prototype.update = function () {
 
-
     //yo, check to see that I haven't been pushed into another box.
     //If I have, make sure I don't move any further.
     var collisions = 0;

@@ -193,6 +193,14 @@ Background.prototype.draw = function (ctx) {
   		ctx.drawImage(ASSET_MANAGER.getAsset(bg.layer1), 0, i);
     }
   }
+  ctx.font = "150% pixel1";
+  ctx.textAlign = "left";
+  ctx.fillStyle = "white";
+  ctx.fillText("Usually it creaked but today it roared", 0, 800);
+  ctx.fillText("The Machine, great protector of the land", 1600, 800);
+  ctx.fillText("It struck our humble land in anger", 3200, 800);
+  ctx.fillText("Why? O great monolith", 4800, 800);
+  ctx.fillText("It must be stopped", 6400, 800);
 }
 
 // the "main" code begins here
@@ -240,7 +248,7 @@ function level_1(gameEngine){
       //NPC
         new Character(gameEngine, "./img/kid_talk_l.png", 400, 620, 192, 192, "Do you know who woke the machine?"),
         new Character(gameEngine, "./img/kid_talk_l.png", 6300, 620, 192, 192, "if you get stuck, push x to restart the level"),
-        new EndLevel(gameEngine, 70, 620, 500, 500)
+        new EndLevel(gameEngine, 7700, 620, 500, 500)
     ];
     //LEVER
       var lever_0 = new Lever(gameEngine, 3111, 575, 192, 192);
@@ -257,16 +265,22 @@ function level_1(gameEngine){
         statics.unshift(new Plat3(gameEngine, i * (349 * .75), 700, 350, 87, 1));
       }
     }
+    gameEngine.text = [
+    "Usually it creaked but today it roared",
+    "The Machine, great protector of the land",
+    "It struck our humble land in anger",
+    "Glorius monument turned wicked ",
+    "Save this land. for all of us"
+    ];
     set_level(gameEngine, statics);
 }
 
 function level_2(gameEngine){
   var statics = [
-  new Box1(gameEngine, 600, 627, 144, 144),
-  new Box1(gameEngine, 5900, 627, 144, 144),
-  new Box1(gameEngine, 1600, 627, 144, 144),
-
-  new Box1(gameEngine, 3500, 627, 144, 144),
+  new Box1(gameEngine, 600, 630, 144, 144),
+  new Box1(gameEngine, 5900, 630, 144, 144),
+  new Box1(gameEngine, 1600, 630, 144, 144),
+  new Box1(gameEngine, 3500, 630, 144, 144),
   // new Box1(gameEngine, 5900, 627, 144, 144),
 
 //BOX 2 (NO PUSH)
@@ -364,6 +378,13 @@ function level_2(gameEngine){
   var vol = music.volume;
   music = ASSET_MANAGER.getAsset("./asset_lib/audio/In_Your_Prime_OC.mp3");
   music.volume = vol;
+  gameEngine.text = [
+  "The city wept as its people died",
+  "Now withering as quickly as it once grew",
+  "The Machine carved a valley into its face",
+  "Goodbye, ocean of dunes",
+  "And welcome to the glimmering pinnacle"
+  ];
   set_level(gameEngine, statics);
 }
 
