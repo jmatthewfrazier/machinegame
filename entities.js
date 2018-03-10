@@ -87,6 +87,9 @@ Box1.prototype.update = function () {
         this.boundingbox = new BoundingBox(this.x, this.y, this.width * .5, this.height *.5);
     }
 
+    this.pushedLeft = false;
+    this.pushedRight = false;
+
     // for (var i = 0; i < this.game.boxes.length; i++) {
     //     var box = this.game.boxes[i];
     //     if (this.boundingbox.collide(box.boundingbox) && this.boundingbox.top >= box.boundingbox.bottom && (box instanceof Box1 || box instanceof Box2)) {
@@ -361,6 +364,9 @@ Character.prototype = new Entity();
 Character.prototype.constructor = Character;
 
 Character.prototype.reset = function() {
+  if (this.char === './img/dog_excited_l.png'){
+    this.touched = false;
+  }
   this.x = this.startX;
   this.y = this.startY;
   this.touched = false;

@@ -143,6 +143,13 @@ GameEngine.prototype.reset = function () {
           this.entities[i].y = 550;
         }
     }
+    this.flags = [
+        false,
+        false,
+        false,
+        false,
+        false
+      ];
 }
 
 GameEngine.prototype.gameOver = function(){
