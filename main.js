@@ -263,7 +263,7 @@ function level_1(gameEngine){
 function level_2(gameEngine){
   var statics = [
   new Box1(gameEngine, 600, 627, 144, 144),
-  new Box1(gameEngine, 5900, 627, 144, 144),
+  new Box1(gameEngine, 6170, 445, 144, 144),
   new Box1(gameEngine, 1600, 627, 144, 144),
 
   new Box1(gameEngine, 3500, 627, 144, 144),
@@ -372,38 +372,94 @@ function level_3(gameEngine){
 
       // new Box1(gameEngine, 875, 387, 144, 144),
       // new Box2(gameEngine, 1000, 387, 144, 144),
-      // new Box2(gameEngine, 1000, 315, 144, 144),
+      new Box1(gameEngine, 180, 20, 144, 144),
 
-      // new Ouchies(gameEngine, 800, 400, 192, 192),
-      // new Ouchies(gameEngine, 1050, 400, 192, 192),
-      // new Ouchies(gameEngine, 1100, 400, 192, 192),
+      new Plat1(gameEngine, 700, 320, 553, 92),
+      new Plat1(gameEngine, 900, 380, 553, 92),
 
-      new Box2(gameEngine, 1400, 387, 144, 144),
+      new Plat2(gameEngine, 100, -100, 553, 92),
 
-      new Character(gameEngine, "./img/tall_talk_l.png", 900, 375, 192, 192, "please help!", "tall"),
-      new EndLevel(gameEngine, 7700, 620, 500, 500),
+      new Ouchies(gameEngine, 700, 400, 192, 192, "./img/electric.png"),
+      new Ouchies(gameEngine, 800, 400, 192, 192, "./img/electric.png"),
+      new Ouchies(gameEngine, 900, 400, 192, 192, "./img/electric.png"),
+      new Ouchies(gameEngine, 1000, 400, 192, 192, "./img/electric.png"),
+
+      new Ouchies(gameEngine, 860, 190, 192, 192, "./img/scrap.png"),
+      new Ouchies(gameEngine, 660, 110, 192, 192, "./img/scrap.png"),
+      new Ouchies(gameEngine, 460, 30, 192, 192, "./img/scrap.png"),
+
+      new Box2(gameEngine, 1300, 387, 144, 144),
+      new Box2(gameEngine, 100, 20, 144, 144),
+      new Box2(gameEngine, 100, -52, 144, 144),
+
+      new Box2(gameEngine, 650, -530, 144, 144),
+      new Box2(gameEngine, 500, -450, 144, 144),
+      new Box2(gameEngine, 250, -370, 144, 144),
+      new Ouchies(gameEngine, 440, -450, 192, 192, "./img/electric_wall_r.png"),
+      //
+
+      new Ouchies(gameEngine, 900, -520, 192, 192, "./img/scrap.png"),
+      new Ouchies(gameEngine, 1000, -520, 192, 192, "./img/scrap.png"),
+      new Ouchies(gameEngine, 1100, -520, 192, 192, "./img/scrap.png"),
+
+      new Box1(gameEngine, 1200, -520, 144, 144),
+
+      new Plat1(gameEngine, 700, -600, 553, 92),
+      new Plat1(gameEngine, 900, -680, 553, 92),
+
+      new Ouchies(gameEngine, 900, -820, 192, 192, "./img/electric.png"),
+      new Ouchies(gameEngine, 1000, -820, 192, 192, "./img/electric.png"),
+      new Ouchies(gameEngine, 1100, -820, 192, 192, "./img/electric.png"),
+      new Ouchies(gameEngine, 800, -820, 192, 192, "./img/electric.png"),
+      new Ouchies(gameEngine, 700, -820, 192, 192, "./img/electric.png"),
+
+      // new Box2(gameEngine, 500, -830, 144, 144),
+      // new Box2(gameEngine, 500, -902, 144, 144),
+      new Box1(gameEngine, 600, -830, 144, 144),
+      new Box1(gameEngine, 600, -990, 144, 144),
+      // new Character(gameEngine, "./img/tall_talk_l.png", 900, 375, 192, 192, "please help!", "tall"),
+      //new EndLevel(gameEngine, 0, -1040, 50, 50),
       new Plat3(gameEngine, 0, 700, 350, 87)
   ];
-  var lever_0 = new Lever(gameEngine, 1000, 340, 192, 192);
-  var door_0 = new Door(gameEngine, 1200, 300, 192, 192, lever_0);
+  var lever_0 = new Lever(gameEngine, 220, -30, 192, 192);
+  var door_0 = new Door(gameEngine, 700, -640, 192, 192, lever_0);
+
+  var plate_0 = new Plate(gameEngine, 400, -980, 192, 192);
+  var door_1 = new Door(gameEngine, 100, -1050, 192, 192, plate_0);
 //PLATE
   statics.push(lever_0);
-  statics.push(door_0);
+  // statics.push(door_0);
+  statics.push(plate_0);
+  statics.push(door_1);
   for (var i = 1; i < 4; i++) {
     statics.unshift(new Plat3(gameEngine, (i * 200), 700 - (i * 80), 350, 87));
   }
   for (var j = 0; j < 3; j++) {
     statics.unshift(new Plat3(gameEngine, (860 + j * 175), 459, 350, 87));
   }
-  // for (var i = 1; i < 4; i++) {
-  //   statics.unshift(new Plat3(gameEngine, 900 - (i * 200), 315 - (i * 80), 350, 87));
-  // }
+  for (var y = 0; y < 3; y++) {
+    statics.unshift(new Plat3(gameEngine, 800 - (y * 200), 250 - (y * 80), 350, 87));
+  }
+  statics.unshift(new Plat3(gameEngine, 800 - (3 * 200) - 100, 250 - (2 * 80) , 350, 87));
+  for (var i = 0; i < 3; i++) {
+    statics.unshift(new Plat3(gameEngine, 200 + (i * 200), -300 - (i * 80), 350, 87));
+  }
+  for (var i = 0; i < 2; i++) {
+    statics.unshift(new Plat3(gameEngine, 1100 - (i * 200), -300 - (2 * 80), 350, 87));
+  }
+  for (var i = 0; i < 4; i++) {
+    statics.unshift(new Plat3(gameEngine, 1100 - (i * 200), -600 - (2 * 80), 350, 87));
+  }
+  for (var i = 0; i < 4; i++) {
+    statics.unshift(new Plat3(gameEngine, 500 - (i * 200), -720 - (2 * 80), 350, 87));
+  }
   gameEngine.Background.layer0 = "./img/Hallway.bmp";
   gameEngine.Background.layer1 = "./img/layer1_dummy.png";
   gameEngine.Background.vertical = true;
   var vol = music.volume;
   music = ASSET_MANAGER.getAsset("./asset_lib/audio/Atomyk Ebonpyre.mp3");
   music.volume = vol;
+  gameEngine.Hero.y = 400;
   set_level(gameEngine, statics);
 }
 
