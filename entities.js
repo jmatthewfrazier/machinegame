@@ -52,7 +52,7 @@ Box1.prototype.update = function () {
       } if (this.boundingbox.collide(box.boundingbox) && (box instanceof Plat1 || box instanceof Plat3)) {
         this.onPlat = true;
         if (box.rightMove) {
-          this.speed = box.speed;
+            this.speed = box.speed;
             this.x += this.speed * this.game.clockTick;
             this.boundingbox.x += box.speed * this.game.clockTick;
         } else if (box.leftMove) {
@@ -67,7 +67,7 @@ Box1.prototype.update = function () {
       this.y += 130 * this.game.clockTick;
       this.boundingbox = new BoundingBox(this.x, this.y, this.width * .5, this.height * .5);
       this.pushedLeft = false;
-      this.pushedRight =false;
+      this.pushedRight = false;
     }
 
     //If I'm being pushed right, then I'm going right and I'm taking my bounding box with me.
@@ -80,7 +80,7 @@ Box1.prototype.update = function () {
         //
         //     }
         // }
-
+        this.pushedRight = false;
     //If I'm being pushed left.... you get it.
     } else if (this.pushedLeft) {
         this.x -= this.speed * this.game.clockTick;
@@ -1090,6 +1090,7 @@ Unicorn.prototype.update = function () {
           this.lastplattouch.pushedRight = false;
           this.lastplattouch.pushedLeft = false;
       }
+
 
       //Had to check if I'm jumping right and land on a platform you bess belee that I land on that son of a gun
       for (var i = 0; i < this.game.boxes.length; i++) {
