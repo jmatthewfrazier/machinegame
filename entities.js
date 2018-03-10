@@ -926,11 +926,7 @@ Unicorn.prototype.update = function () {
       //yo, check to see if I fall onto another box or a platform, would ya?
       for (var i = 0; i < this.game.boxes.length; i++) {
           var box = this.game.boxes[i];
-          if (this.boundingbox.collide(box.boundingbox) && box instanceof Plat3){
-            this.falling = false;
-            this.onBox = true;
-            this.platform = box;
-          } if (this.boundingbox.collide(box.boundingbox) && this.lastbottom <= box.boundingbox.top && !(box instanceof Lever) && !(box instanceof Character)) {
+          if (this.boundingbox.collide(box.boundingbox) && this.lastbottom <= box.boundingbox.top && !(box instanceof Lever) && !(box instanceof Character)) {
               this.falling = false;
               this.y = box.boundingbox.top - this.animation.frameHeight;
               this.onBox = true;
@@ -991,6 +987,7 @@ Unicorn.prototype.update = function () {
           // }
           if (this.boundingbox.collide(box.boundingbox) && this.boundingbox.right >= box.boundingbox.left && !(this.platform === box) && !(box instanceof Ouchies) && !(box instanceof Lightning) && !(box instanceof Lever) &&  !(box instanceof Character) ) {
               this.lastplattouch = box;
+
           }
           // if (this.boundingbox.collide(box.boundingbox) && this.boundingbox.bottom >= box.boundingbox.top && this.boundingbox.top < box.boundingbox.top && box instanceof Plat3) {
           //   console.log("collide plat3");
