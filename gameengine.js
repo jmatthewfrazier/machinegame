@@ -1,4 +1,3 @@
-
 window.requestAnimFrame = (function () {
     return window.requestAnimationFrame ||
             window.webkitRequestAnimationFrame ||
@@ -207,6 +206,20 @@ GameEngine.prototype.update = function () {
 
         if (!entity.removeFromWorld) {
             entity.update();
+        }
+    }
+
+    if (this.Hero && this.Background && this.text){
+        if(this.Background.vertical){
+            if (this.Hero.y <= (5-this.text.length)*-200 && !this.flags[(5-this.text.length)]){
+                this.flags[(5-this.text.length)] = true;
+                pushText_safe(this.text.shift(), "story");
+            }
+        } else {
+            if (this.Hero.x >= (5-this.text.length)*1500 + 750 && !this.flags[(5-this.text.length)]){
+                this.flags[(5-this.text.length)] = true;
+                pushText_safe(this.text.shift(), "story");
+            }
         }
     }
 

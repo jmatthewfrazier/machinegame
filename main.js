@@ -257,16 +257,31 @@ function level_1(gameEngine){
         statics.unshift(new Plat3(gameEngine, i * (349 * .75), 700, 350, 87, 1));
       }
     }
+    gameEngine.text = [
+      "Usually it creaked but today it roared",
+      "The Machine, great protector of the land",
+      "It struck our humble land in anger",
+      "Glorius monument turned wicked ",
+      "Save this land. for all of us"
+      ];
+    gameEngine.flags = [
+      false,
+      false,
+      false,
+      false,
+      false
+    ];
     set_level(gameEngine, statics);
 }
 
 function level_2(gameEngine){
   var statics = [
-  new Box1(gameEngine, 600, 627, 144, 144),
+  new Box1(gameEngine, 600, 630, 144, 144),
+  new Box1(gameEngine, 5900, 630, 144, 144),
+  new Box1(gameEngine, 1600, 630, 144, 144),
+  new Box1(gameEngine, 3500, 630, 144, 144),
   new Box1(gameEngine, 6170, 445, 144, 144),
-  new Box1(gameEngine, 1600, 627, 144, 144),
 
-  new Box1(gameEngine, 3500, 627, 144, 144),
   // new Box1(gameEngine, 5900, 627, 144, 144),
 
 //BOX 2 (NO PUSH)
@@ -364,6 +379,20 @@ function level_2(gameEngine){
   var vol = music.volume;
   music = ASSET_MANAGER.getAsset("./asset_lib/audio/In_Your_Prime_OC.mp3");
   music.volume = vol;
+  gameEngine.text = [
+    "The city wept as its people died",
+    "Now withering as quickly as it once grew",
+    "The Machine carved a valley into its face",
+    "Goodbye, ocean of dunes",
+    "And welcome to the glimmering pinnacle"
+    ];
+  gameEngine.flags = [
+    false,
+    false,
+    false,
+    false,
+    false
+  ];
   set_level(gameEngine, statics);
 }
 
@@ -459,7 +488,25 @@ function level_3(gameEngine){
   var vol = music.volume;
   music = ASSET_MANAGER.getAsset("./asset_lib/audio/Atomyk Ebonpyre.mp3");
   music.volume = vol;
+<<<<<<< HEAD
   gameEngine.Hero.y = 550;
+=======
+  gameEngine.text = [
+    "Stew in its belly",
+    "That's all you are",
+    "It never cared for this land",
+    "So it tears it apart",
+    "And you along with it"
+    ];
+  gameEngine.flags = [
+    false,
+    false,
+    false,
+    false,
+    false
+  ];
+  gameEngine.Hero.y = 400;
+>>>>>>> d043ca5eebcc2660bb796a37e46af358e4f1fc39
   set_level(gameEngine, statics);
 }
 

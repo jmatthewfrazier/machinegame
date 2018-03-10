@@ -7,7 +7,7 @@ function pushText_safe(text, elementID){
 	if(document.getElementById(elementID).style.display === "none"){
 		setText(text, elementID);
 		display(1, elementID);
-		hide(4000, 2000, "dialogue");
+		hide(4000, 2000, elementID);
 	} else {
 		setTimeout(200, function(){
 			pushText_safe(text, elementID);
