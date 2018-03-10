@@ -85,6 +85,7 @@ Box1.prototype.update = function () {
     } else if (this.pushedLeft) {
         this.x -= this.speed * this.game.clockTick;
         this.boundingbox = new BoundingBox(this.x, this.y, this.width * .5, this.height *.5);
+        this.pushedLeft = false;
     }
 
     // for (var i = 0; i < this.game.boxes.length; i++) {
@@ -441,8 +442,7 @@ Ouchies.prototype.update = function () {
 
 Ouchies.prototype.draw = function (ctx) {
   if (!this.game.running) return;
-  // ctx.strokeStyle = "green";
-  // ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
+
    this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, .5);
 }
 
@@ -722,13 +722,8 @@ EndLevel.prototype.reset = function () {
   this.boundingbox = new BoundingBox(this.x, this.y, this.width, this.height);
 }
 
-// Plate.prototype.update = function () {
-//   Entity.prototype.update.call(this);
-// }
 
-// Plate.prototype.draw = function (ctx) {
 
-// }
 
 function Unicorn(game) {
     this.animation = new Animation(ASSET_MANAGER.getAsset("./img/pc_idle.png"), 0, 0, 192, 192, 0.2, 16, true, false);
@@ -1067,7 +1062,7 @@ Unicorn.prototype.update = function () {
               }
             }
           }
-          if (this.boundingbox.collide(box.boundingbox) && this.boundingbox.right >= box.boundingbox.left && box instanceof EndLevel) {
+          if (this.boundingbox.collide(box.boundingbox)  && box instanceof EndLevel) {
               this.game.success();
           }
       }
@@ -1191,7 +1186,9 @@ Unicorn.prototype.update = function () {
             }
           }
       }
-
+      if (this.boundingbox.collide(box.boundingbox)  && box instanceof EndLevel) {
+          this.game.success();
+      }
       //If I'm moving left on the ground and I run into a box, and that box is of type Box1 and it's not blocked by another box
       //push that bish left
       //otherwise, stop moving because you can't push that type of box
@@ -1319,6 +1316,9 @@ Unicorn.prototype.update = function () {
             if (box.isDie) {
               this.dead = true;
              }
+          }
+          if (this.boundingbox.collide(box.boundingbox)  && box instanceof EndLevel) {
+              this.game.success();
           }
           if (this.boundingbox.collide(box.boundingbox) && box instanceof Character) {
             if(!box.interaction){

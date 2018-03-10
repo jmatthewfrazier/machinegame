@@ -32,6 +32,7 @@ Timer.prototype.tick = function () {
 
 function GameEngine() {
     this.entities = [];
+    this.level;
     this.showOutlines = false;
     this.ctx = null;
     this.click = null;
@@ -157,12 +158,20 @@ GameEngine.prototype.gameOver = function(){
 GameEngine.prototype.success = function(){
     this.over = true;
     fadeAudio(music, 0);
-    document.getElementById("pause").style.display = "none";
-    document.getElementById("pausedBanner").style.display = "none";
-    document.getElementById("resume").style.display = "none";
-    document.getElementById("done").style.display = "inline-block";
-    document.getElementById("nxtLvl").style.display = "inline-block";
-    this.togglePause();
+    if (this.level !== 3) {
+      document.getElementById("pause").style.display = "none";
+      document.getElementById("pausedBanner").style.display = "none";
+      document.getElementById("resume").style.display = "none";
+      document.getElementById("done").style.display = "inline-block";
+      document.getElementById("nxtLvl").style.display = "inline-block";
+      this.togglePause();
+    } else {
+      document.getElementById("pause").style.display = "none";
+      document.getElementById("pausedBanner").style.display = "none";
+      document.getElementById("resume").style.display = "none";
+      document.getElementById("done").style.display = "inline-block";
+      this.togglePause();
+    }
 }
 
 GameEngine.prototype.resetandHide = function(){

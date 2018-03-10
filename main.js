@@ -200,6 +200,7 @@ var gameEngine = new GameEngine();
 var ASSET_MANAGER = new AssetManager();
 
 function level_1(gameEngine){
+  gameEngine.level = 1;
     var statics = [
         new Plat3(gameEngine, 0, 700, 350, 87, 1),
       //BOX 1 (PUSHING)
@@ -275,6 +276,7 @@ function level_1(gameEngine){
 }
 
 function level_2(gameEngine){
+  gameEngine.level = 2;
   var statics = [
   new Box1(gameEngine, 600, 630, 144, 144),
   new Box1(gameEngine, 5900, 630, 144, 144),
@@ -397,6 +399,7 @@ function level_2(gameEngine){
 }
 
 function level_3(gameEngine){
+  gameEngine.level = 3;
   var statics = [
 
       // new Box1(gameEngine, 875, 387, 144, 144),
@@ -445,15 +448,16 @@ function level_3(gameEngine){
       // new Box2(gameEngine, 500, -830, 144, 144),
       // new Box2(gameEngine, 500, -902, 144, 144),
       new Box1(gameEngine, 600, -830, 144, 144),
-      new Box1(gameEngine, 600, -990, 144, 144),
-      // new Character(gameEngine, "./img/tall_talk_l.png", 900, 375, 192, 192, "please help!", "tall"),
-      new EndLevel(gameEngine, 0, -1040, 50, 50),
+      new Box1(gameEngine, 550, -990, 144, 144),
+      new Character(gameEngine, "./img/grrl_talk_l.png", 1220, 390, 192, 192, "You must make it to the top"),
+      new Character(gameEngine, "./img/tall_talk_l.png", 1220, -840, 192, 192, "Go through that door to stop the machine!"),
+      new EndLevel(gameEngine, 50, -1040, 100, 200),
       new Plat3(gameEngine, 0, 700, 350, 87)
   ];
   var lever_0 = new Lever(gameEngine, 220, -30, 192, 192);
   var door_0 = new Door(gameEngine, 700, -640, 192, 192, lever_0);
 
-  var plate_0 = new Plate(gameEngine, 400, -980, 192, 192);
+  var plate_0 = new Plate(gameEngine, 350, -970, 192, 192);
   var door_1 = new Door(gameEngine, 100, -1050, 192, 192, plate_0);
   //PLATE
   statics.push(lever_0);
@@ -488,7 +492,8 @@ function level_3(gameEngine){
   var vol = music.volume;
   music = ASSET_MANAGER.getAsset("./asset_lib/audio/Atomyk Ebonpyre.mp3");
   music.volume = vol;
-  gameEngine.Hero.y = 550;
+  gameEngine.Hero.y = -1200;
+  gameEngine.Hero.x = 300
   gameEngine.text = [
     "Stew in its belly",
     "That's all you are",
@@ -503,7 +508,7 @@ function level_3(gameEngine){
     false,
     false
   ];
-  gameEngine.Hero.y = 400;
+  // gameEngine.Hero.y = 400;
   set_level(gameEngine, statics);
 }
 
@@ -578,6 +583,7 @@ ASSET_MANAGER.queueDownload("./img/pc_push_l.png");
 ASSET_MANAGER.queueDownload("./img/kid_talk_l.png");
 ASSET_MANAGER.queueDownload("./img/old_talk_l.png");
 ASSET_MANAGER.queueDownload("./img/tall_talk_l.png");
+ASSET_MANAGER.queueDownload("./img/grrl_talk_l.png");
 ASSET_MANAGER.queueDownload("./img/dwight_talk_l.png");
 ASSET_MANAGER.queueDownload("./img/Image_0005.jpg");
 ASSET_MANAGER.queueDownload("./img/Image_0009.png");
