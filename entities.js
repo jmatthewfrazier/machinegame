@@ -993,9 +993,10 @@ Unicorn.prototype.update = function () {
       for (var i = 0; i < this.game.boxes.length; i++) {
           var box = this.game.boxes[i];
 
-          if(this.boundingbox.collide(box.boundingbox) && (box instanceof Plat3)) {
-            console.log("stuck");
-          }
+          // if(this.boundingbox.collide(box.boundingbox) && this.boundingbox.left < box.boundingbox.left && this.boundingbox.right >= box.boundingbox.left && (box instanceof Plat3)) {
+          //   this.speed = 130;
+          //   console.log("stuck");
+          // }
           if (this.boundingbox.collide(box.boundingbox) && this.boundingbox.right >= box.boundingbox.left && !(this.platform === box) && !(box instanceof Ouchies) && !(box instanceof Lightning) && !(box instanceof Lever) &&  !(box instanceof Character) ) {
               this.lastplattouch = box;
 
@@ -1094,8 +1095,9 @@ Unicorn.prototype.update = function () {
             this.onBox = true;
             this.falling = false;
             this.platform = box;
+
           }
-          if (this.onBox && this.boundingbox.collide(box.boundingbox) && this.x < box.x && !(box instanceof Plat1) && !(box instanceof Plat2) && !(box instanceof Lightning) && !(box instanceof Plate) && !(box instanceof Lever)  && !(box instanceof Character)) {
+          if (this.onBox && this.boundingbox.collide(box.boundingbox) && this.x < box.x && !(box instanceof Plat1) && !(box instanceof Plat2) && !(box instanceof Lightning) && !(box instanceof Plate) && !(box instanceof Lever)  && !(box instanceof Character) && !(box instanceof Plat3)) {
               if (!(box === this.platform)) {
                   this.speed = 0;
               } else {
