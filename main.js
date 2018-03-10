@@ -350,7 +350,7 @@ function level_2(gameEngine){
   new Character(gameEngine, "./img/dog_excited_l.png", 2350, 635, 192, 192, "woof woof!"),
   new Character(gameEngine, "./img/dwight_talk_l.png", 7100, 620, 192, 192, "The entrance to the machine is near"),
 
-  new EndLevel(gameEngine, 7400, 620, 500, 500),
+  new EndLevel(gameEngine, 70, 620, 500, 500),
   new Plat3(gameEngine, 0, 700, 350, 50, 2)
   ];
   //LEVER
