@@ -140,6 +140,9 @@ GameEngine.prototype.addEntity = function (entity) {
 GameEngine.prototype.reset = function () {
     for (var i = 0; i < this.entities.length; i++) {
         this.entities[i].reset();
+        if (this.entities[i] === this.Hero ) {
+          this.entities[i].y = 550;
+        }
     }
 }
 
