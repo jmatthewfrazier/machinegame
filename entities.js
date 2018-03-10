@@ -865,7 +865,7 @@ Unicorn.prototype.update = function () {
       //   }
       // }
       if (this.jumping && this.justLeft) {
-        // console.log("jumping left");
+        console.log("jumping left");
           if (this.rjump) {
             this.jumpRevAnimation.elapsedTime += this.jumpAnimation.elapsedTime;
             this.jumpAnimation.elapsedTime = 0;
@@ -926,11 +926,11 @@ Unicorn.prototype.update = function () {
       //yo, check to see if I fall onto another box or a platform, would ya?
       for (var i = 0; i < this.game.boxes.length; i++) {
           var box = this.game.boxes[i];
-          // if (this.boundingbox.collide(box.boundingbox) && box instanceof Plat2){
-          //   console.log(this);
-          //   console.log(box);
-          // }
-          if (this.boundingbox.collide(box.boundingbox) && this.lastbottom <= box.boundingbox.top && !(box instanceof Lever) && !(box instanceof Character)) {
+          if (this.boundingbox.collide(box.boundingbox) && box instanceof Plat3){
+            this.falling = false;
+            this.onBox = true;
+            this.platform = box;
+          } if (this.boundingbox.collide(box.boundingbox) && this.lastbottom <= box.boundingbox.top && !(box instanceof Lever) && !(box instanceof Character)) {
               this.falling = false;
               this.y = box.boundingbox.top - this.animation.frameHeight;
               this.onBox = true;
@@ -991,7 +991,6 @@ Unicorn.prototype.update = function () {
           // }
           if (this.boundingbox.collide(box.boundingbox) && this.boundingbox.right >= box.boundingbox.left && !(this.platform === box) && !(box instanceof Ouchies) && !(box instanceof Lightning) && !(box instanceof Lever) &&  !(box instanceof Character) ) {
               this.lastplattouch = box;
-
           }
           // if (this.boundingbox.collide(box.boundingbox) && this.boundingbox.bottom >= box.boundingbox.top && this.boundingbox.top < box.boundingbox.top && box instanceof Plat3) {
           //   console.log("collide plat3");
@@ -1045,7 +1044,7 @@ Unicorn.prototype.update = function () {
               this.lastplattouch.pushedRight = true;
               this.pushing = true;
               this.speed = 50;
-              //console.log("im hitting someting");
+              console.log("im hitting someting");
           } else {
               this.speed = 0;
           }
