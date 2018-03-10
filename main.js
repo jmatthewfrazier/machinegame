@@ -240,7 +240,7 @@ function level_1(gameEngine){
       //NPC
         new Character(gameEngine, "./img/kid_talk_l.png", 400, 620, 192, 192, "Do you know who woke the machine?"),
         new Character(gameEngine, "./img/kid_talk_l.png", 6300, 620, 192, 192, "if you get stuck, push x to restart the level"),
-        new EndLevel(gameEngine, 77, 620, 500, 500)
+        new EndLevel(gameEngine, 7700, 620, 500, 500)
     ];
     //LEVER
       var lever_0 = new Lever(gameEngine, 3111, 575, 192, 192);
@@ -350,7 +350,7 @@ function level_2(gameEngine){
   new Character(gameEngine, "./img/dog_excited_l.png", 2350, 635, 192, 192, "woof woof!"),
   new Character(gameEngine, "./img/dwight_talk_l.png", 7100, 620, 192, 192, "The entrance to the machine is near"),
 
-  new EndLevel(gameEngine, 74, 620, 500, 500),
+  new EndLevel(gameEngine, 7400, 620, 500, 500),
   new Plat3(gameEngine, 0, 700, 350, 50, 2)
   ];
   //LEVER
@@ -447,7 +447,7 @@ function level_3(gameEngine){
       new Box1(gameEngine, 600, -830, 144, 144),
       new Box1(gameEngine, 600, -990, 144, 144),
       // new Character(gameEngine, "./img/tall_talk_l.png", 900, 375, 192, 192, "please help!", "tall"),
-      //new EndLevel(gameEngine, 0, -1040, 50, 50),
+      new EndLevel(gameEngine, 0, -1040, 50, 50),
       new Plat3(gameEngine, 0, 700, 350, 87)
   ];
   var lever_0 = new Lever(gameEngine, 220, -30, 192, 192);
@@ -488,9 +488,7 @@ function level_3(gameEngine){
   var vol = music.volume;
   music = ASSET_MANAGER.getAsset("./asset_lib/audio/Atomyk Ebonpyre.mp3");
   music.volume = vol;
-<<<<<<< HEAD
   gameEngine.Hero.y = 550;
-=======
   gameEngine.text = [
     "Stew in its belly",
     "That's all you are",
@@ -506,7 +504,6 @@ function level_3(gameEngine){
     false
   ];
   gameEngine.Hero.y = 400;
->>>>>>> d043ca5eebcc2660bb796a37e46af358e4f1fc39
   set_level(gameEngine, statics);
 }
 

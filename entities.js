@@ -413,8 +413,8 @@ Ouchies.prototype.update = function () {
 
 Ouchies.prototype.draw = function (ctx) {
   if (!this.game.running) return;
-  ctx.strokeStyle = "green";
-  ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
+  // ctx.strokeStyle = "green";
+  // ctx.strokeRect(this.boundingbox.x, this.boundingbox.y, this.boundingbox.width, this.boundingbox.height);
    this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y, .5);
 }
 
@@ -1182,7 +1182,7 @@ Unicorn.prototype.update = function () {
               this.jumpAnimation.elapsedTime = 0;
               this.onBox = true;
               this.platform = box;
-<<<<<<< HEAD
+
           } else if (this.boundingbox.collide(box.boundingbox) && this.lastbottom <= box.boundingbox.top && !(box instanceof Plat2) && !(box instanceof Character)){
             this.jumping = false;
             this.y = box.boundingbox.top - this.animation.frameHeight;
@@ -1199,8 +1199,7 @@ Unicorn.prototype.update = function () {
           //     this.y = box.boundingbox.top - this.animation.frameHeight;
           //   }
           //
-=======
-          }
+
           // else if (this.boundingbox.collide(box.boundingbox) && this.lastbottom <= box.boundingbox.top && !(box instanceof Plat2) && !(box instanceof Character)){
           //   this.jumping = false;
           //   this.y = box.boundingbox.top - this.animation.frameHeight;
@@ -1210,7 +1209,6 @@ Unicorn.prototype.update = function () {
           //   // console.log(this.platform.y + "," + this.platform.boundingbox.y + ", " + this.lastbottom);
           // } else {
           //   //console.log(this.platform.constructor.name);
->>>>>>> d043ca5eebcc2660bb796a37e46af358e4f1fc39
           // }
       }
 
