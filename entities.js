@@ -897,12 +897,16 @@ Unicorn.prototype.update = function () {
                     this.onBox = true;
                     this.platform = box;
                     this.y = box.boundingbox.top - this.animation.frameHeight;
+                    this.jumpRevAnimation.elapsedTime = 0;
+                    this.jumpAnimation.elapsedTime = 0;
                 }else if (this.boundingbox.collide(box.boundingbox)&& this.lastbottom-1 <= box.boundingbox.top  && (box instanceof Plat2)) {
                   this.jumping = false;
                   this.jumpAnimation.elapsedTime = 0;
                   this.onBox = true;
                   this.platform = box;
                   this.y = box.boundingbox.top - this.animation.frameHeight;
+                  this.jumpRevAnimation.elapsedTime = 0;
+                  this.jumpAnimation.elapsedTime = 0;
                 }else if (this.boundingbox.collide(box.boundingbox) && box instanceof Plat3) {
                   if (this.boundingbox.bottom >= box.boundingbox.top && this.boundingbox.top <= box.boundingbox.top - this.height + 5) {
                     this.jumping = false;
@@ -910,6 +914,8 @@ Unicorn.prototype.update = function () {
                     this.onBox = true;
                     this.platform = box;
                     this.y = box.boundingbox.top - this.animation.frameHeight;
+                    this.jumpRevAnimation.elapsedTime = 0;
+                    this.jumpAnimation.elapsedTime = 0;
                   }
                 }
               }
@@ -1097,6 +1103,7 @@ Unicorn.prototype.update = function () {
       if (this.boundingbox.left > this.platform.boundingbox.right && this.onBox && !this.jumping) {
           this.falling = true;
           this.onBox = false;
+          // console.log("bbl > pbbr");
       }
 
       if (!this.game.right) {
@@ -1178,13 +1185,16 @@ Unicorn.prototype.update = function () {
               this.jumpAnimation.elapsedTime = 0;
               this.onBox = true;
               this.platform = box;
-
+              this.jumpRevAnimation.elapsedTime = 0;
+              this.jumpAnimation.elapsedTime = 0;
           } else if (this.boundingbox.collide(box.boundingbox) && this.lastbottom <= box.boundingbox.top && !(box instanceof Plat2) && !(box instanceof Character)){
             this.jumping = false;
             this.y = box.boundingbox.top - this.animation.frameHeight;
             this.jumpAnimation.elapsedTime = 0;
             this.onBox = true;
             this.platform = box;
+            this.jumpRevAnimation.elapsedTime = 0;
+            this.jumpAnimation.elapsedTime = 0;
             // console.log(this.platform.y + "," + this.platform.boundingbox.y + ", " + this.lastbottom);
           } //else if (this.boundingbox.collide(box.boundingbox) && box instanceof Plat3) {
           //   if (this.boundingbox.bottom >= box.boundingbox.top && this.boundingbox.top < box.boundingbox.top) {
@@ -1233,6 +1243,7 @@ Unicorn.prototype.update = function () {
       if (this.boundingbox.right < this.platform.boundingbox.left && this.onBox && !this.jumping) {
           this.falling = true;
           this.onBox = false;
+          // console.log("bbr > pbbl " + this.platform.boundingbox.left);
       }
       if (!this.game.left) {
           this.leftMove = false;
@@ -1321,12 +1332,15 @@ Unicorn.prototype.draw = function (ctx) {
     }
     if (this.justLeft && this.jumping) {
       this.jumpRevAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y, .5);
+      // console.log("jlj1 " + this.jumpRevAnimation.elapsedTime + " " + this.jumpRevAnimation.totalTime);
         if (this.jumpRevAnimation.isDone()) {
             this.jumpRevAnimation.elapsedTime = 0;
             this.jumpAnimation.elapsedTime = 0;
             this.jumping = false;
+            // console.log("jlj2 " + this.jumpRevAnimation.elapsedTime + " " + this.jumpRevAnimation.totalTime);
             if (!this.onBox){
               this.falling = true;
+              console.log("jlj fall");
             }
         }
     } else if (this.justRight && this.jumping) {
@@ -1335,8 +1349,10 @@ Unicorn.prototype.draw = function (ctx) {
           this.jumpAnimation.elapsedTime = 0;
           this.jumpRevAnimation.elapsedTime = 0;
           this.jumping = false;
+          // console.log("jrj");
           if (!this.onBox){
             this.falling = true;
+            console.log("jrj fall");
           }
       }
     }
