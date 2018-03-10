@@ -820,22 +820,15 @@ Unicorn.prototype.update = function () {
 
           for (var i = 0; i < this.game.boxes.length; i++) {
               var box = this.game.boxes[i];
-<<<<<<< HEAD
               if (this.jumpAnimation.currentFrame() > 7){
                 if (this.boundingbox.collide(box.boundingbox) && this.lastbottom <= box.boundingbox.top 
                   && this.boundingbox.right > box.boundingbox.left && !(box instanceof Plat2) 
-=======
-              if (this.jumpAnimation.currentFrame() > 9){
-                if (this.boundingbox.collide(box.boundingbox) && this.lastbottom <= box.boundingbox.top
-                  && this.boundingbox.right > box.boundingbox.left && !(box instanceof Plat2)
->>>>>>> c3f145560f5c13d107108891453979d62b9df1f2
                   && !(box instanceof Character)) {
                     this.jumping = false;
                     this.jumpAnimation.elapsedTime = 0;
                     this.onBox = true;
                     this.platform = box;
                     this.y = box.boundingbox.top - this.animation.frameHeight;
-                    // console.log("jump R collide");
                 } else if (this.boundingbox.collide(box.boundingbox) && this.lastbottom-1 <= box.boundingbox.top  && (box instanceof Plat2)) {
                   this.jumping = false;
                   this.jumpAnimation.elapsedTime = 0;
@@ -868,7 +861,7 @@ Unicorn.prototype.update = function () {
           this.rjump = false;
 
           var duration = this.jumpRevAnimation.elapsedTime + this.game.clockTick;
-          if (duration > this.jumpRevAnimation.totalTime / 2) {
+          if (duration > this.jumpRevAnimation.totalTime / 8) {
               duration = this.jumpRevAnimation.totalTime - duration;
           }
           duration = duration / this.jumpRevAnimation.totalTime;
@@ -877,28 +870,19 @@ Unicorn.prototype.update = function () {
           this.lastbottom = this.boundingbox.bottom;
           this.y = this.base - this.height;
           this.boundingbox = new BoundingBox(this.x + 30, this.y + 10, this.resize - 60, this.resize - 22);
-<<<<<<< HEAD
           // this.onBox = false;
 
           for (var i = 0; i < this.game.boxes.length; i++) {
               var box = this.game.boxes[i];
-              if(this.jumpRevAnimation.currentFrame() > 8){
+              if(this.jumpRevAnimation.currentFrame() > 7){
                 if (this.boundingbox.collide(box.boundingbox) && this.lastbottom <= box.boundingbox.top 
                   && this.boundingbox.left < this.boundingbox.right && !(box instanceof Plat2) 
-=======
-          this.onBox = false;
-          for (var i = 0; i < this.game.boxes.length; i++) {
-              var box = this.game.boxes[i];
-              if(this.jumpRevAnimation.currentFrame() > 9){
-                if (this.boundingbox.collide(box.boundingbox) && this.lastbottom <= box.boundingbox.top
-                  && this.boundingbox.left < this.boundingbox.right && !(box instanceof Plat2)
->>>>>>> c3f145560f5c13d107108891453979d62b9df1f2
                   && !(box instanceof Character)) {
                     this.jumping = false;
-                    this.y = box.boundingbox.top - this.animation.frameHeight;
                     this.jumpAnimation.elapsedTime = 0;
                     this.onBox = true;
                     this.platform = box;
+                    this.y = box.boundingbox.top - this.animation.frameHeight;
                 }else if (this.boundingbox.collide(box.boundingbox)&& this.lastbottom-1 <= box.boundingbox.top  && (box instanceof Plat2)) {
                   this.jumping = false;
                   this.jumpAnimation.elapsedTime = 0;
@@ -1088,11 +1072,6 @@ Unicorn.prototype.update = function () {
           this.falling = true;
           this.onBox = false;
       }
-      if (this.x >= 500 && !this.blocked) {
-          this.scroll = true;
-      } else {
-          this.scroll = false;
-      }
 
       if (!this.game.right) {
           this.rightMove = false;
@@ -1270,42 +1249,6 @@ Unicorn.prototype.update = function () {
           }
       }
   }
-
-  // //if you're on a box and you collide with another box you should stop moving.
-  // //except if that "box" is a platform, you should be able to move through its bounding box
-  // for (var i = 0; i < this.game.boxes.length; i++) {
-  //     var box = this.game.boxes[i];
-  //     if (this.onBox && this.boundingbox.collide(box.boundingbox) && !(box instanceof Plat1) && !(box instanceof Plat2) && !(box instanceof Lightning) && !(box instanceof Plate) && !(box instanceof Lever) && !(box instanceof Child)) {
-  //         if (!(box === this.platform)) {
-  //             this.speed = 0;
-  //         } else {
-  //             this.speed = 75;
-  //         }
-  //     }
-  // }
-
-  //this.boundingbox = new BoundingBox(this.x + 30, this.y + 10, this.resize - 60, this.resize - 22);
-
-  // if (this.scroll && this.rightMove) {
-  //     for (var i = 0; i < this.game.boxes.length; i++) {
-  //         var thing = this.game.boxes[i];
-  //         thing.x -= this.speed * this.game.clockTick;
-  //         if (thing instanceof Lever) {
-  //             thing.boundingbox = new BoundingBox(thing.x + 55, thing.y + 80, (thing.width) - 115, (thing.height) - 140);
-  //             thing.doorbounding = new BoundingBox(thing.x + 250, thing.y - 50, (thing.width) - 100, (thing.height) - 20);
-  //         } else if (thing instanceof Lightning) {
-  //             thing.boundingbox = new BoundingBox(thing.x + 100, thing.y, (thing.width * .95) - 200, (thing.height * .95));
-  //         } else if (thing instanceof Ouchies) {
-  //             thing.boundingbox = new BoundingBox(thing.x + 20, thing.y + 34, (thing.width * .5) - 45, (thing.height * .5) - 20);
-  //         } else if (thing instanceof Plate) {
-  //             thing.boundingbox = new BoundingBox(thing.x, thing.y + 80, thing.width * thing.scale, 10);
-  //         } else {
-  //             thing.boundingbox = new BoundingBox(thing.x, thing.y, thing.boundingbox.width, thing.boundingbox.height);
-  //         }
-  //     }
-  //     this.speed = 0;
-  // }
-  //console.log(this.platform === this.game.boxes[0]);
 
     Entity.prototype.update.call(this);
   }
