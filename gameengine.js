@@ -96,10 +96,10 @@ GameEngine.prototype.startInput = function () {
         }else if (String.fromCharCode(e.which) === 'I') {
           console.log(that.Hero);
         }
-        // else if (String.fromCharCode(e.which) === 'N') {
-        //   that.togglePause();
-        //   nextLevel(that);
-        // }
+        else if (String.fromCharCode(e.which) === 'N') {
+          that.togglePause();
+          nextLevel(that);
+        }
 
 //        console.log(e);
         e.preventDefault();
@@ -250,9 +250,9 @@ GameEngine.prototype.update = function () {
           if(obj.sound !== null){
             obj.sound.play();
             if (obj.text.length > 80){
-              setText(obj.text, elementID);
-          		display(1, elementID);
-          		hide(6000, 2000, elementID);
+              setText(obj.text, "dialogue");
+          		display(1, "dialogue");
+          		hide(6000, 2000, "dialogue");
             } else{
               pushText_safe(obj.text, "dialogue");
             }
