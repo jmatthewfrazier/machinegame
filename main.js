@@ -461,7 +461,7 @@ function level_3(gameEngine){
   var door_1 = new Door(gameEngine, 100, -1050, 192, 192, plate_0);
   //PLATE
   statics.push(lever_0);
-  // statics.push(door_0);
+  statics.push(door_0);
   statics.push(plate_0);
   statics.push(door_1);
   for (var i = 1; i < 4; i++) {
