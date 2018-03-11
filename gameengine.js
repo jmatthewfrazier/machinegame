@@ -96,10 +96,10 @@ GameEngine.prototype.startInput = function () {
         }else if (String.fromCharCode(e.which) === 'I') {
           console.log(that.Hero);
         }
-        else if (String.fromCharCode(e.which) === 'N') {
-          that.togglePause();
-          nextLevel(that);
-        }
+        // else if (String.fromCharCode(e.which) === 'N') {
+        //   that.togglePause();
+        //   nextLevel(that);
+        // }
 
 //        console.log(e);
         e.preventDefault();
@@ -177,8 +177,7 @@ GameEngine.prototype.success = function(){
       document.getElementById("nxtLvl").style.display = "inline-block";
       this.togglePause();
     } else {
-      document.getElementById("resume").onclick = function(){
-        location.reload()};
+      document.getElementById("resume").onclick = "(function(){location.reload()})()";
       document.getElementById("pause").style.display = "none";
       document.getElementById("pausedBanner").style.display = "none";
       document.getElementById("resume").style.display = "none";
@@ -264,6 +263,11 @@ GameEngine.prototype.update = function () {
           setTimeout(function(){
             that.addEntity(new Box1(that, x, 0, 144, 144));
           },4000);
+          if (this.Hero.x >= 7500){
+            this.Background.eyes = "-  -";
+          } else if (this.Hero.x >= 500){
+            this.Background.eyes = "0  0";
+          }
       }
     }
 

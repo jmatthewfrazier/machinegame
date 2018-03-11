@@ -132,6 +132,8 @@ PlayGame.prototype.draw = function (ctx) {
 }
 
 function Background(game) {
+  this.eyes = "-  -";
+  this.mouth = "_";
   this.x = 0;
   this.y = 0;
   this.game = game;
@@ -192,6 +194,13 @@ Background.prototype.draw = function (ctx) {
       ctx.drawImage(ASSET_MANAGER.getAsset(bg.layer0), 0, i, window.innerWidth/gameEngine.xscale, window.innerHeight/gameEngine.xscale);
   		ctx.drawImage(ASSET_MANAGER.getAsset(bg.layer1), 0, i);
     }
+  }
+  if (this.game.lvl == 4){
+    ctx.font = "600% pixel1";
+    ctx.textAlign = "center";
+    ctx.fillStyle = "#61D6B2";
+    ctx.fillText(this.eyes, this.game.Hero.x+48, 400);
+    ctx.fillText(this.mouth, this.game.Hero.x+48, 450);
   }
 }
 
