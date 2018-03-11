@@ -1,4 +1,5 @@
-﻿<DOCTYPE html>
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
@@ -13,30 +14,29 @@
     <link rel="stylesheet" type="text/css" href="index.css"/>
 </head>
 <body style="overflow:hidden;margin:0 auto;">
-	<div id="pause" style="display:none" onclick="gameEngine.togglePause()">*</div>
+	<div id="pause" onclick="gameEngine.togglePause()">*</div>
 	<div id="menu" style="display: none;">
 		<h3 id="pausedBanner" >Paused</h3>
     <h3 id="endGame" style="display:none;">Game Over</h3>
-    <h3 id="done" style="display:none;">Level Completed!</h3>
 		<br/>
-		<button id="resume" class="astext" onclick="gameEngine.togglePause()">Resume</button>
-		<button id="restart" class="astext" onclick="gameEngine.resetandHide()">Restart</button>
-    <button id="nxtLvl" class="astext" onclick="nextLevel(gameEngine)" style="display:none">Next Level</button>
+		<button id="resume" class="astext" onclick="gameEngine.togglePause()">Resume
+    </button>
+		<button class="astext" onclick="gameEngine.resetandHide()">Restart</button>
     <button id="vol" class="astext">Volume</button>
-    <div id="volMenu" class="ctrlMenu" style="display:none;">
+    <div id="volMenu" class="ctrlMenu" style="display:none;height:20%;">
       <input id="muteMusic" class="checkbox" type="checkbox">
       Mute music
       <br/>
       Music Volume
       <br/>
-      <input id="volMusic" class="slider" type="range" min="0" max="100" value="50">
+      <input id="volMusic" class="slider" type="range" min="1" max="100" value="70">
       <br/>
       <input id="muteMaster" class="checkbox" type="checkbox">
       Mute all
       <br/>
       Master Volume
       <br/>
-      <input id="volMaster" class="slider" type="range" min="0" max="100" value="100">
+      <input id="volMaster" class="slider" type="range" min="1" max="100" value="100">
       <br/>
     </div>
     <button id="ctrl" class="astext">Controls</button>
@@ -45,15 +45,12 @@
       <br/>
       D - Move right
       <br/>
-      Space - Jump
-      <br/>
       X - Reset
       <br/>
       esc - Menu
     </div>
 	</div>
     <div id="dialogue" style="opacity: 0;"></div>
-    <div id="story" style="opacity: 0;display: none;"></div>
     <canvas id="gameWorld" tabindex="1" style="background-color: black"></canvas>
 </body>
 </html>
