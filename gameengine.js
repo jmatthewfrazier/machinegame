@@ -250,7 +250,7 @@ GameEngine.prototype.update = function () {
           if(obj.sound !== null){
             obj.sound.play();
             if (obj.text.length > 80){
-              setText(text, elementID);
+              setText(obj.text, elementID);
           		display(1, elementID);
           		hide(6000, 2000, elementID);
             } else{
