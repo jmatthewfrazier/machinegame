@@ -96,6 +96,10 @@ GameEngine.prototype.startInput = function () {
         }else if (String.fromCharCode(e.which) === 'I') {
           console.log(that.Hero);
         }
+        // else if (String.fromCharCode(e.which) === 'N') {
+        //   that.togglePause();
+        //   nextLevel(that);
+        // }
 
 //        console.log(e);
         e.preventDefault();
@@ -165,7 +169,7 @@ GameEngine.prototype.gameOver = function(){
 GameEngine.prototype.success = function(){
     this.over = true;
     fadeAudio(music, 0);
-    if (this.level !== 3) {
+    if (this.lvl !== 4) {
       document.getElementById("pause").style.display = "none";
       document.getElementById("pausedBanner").style.display = "none";
       document.getElementById("resume").style.display = "none";
@@ -173,6 +177,8 @@ GameEngine.prototype.success = function(){
       document.getElementById("nxtLvl").style.display = "inline-block";
       this.togglePause();
     } else {
+      document.getElementById("resume").onclick = function(){
+        location.reload()};
       document.getElementById("pause").style.display = "none";
       document.getElementById("pausedBanner").style.display = "none";
       document.getElementById("resume").style.display = "none";
@@ -225,7 +231,7 @@ GameEngine.prototype.update = function () {
         }
     }
 
-    if (this.Hero && this.Background && this.text){
+    if (this.Hero && this.Background && this.text && this.lvl < 4){
         if(this.Background.vertical){
             if (this.Hero.y <= 700 + (5-this.text.length)*(-340) && !this.flags[(5-this.text.length)]){
                 this.flags[(5-this.text.length)] = true;
@@ -237,6 +243,28 @@ GameEngine.prototype.update = function () {
                 pushText_safe(this.text.shift(), "story");
             }
         }
+    }
+    if (this.lvl == 4){
+      if (this.Hero.x >= (10-this.text.length)*1000 + 500){
+          let obj = this.text.shift();
+          if(obj.sound !== null){
+            obj.sound.play();
+            if (obj.text.length > 80){
+              setText(text, elementID);
+          		display(1, elementID);
+          		hide(6000, 2000, elementID);
+            } else{
+              pushText_safe(obj.text, "dialogue");
+            }
+          } else{
+            pushText(obj.text, "story");
+          }
+          var that = this;
+          var x = this.Hero.x -220;
+          setTimeout(function(){
+            that.addEntity(new Box1(that, x, 0, 144, 144));
+          },4000);
+      }
     }
 
     for (var i = this.entities.length - 1; i >= 0; --i) {

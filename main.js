@@ -184,8 +184,8 @@ Background.prototype.draw = function (ctx) {
     let ay = window.innerHeight/gameEngine.yscale - ASSET_MANAGER.getAsset(this.layer1).height;
   	for (i = 0; i < fillNum; i++){
   		ctx.drawImage(ASSET_MANAGER.getAsset(bg.layer0), x, y, ASSET_MANAGER.getAsset(bg.layer0).width, window.innerHeight/gameEngine.yscale);
-  		ctx.drawImage(ASSET_MANAGER.getAsset(bg.layer1), x, ay);
-  		x += 700;
+  		ctx.drawImage(ASSET_MANAGER.getAsset(bg.layer1), x, ay,  ASSET_MANAGER.getAsset(bg.layer0).width, ASSET_MANAGER.getAsset(bg.layer1).height);
+  		x += ASSET_MANAGER.getAsset(bg.layer0).width;
   	}
   } else {
     for (i = -8000; i <= 2*window.innerHeight/gameEngine.xscale; i += window.innerHeight/gameEngine.xscale -5){
@@ -511,6 +511,40 @@ function level_3(gameEngine){
   set_level(gameEngine, statics);
 }
 
+function level_4(gameEngine){
+  var statics = [
+    new EndLevel(gameEngine, 7700, 620, 500, 500)
+  ];
+  for (var i = -1; i < 50; i++) {
+    statics.unshift(new Plat3(gameEngine, i * (349 * .75), 630, 350, 87, 1));
+  }
+  gameEngine.Background.layer0 = "./img/lv4_l0.png";
+  gameEngine.Background.vertical = false;
+  var vol = music.volume;
+  music = ASSET_MANAGER.getAsset("./asset_lib/audio/Blackest Heart.mp3");
+  music.volume = vol;
+  gameEngine.text = null;
+  gameEngine.text = [
+    {sound: ASSET_MANAGER.getAsset("./asset_lib/audio/arbor_0.wav"), text:"Welcome", flag:false, x: 0},
+    {sound: ASSET_MANAGER.getAsset("./asset_lib/audio/arbor_1.wav"), text:"I am the colony ship arbor. This planet is 40% habitable. I am adjusting to an acceptable margin of 80%. Existing life will be extinguished.", flag:false, x: 0},
+    {sound: null, text:"But you protect this land", flag:false, x: 0},
+    {sound: ASSET_MANAGER.getAsset("./asset_lib/audio/arbor_2.wav"), text:"Impossible", flag:false, x: 0},
+    {sound: null, text:"It's true.", flag:false, x: 0},
+    {sound: ASSET_MANAGER.getAsset("./asset_lib/audio/arbor_3.wav"), text:"I can continue if you wish. The surface living conditions will improve, but your people will die.", flag:false, x: 0},
+    {sound: null, text:"Let you slaughter us? never", flag:false, x: 0},
+    {sound: ASSET_MANAGER.getAsset("./asset_lib/audio/arbor_4.wav"), text:"Confirmed. Shutting down.", flag:false, x: 0},
+    {sound: null, text:"Life is miserable here ... I guess it would be okay...", flag:false, x: 0},
+    {sound: ASSET_MANAGER.getAsset("./asset_lib/audio/arbor_5.wav"), text:"As you wish. Adjustments resuming.", flag:false, x: 0}
+    ];
+
+  for (i = 0; i < gameEngine.text.length - 3; i++){
+    let plate =  new Plate(gameEngine, i* 1000 + 250, 540, 192, 192);
+    statics.push(new Door(gameEngine,i*1000 + 750, 450, 192, 192, plate));
+    statics.push(plate);
+  }
+  set_level(gameEngine, statics);
+}
+
 function set_level(gameEngine, statics){
   boxes = [];
   gameEngine.addEntity(gameEngine.Background);
@@ -530,18 +564,25 @@ function nextLevel(gameEngine){
   gameEngine.resetandHide();
   if (gameEngine.lvl == 1){
     gameEngine.clear();
+    gameEngine.lvl++;
     level_2(gameEngine);
     setText("Concourse", "dialogue");
   	display(1, "dialogue");
     hide(2000, 2000, "dialogue");
-    gameEngine.lvl++;
   } else if (gameEngine.lvl == 2){
     gameEngine.clear();
+    gameEngine.lvl++;
     level_3(gameEngine);
     setText("Interior", "dialogue");
   	display(1, "dialogue");
     hide(2000, 2000, "dialogue");
+  } else if (gameEngine.lvl == 3){
+    gameEngine.clear();
     gameEngine.lvl++;
+    level_4(gameEngine);
+    setText("Brain", "dialogue");
+    display(1, "dialogue");
+    hide(2000, 2000, "dialogue");
   }
 }
 
@@ -551,18 +592,27 @@ function continue_dl(){
   ASSET_MANAGER.errorCount = 0;
   ASSET_MANAGER.queueDownload("./asset_lib/audio/Atomyk Ebonpyre.mp3");
   ASSET_MANAGER.queueDownload("./asset_lib/audio/In_Your_Prime_OC.mp3");
+  ASSET_MANAGER.queueDownload("./asset_lib/audio/Blackest Heart.mp3");
+  ASSET_MANAGER.queueDownload("./asset_lib/audio/arbor_0.wav");
+  ASSET_MANAGER.queueDownload("./asset_lib/audio/arbor_1.wav");
+  ASSET_MANAGER.queueDownload("./asset_lib/audio/arbor_2.wav");
+  ASSET_MANAGER.queueDownload("./asset_lib/audio/arbor_3.wav");
+  ASSET_MANAGER.queueDownload("./asset_lib/audio/arbor_4.wav");
+  ASSET_MANAGER.queueDownload("./asset_lib/audio/arbor_5.wav");
 
   ASSET_MANAGER.queueDownload("./img/L2_layer0.png");
   ASSET_MANAGER.queueDownload("./img/L2_layer1.png");
   ASSET_MANAGER.queueDownload("./img/Hallway.bmp");
   ASSET_MANAGER.queueDownload("./img/layer1_dummy.png");
   ASSET_MANAGER.queueDownload("./img/level_2_ground.png");
+  ASSET_MANAGER.queueDownload("./img/level_4_ground.png");
   ASSET_MANAGER.queueDownload("./img/electric.png");
   ASSET_MANAGER.queueDownload("./img/electric_wall_l.png");
   ASSET_MANAGER.queueDownload("./img/electric_wall_r.png");
   ASSET_MANAGER.queueDownload("./img/dog_excited_l.png");
   ASSET_MANAGER.queueDownload("./img/dog_walk.png");
   ASSET_MANAGER.queueDownload("./img/dog_wait.png");
+  ASSET_MANAGER.queueDownload("./img/lv4_l0.png");
 
   ASSET_MANAGER.downloadAll(function(){
     console.log("downloads complete\n");

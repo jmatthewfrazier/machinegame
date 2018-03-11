@@ -20,7 +20,7 @@
     <h3 id="done" style="display:none;">Level Completed!</h3>
 		<br/>
 		<button id="resume" class="astext" onclick="gameEngine.togglePause()">Resume</button>
-		<button class="astext" onclick="gameEngine.resetandHide()">Restart</button>
+		<button id="restart" class="astext" onclick="gameEngine.resetandHide()">Restart</button>
     <button id="nxtLvl" class="astext" onclick="nextLevel(gameEngine)" style="display:none">Next Level</button>
     <button id="vol" class="astext">Volume</button>
     <div id="volMenu" class="ctrlMenu" style="display:none;">
@@ -46,8 +46,6 @@
       D - Move right
       <br/>
       Space - Jump
-      <br/>
-      E - Activate
       <br/>
       X - Reset
       <br/>

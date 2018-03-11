@@ -308,8 +308,11 @@ function Plat3(game, x, y, width, height, level) {
     this.startY = y;
     this.width = width;
     this.height = height;
-    if(level === 1) {
+    if(game.lvl === 1) {
       this.animation = new Animation(ASSET_MANAGER.getAsset("./img/Image_0010.png"), 0, 0, 350, 87, 1, 1, true, false);
+
+    } else if(game.lvl === 4) {
+      this.animation = new Animation(ASSET_MANAGER.getAsset("./img/level_4_ground.png"), 0, 0, 350, 50, 1, 1, true, false);
 
     } else {
       this.animation = new Animation(ASSET_MANAGER.getAsset("./img/level_2_ground.png"), 0, 0, 350, 50, 1, 1, true, false);
